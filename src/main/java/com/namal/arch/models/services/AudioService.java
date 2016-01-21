@@ -7,9 +7,27 @@ import com.namal.arch.models.Song;
 
 public interface AudioService {
 
+	/**
+	 * 
+	 * @return List of all the playlist for this AudioService
+	 */
 	public List<Playlist> getPlaylists();
+	
+	/**
+	 * authenticate the user
+	 */
 	public void authenticate();
+	
+	/**
+	 * 
+	 * @return true if an authentication is needed
+	 */
 	public boolean authenticationNeeded();
-	public List<Song> searchTrack();
+	
+	/**
+	 * 
+	 * @return list of tracks found 
+	 */
+	public List<Song> searchTrack(String track);
 	
 }

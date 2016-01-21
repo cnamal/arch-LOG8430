@@ -12,10 +12,18 @@ public abstract class ProviderInformation {
 		this.logo=logo;
 	}
 	
+	/**
+	 * 
+	 * @return Name of the AudioService
+	 */
 	public String getName(){
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return logo of the AudioService
+	 */
 	public Image getLogo(){
 		return logo;
 	}

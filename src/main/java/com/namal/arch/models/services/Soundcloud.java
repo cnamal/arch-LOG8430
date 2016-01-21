@@ -77,12 +77,6 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 	}
 
 	@Override
-	public List<Song> searchTrack() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void savePlaylist(Playlist playlist) {
 		// TODO Auto-generated method stub
 		
@@ -107,5 +101,11 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 		public static SoundcloudProviderInformation getInstance(){
 			return instance;
 		}
+	}
+
+	@Override
+	public List<Song> searchTrack(String track) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
