@@ -3,6 +3,7 @@ package com.namal.arch.models.services;
 import java.util.List;
 
 import com.namal.arch.models.Playlist;
+import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 
 public interface AudioService {
@@ -30,4 +31,15 @@ public interface AudioService {
 	 */
 	public List<Song> searchTrack(String track);
 	
+	/**
+	 * 
+	 * @return ProviderInformation of the AudioService
+	 */
+	public ProviderInformation getProviderInformation();
+	
+	public static AudioService getInstance() {
+		return null;
+	}
+	
+	public AudioServiceProvider getAudioServiceProvider();
 }
