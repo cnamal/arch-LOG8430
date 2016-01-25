@@ -9,6 +9,7 @@ public class Playlist {
 
 	private List<Song> playlist;
 	private AudioServiceProvider provider;
+	private String name;
 	
 	/**
 	 * 
@@ -48,5 +49,7 @@ public class Playlist {
 		// TODO else -> modify provider for cross-platform provider and save playlist
 	}
 	
-	
+	public String getName(){
+		return name;
+	}
 }
