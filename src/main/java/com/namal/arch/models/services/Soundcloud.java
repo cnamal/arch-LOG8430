@@ -20,9 +20,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 	
 	private InputStream inputStream;
 	
-	private Soundcloud(){
-		
-	}
+	private Soundcloud(){}
 	
 	public static Soundcloud getInstance(){
 		return instance;
@@ -84,10 +82,13 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 
 	@Override
 	public ProviderInformation getProviderInformation() {
-		// TODO Auto-generated method stub
 		return SoundcloudProviderInformation.getInstance();
 	}
 
+	public String toString(){
+		return getProviderInformation().toString();
+	}
+	
 	private static class SoundcloudProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Soundclound";
@@ -96,6 +97,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 		
 		private SoundcloudProviderInformation(){
 			super(name,new Image(logoURL));
+			
 		}
 		
 		public static SoundcloudProviderInformation getInstance(){
@@ -107,5 +109,11 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 	public List<Song> searchTrack(String track) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public AudioServiceProvider getAudioServiceProvider() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 }

@@ -28,4 +28,7 @@ public abstract class ProviderInformation {
 		return logo;
 	}
 	
+	public String toString(){
+		return "Name : " + name;
+	}
 }
