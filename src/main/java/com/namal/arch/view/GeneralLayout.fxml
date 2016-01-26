@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="564.0" prefWidth="1024.0" styleClass="background" stylesheets="@GeneralLayout.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65">
+<AnchorPane prefHeight="564.0" prefWidth="1024.0" styleClass="background" stylesheets="@GeneralLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.namal.arch.view.GeneralLayoutController">
    <children>
-      <SplitPane dividerPositions="0.29549902152641877" layoutX="-154.0" layoutY="-116.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.1780821917808219" layoutX="-154.0" layoutY="-116.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <VBox layoutX="19.0" layoutY="26.0" prefHeight="60.0" prefWidth="100.0" styleClass="vbox" stylesheets="@GeneralLayout.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="playlistBox" layoutX="19.0" layoutY="26.0" onMouseClicked="#playlistLoading" prefHeight="60.0" prefWidth="100.0" styleClass="vbox" stylesheets="@GeneralLayout.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label prefHeight="67.0" prefWidth="309.0" text="Playlist">
                            <font>
@@ -24,12 +23,12 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets left="50.0" />
+                              <Insets left="25.0" />
                            </padding>
                         </Label>
                      </children>
                   </VBox>
-                  <VBox layoutX="20.0" layoutY="75.0" prefHeight="60.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <VBox fx:id="searchBox" layoutX="20.0" layoutY="75.0" onMouseClicked="#searchLoading" prefHeight="60.0" prefWidth="100.0" styleClass="vbox" stylesheets="@GeneralLayout.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Label prefHeight="67.0" prefWidth="309.0" text="Browse">
                            <font>
@@ -39,12 +38,12 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets left="50.0" />
+                              <Insets left="25.0" />
                            </padding>
                         </Label>
                      </children>
                   </VBox>
-                  <VBox layoutX="9.0" layoutY="147.0" prefHeight="60.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <VBox fx:id="settingsBox" layoutX="9.0" layoutY="147.0" onMouseClicked="#settingsLoading" prefHeight="60.0" prefWidth="100.0" styleClass="vbox" stylesheets="@GeneralLayout.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Label prefHeight="67.0" prefWidth="309.0" text="Settings">
                            <font>
@@ -54,7 +53,7 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets left="50.0" />
+                              <Insets left="25.0" />
                            </padding>
                         </Label>
                      </children>
@@ -65,8 +64,8 @@
                <children>
                   <SplitPane dividerPositions="0.8910714285714286" layoutX="240.0" layoutY="181.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                      <AnchorPane fx:id="modulePlane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                      <AnchorPane fx:id="currentlyPlayedPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                     </items>
                   </SplitPane>
                </children>
