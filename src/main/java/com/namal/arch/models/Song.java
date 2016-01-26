@@ -21,4 +21,42 @@ public class Song {
 		provider.closeInputStream();
 	}
 	
+	/*
+	 * TO REMOVE IF NOT OK
+	 * By Adrien
+	 */
+	public Song(String title, String singer, String album){
+		this.title = title;
+		this.singer = singer;
+		this.album = album;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getSinger() {
+		return singer;
+	}
+	
+	public String getAlbum() {
+		return album;
+	}
+
+	public AudioServiceProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AudioServiceProvider provider) {
+		this.provider = provider;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	
 }

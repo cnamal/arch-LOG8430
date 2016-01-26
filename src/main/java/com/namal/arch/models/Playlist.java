@@ -1,5 +1,6 @@
 package com.namal.arch.models;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,4 +53,23 @@ public class Playlist {
 	public String getName(){
 		return name;
 	}
+
+	/*
+	 * TO REMOVE IF NOT OK
+	 * By Adrien
+	 */
+	public Playlist(String name) {
+		this.name = name;
+		this.playlist = new ArrayList<Song>();
+	}
+	
+	//ONLY FOR TESTING
+	public void addSong(Song song){
+		playlist.add(song);
+	}
+	
+	public List<Song> getListSongs(){
+		return playlist;
+	}
+	
 }

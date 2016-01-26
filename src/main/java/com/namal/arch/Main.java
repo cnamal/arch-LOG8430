@@ -2,6 +2,8 @@ package com.namal.arch;
 
 import java.io.IOException;
 
+import com.namal.arch.view.GeneralLayoutController;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,9 +43,9 @@ public class Main extends Application{
             primaryStage.setScene(scene);
             primaryStage.show();
             
-         /*// Give the controller access to the main app.
+         // Give the controller access to the main app.
             GeneralLayoutController controller = loader.getController();
-            controller.setMainApp(this);*/
+            controller.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
