@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 public class PlaylistOverview {
 	
@@ -26,18 +26,21 @@ public class PlaylistOverview {
 	@FXML
 	private AnchorPane playlistAnchorPane;
 	
-	//Example playslistBox
+	//The AnchorPane where the songs will be displayed
 	@FXML
+	private AnchorPane songsAnchorPane;
+	
+	//Example playslistBox
 	private final double PREF_HEIGHT = 30.0;
 	
 	//List of all the playlist saved
-	private List<VBox> playlistList;
+	private List<HBox> playlistList;
 	
 	/**
 	 * Constructor, initialize a empty list
 	 */
 	public PlaylistOverview(){
-		playlistList = new ArrayList<VBox>();
+		playlistList = new ArrayList<HBox>();
 	}
 	
 	/**
@@ -48,17 +51,16 @@ public class PlaylistOverview {
 	}
 
 	/**
-	 * Create the VBox (and all of its properties) and return it
-	 * @param playlist The playlist associated with this new VBox
-	 * @return The VBox freshly created
+	 * Create the HBox (and all of its properties) and return it
+	 * @param playlist The playlist associated with this new HBox
+	 * @return The HBox freshly created
 	 */
-	private VBox createVBoxPlaylist(Playlist playlist){	
+	private HBox createHBoxPlaylist(Playlist playlist){	
 		//Create the new box
-		VBox newBox = new VBox();
+		HBox newBox = new HBox();
 		
 		// Set the anchors and size and position
 		newBox.setPrefHeight(PREF_HEIGHT);
-		newBox.setFillWidth(true);
 		AnchorPane.setLeftAnchor(newBox, 0.0);
 		AnchorPane.setRightAnchor(newBox, 0.0);
 		newBox.setLayoutX(0.0);
@@ -146,7 +148,7 @@ public class PlaylistOverview {
 		
 		//Begin of the real function
 		for(Playlist p : playlists){
-			VBox v = createVBoxPlaylist(p);
+			HBox v = createHBoxPlaylist(p);
 			playlistList.add(v);
 			playlistAnchorPane.getChildren().add(v);
 		}
@@ -159,7 +161,7 @@ public class PlaylistOverview {
 	 * (Can be perhaps refactored with the same method in GeneralLayoutController)
 	 */
     public void resetAllBoxes(){
-    	for(VBox v : playlistList){
+    	for(HBox v : playlistList){
 	    	v.getStyleClass().removeAll("vboxSelected", "vbox");
 	    	v.getStyleClass().add("vbox");
     	}
