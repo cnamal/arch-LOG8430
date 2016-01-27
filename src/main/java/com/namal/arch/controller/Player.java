@@ -20,7 +20,8 @@ public class Player {
 	 * @param song Song played
 	 */
 	public void play(Song song){
-		// TODO Create a playlist with just song
+		playlist = new Playlist(song.getTitle());
+		playlist.addSong(song);
 		// TODO call play()
 	}
 
@@ -58,14 +59,29 @@ public class Player {
 	
 	/**
 	 * Sets the current song but does NOT play it.
-	 * The current song is NOT stopped.
-	 * Therefore this method should typically be called when the playlist is paused or stopped.
+	 * This method should typically be called when the playlist is paused or stopped.
 	 * @param i if i is within the bounds of the playlist size then it is set to that index
 	 * if i<0 then it is set to the last Song of the playlist
 	 * if (i>playlist size) it is set to the first Song of the playlist
 	 */
 	public void setCurrentSongIndex(int i){
 		//TODO read carefully the Javadoc
+		
+		// As multiple calls to getTotalNumberSongs will be made in this method,
+		// we store it.
+		int sizePlaylist = playlist.getTotalNumberSongs();
+		
+		if(i<0) {
+			currentPos = sizePlaylist - 1;
+		}
+		else if(i > sizePlaylist - 1) {
+			currentPos = 0;
+		}
+		else {
+			currentPos = i;
+		}
+		
+		song = playlist.getSong(currentPos);
 	}
 	
 	/**
@@ -73,7 +89,8 @@ public class Player {
 	 * @param i
 	 */
 	public void setCurrentSongIndexAndPlay(int i){
-		// TODO call setCurrentSongIndex then play
+		setCurrentSongIndex(i);
+		// TODO call play
 	}
 	
 	/**
@@ -99,7 +116,7 @@ public class Player {
 	 * Therefore this method should typically be called when the playlist is paused or stopped.
 	 */
 	public void next(){
-		//TODO call setCurrentSongIndex(curr+1)
+		setCurrentSongIndex(currentPos+1);
 	}
 	
 	/**
@@ -109,7 +126,7 @@ public class Player {
 	 * Therefore this method should typically be called when the playlist is paused or stopped.
 	 */
 	public void previous(){
-		// TODO call setCurrentSongIndex(curr-1)
+		setCurrentSongIndex(currentPos-1);
 	}
 	
 	/**
@@ -117,7 +134,7 @@ public class Player {
 	 * If the current song is the last one, the next one is the first Song of the playlist.
 	 */
 	public void nextAndPlay(){
-		// TODO call setCurrentSongIndex(curr+1)
+		setCurrentSongIndex(currentPos+1);
 		// TODO call play
 	}
 	
@@ -126,7 +143,7 @@ public class Player {
 	 * If the current song is the first one, the previous one is the last Song of the playlist.
 	 */
 	public void previousAndPlay(){
-		// TODO call setCurrentSongIndex(curr-1)
+		setCurrentSongIndex(currentPos-1);
 		// TODO call play
 	}
 	
@@ -134,9 +151,11 @@ public class Player {
 	 * 
 	 * @return true if the current song is the first song of the playlist, false otherwise.
 	 */
-	public boolean isFirst(){
-		// TODO 
-		return false;
+	public boolean isFirst(){		
+		if(playlist == null) {
+			return true;
+		}
+			return currentPos == 0;
 	}
 	
 	/**
@@ -144,8 +163,10 @@ public class Player {
 	 * @return true if the current song is the last song of the playlist, false otherwise.
 	 */
 	public boolean isLast(){
-		// TODO 
-		return false;
+		if(playlist == null) {
+			return true;
+		}
+			return currentPos == playlist.getTotalNumberSongs()-1;
 	}
 	
 	/**
@@ -155,6 +176,10 @@ public class Player {
 	public boolean isPlaying(){
 		//TODO
 		return false;
+	}
+	
+	public Playlist getCurrentPlaylist() {
+		return playlist;
 	}
 	
 }
