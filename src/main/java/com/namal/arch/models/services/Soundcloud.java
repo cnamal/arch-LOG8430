@@ -81,7 +81,6 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 
 	@Override
 	public boolean authenticationNeeded() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -128,13 +127,15 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 			JsonArray results = rdr.readArray();
 			Playlist playlist = new Playlist("Search results");
 			for (JsonObject result : results.getValuesAs(JsonObject.class)) {
-				Song song = SongBuilder.songBuilder()
-						.setTitle(result.getString("title"))
-						.setArtist(result.getJsonObject("user").getString("username"))
-						.setUri(result.getString("stream_url"))
-						.setProvider(this)
-						.build();
-				playlist.addSong(song);
+				if(result.getBoolean("streamable")){
+					Song song = SongBuilder.songBuilder()
+							.setTitle(result.getString("title"))
+							.setArtist(result.getJsonObject("user").getString("username"))
+							.setUri(result.getString("stream_url"))
+							.setProvider(this)
+							.build();
+					playlist.addSong(song);
+				}
 			}
 			return playlist;
 		} catch (MalformedURLException e) {
