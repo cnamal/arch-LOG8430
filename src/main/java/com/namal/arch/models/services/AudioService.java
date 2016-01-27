@@ -29,7 +29,7 @@ public interface AudioService {
 	 * 
 	 * @return list of tracks found 
 	 */
-	public List<Song> searchTrack(String track);
+	public Playlist searchTrack(String track);
 	
 	/**
 	 * 

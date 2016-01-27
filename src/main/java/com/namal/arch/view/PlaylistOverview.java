@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
+import com.namal.arch.models.SongBuilder;
+import com.namal.arch.models.SongMalformed;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -128,11 +130,44 @@ public class PlaylistOverview {
 		Playlist playlist1 = new Playlist("La chorale de bubulle");
 		Playlist playlist2 = new Playlist("Les chants des oiseaux");
 		Playlist playlist3 = new Playlist("Throwback Thursday");
-		playlist1.addSong(new Song("J'aime les bulles", "Bob l'éponge", "Sonate pour un crabe"));
-		playlist1.addSong(new Song("J'aime les étoiles de mers", "Bob l'éponge", "Sonate pour un crabe"));
-		playlist1.addSong(new Song("Y'a de la joie", "Badoit", "Classiques de la pub française"));
-		playlist2.addSong(new Song("Cui Cui", "Cuiiiii", "Cui cui cui"));
-		playlist3.addSong(new Song("Quand j'étais petit je n'étais pas grand", "Me", "Ma vie"));
+		Song song;
+		try {
+			song = SongBuilder.songBuilder()
+					.setTitle("J'aime les bulles")
+					.setArtist("Bob l'éponge")
+					.setUri("")
+					.build();
+			playlist1.addSong(song);
+			song = SongBuilder.songBuilder()
+					.setTitle("J'aime les étoiles de mers")
+					.setArtist("Bob l'éponge")
+					.setUri("")
+					.build();
+			playlist1.addSong(song);
+			song = SongBuilder.songBuilder()
+					.setTitle("Y'a de la joie")
+					.setArtist("Badoit")
+					.setUri("")
+					.build();
+			playlist1.addSong(song);
+			song = SongBuilder.songBuilder()
+					.setTitle("Cui Cui")
+					.setArtist("Cuiiiii")
+					.setUri("")
+					.build();
+			playlist2.addSong(song);
+			song = SongBuilder.songBuilder()
+					.setTitle("Quand j'étais petit je n'étais pas grand")
+					.setArtist("Me")
+					.setUri("")
+					.build();
+			playlist3.addSong(song);
+		} catch (SongMalformed e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 		playlists.add(playlist1);
 		playlists.add(playlist2);
 		playlists.add(playlist3);

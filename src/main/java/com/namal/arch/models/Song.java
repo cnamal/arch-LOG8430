@@ -7,7 +7,7 @@ import com.namal.arch.models.services.AudioServiceProvider;
 public class Song {
 
 	private String title;
-	private String singer;
+	private String artist;
 	private String album;
 	private AudioServiceProvider provider;
 	
@@ -21,22 +21,20 @@ public class Song {
 		provider.closeInputStream();
 	}
 	
-	/*
-	 * TO REMOVE IF NOT OK
-	 * By Adrien
-	 */
-	public Song(String title, String singer, String album){
-		this.title = title;
-		this.singer = singer;
-		this.album = album;
+	
+	Song(SongBuilder builder){
+		title=builder.title;
+		artist=builder.artist;
+		uri=builder.uri;
+		provider=builder.provider;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public String getSinger() {
-		return singer;
+	public String getArtist() {
+		return artist;
 	}
 	
 	public String getAlbum() {
@@ -59,4 +57,7 @@ public class Song {
 		this.uri = uri;
 	}
 	
+	public String toString(){
+		return "Title : "+title + "\n Artist : "+artist+ "\n Uri : "+uri+"\n";
+	}
 }
