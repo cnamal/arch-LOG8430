@@ -1,5 +1,7 @@
 package com.namal.arch.view;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,8 @@ import com.namal.arch.models.Song;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
@@ -86,7 +90,29 @@ public class PlaylistOverview {
 	 * @param playlist Playlist from which songs will be displayed
 	 */
 	private void loadPlaylistUI(Playlist playlist){
-		System.out.println(playlist.getName());
+		try {
+	    	   //Loading the FXMLFile into an URL
+	    	   URL url = getClass().getClassLoader().getResource("SongsOverview.fxml");
+	           FXMLLoader loader = new FXMLLoader();
+	           loader.setLocation(url);
+	           loader.setBuilderFactory(new JavaFXBuilderFactory());
+	           //Loading the module and setting the anchors
+	           AnchorPane newModule = (AnchorPane) loader.load(url.openStream());
+	           AnchorPane.setBottomAnchor(newModule, 0.0);
+	           AnchorPane.setTopAnchor(newModule, 0.0);
+	           AnchorPane.setLeftAnchor(newModule, 0.0);
+	           AnchorPane.setRightAnchor(newModule, 0.0);
+
+	           //Remove the already loaded module (if there is one) and add the new loaded one
+	           songsAnchorPane.getChildren().clear();
+	           songsAnchorPane.getChildren().add(newModule);
+	           
+	           SongsOverviewController controller = loader.getController();
+	           controller.onLoad(playlist);
+	       } 
+	       catch (IOException e) {
+	           e.printStackTrace();
+	       }
 	}
 	
 	/**
