@@ -132,6 +132,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 						.setTitle(result.getString("title"))
 						.setArtist(result.getJsonObject("user").getString("username"))
 						.setUri(result.getString("stream_url"))
+						.setProvider(this)
 						.build();
 				playlist.addSong(song);
 			}
