@@ -26,6 +26,7 @@ public class Song {
 		title=builder.title;
 		artist=builder.artist;
 		uri=builder.uri;
+		provider=builder.provider;
 	}
 
 	public String getTitle() {

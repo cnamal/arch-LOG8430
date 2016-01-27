@@ -19,7 +19,7 @@ public class Playlist {
 	 */
 	public Song getSong(int Pos){
 		//TODO
-		return null;
+		return playlist.get(Pos);
 	}
 	
 	/**
