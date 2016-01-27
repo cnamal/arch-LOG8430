@@ -72,4 +72,7 @@ public class Playlist {
 		return playlist;
 	}
 	
+	public String toString(){
+		return playlist.toString();
+	}
 }

@@ -5,11 +5,19 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
+import com.namal.arch.models.SongBuilder;
+import com.namal.arch.models.SongMalformed;
 
 import javafx.scene.image.Image;
 
@@ -17,6 +25,9 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 
 	private static Soundcloud instance= new Soundcloud();
 	private static String clientId="467af8ca6a20d82958569c3c248446f3";
+	private static final String BASEURL = "http://api.soundcloud.com/";
+	private static final String SONGSURL = BASEURL+"tracks/";
+	
 	
 	private InputStream inputStream;
 	
@@ -106,8 +117,35 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 	}
 
 	@Override
-	public List<Song> searchTrack(String track) {
-		// TODO Auto-generated method stub
+	public Playlist searchTrack(String track) {
+		URL url;
+		try {
+			url = new URL(SONGSURL+"?client_id="+clientId+"&q=\""+URLEncoder.encode(track, "UTF-8")+"\"");
+
+			InputStream is = url.openStream();
+			JsonReader rdr = Json.createReader(is);
+
+			JsonArray results = rdr.readArray();
+			Playlist playlist = new Playlist("Search results");
+			for (JsonObject result : results.getValuesAs(JsonObject.class)) {
+				Song song = SongBuilder.songBuilder()
+						.setTitle(result.getString("title"))
+						.setArtist(result.getJsonObject("user").getString("username"))
+						.setUri(result.getString("stream_url"))
+						.build();
+				playlist.addSong(song);
+			}
+			return playlist;
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SongMalformed e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
