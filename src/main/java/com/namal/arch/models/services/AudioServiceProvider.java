@@ -25,6 +25,10 @@ public interface AudioServiceProvider {
 	 */
 	public void savePlaylist(Playlist playlist);
 	
-	
+	/**
+	 * 
+	 * @return ProviderInformation of the AudioService
+	 */
+	public ProviderInformation getProviderInformation();
 	
 }
