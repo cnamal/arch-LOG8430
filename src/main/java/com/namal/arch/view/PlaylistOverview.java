@@ -9,6 +9,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
+import com.namal.arch.models.services.Soundcloud;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -131,7 +132,10 @@ public class PlaylistOverview {
 		Playlist playlist2 = new Playlist("Les chants des oiseaux");
 		Playlist playlist3 = new Playlist("Throwback Thursday");
 		Song song;
-		try {
+		playlist1 = Soundcloud.getInstance().searchTrack("lucky");
+		playlist2 = Soundcloud.getInstance().searchTrack("bass");
+		playlist3 = Soundcloud.getInstance().searchTrack("hello");
+		/*try {
 			song = SongBuilder.songBuilder()
 					.setTitle("J'aime les bulles")
 					.setArtist("Bob l'éponge")
@@ -165,7 +169,7 @@ public class PlaylistOverview {
 		} catch (SongMalformed e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 
 		playlists.add(playlist1);

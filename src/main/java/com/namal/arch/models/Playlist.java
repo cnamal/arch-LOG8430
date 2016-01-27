@@ -28,7 +28,7 @@ public class Playlist {
 	 */
 	public Iterator<Song> getSongs(){
 		// TODO
-		return null;
+		return playlist.iterator();
 	}
 	
 	/**
