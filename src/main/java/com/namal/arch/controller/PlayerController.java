@@ -3,17 +3,28 @@ package com.namal.arch.controller;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 
+import javazoom.jl.decoder.JavaLayerException;
+
 /**
  * Music player class. Provides the basic functionalities of a player (play, pause, ..).
  * The player always plays a playlist, even if a single Song is played. 
  * @author namalgac
  *
  */
-public class Player {
+public class PlayerController {
 	
 	private Song song;
 	private Playlist playlist;
 	private int currentPos;
+	private PausablePlayer pplayer;
+	private static PlayerController instance = new PlayerController();
+	
+	private PlayerController() {
+	}
+	
+	public static PlayerController getInstance() {
+		return instance;
+	}
 	
 	/**
 	 * Plays a song
@@ -22,15 +33,27 @@ public class Player {
 	public void play(Song song){
 		playlist = new Playlist(song.getTitle());
 		playlist.addSong(song);
-		// TODO call play()
+		currentPos = 0;
+		play();
 	}
 
 	/**
-	 * Plays an entire playlist
+	 * Sets the current playlist (the current song is the first one)
 	 * @param playlist
 	 */
-	public void play(Playlist playlist){
-		// TODO call play
+	public void setPlaylist(Playlist playlist){
+		this.playlist = playlist;
+		currentPos = 0;
+	}
+	
+	/**
+	 * Sets the current playlist (the current song is the one chosen)
+	 * @param playlist
+	 * @param songIndex
+	 */
+	public void setPlaylist(Playlist playlist, int songIndex){
+		this.playlist = playlist;
+		setCurrentSongIndex(songIndex);
 	}
 	
 	/**
@@ -41,13 +64,30 @@ public class Player {
 		//get current song and use song.getInputStream()
 		// create a thread and play using JLayer (Player(inputStream).play)
 		// probably will need to call stop at the end to cleanup
+		song = playlist.getSong(currentPos);
+		System.out.println(song);
+		try {
+			pplayer = new PausablePlayer(song.getInputStream());
+		} catch (JavaLayerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			pplayer.play();
+		} catch (JavaLayerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
 	 * Pauses the current song
 	 */
 	public void pause(){
-		//TODO Pause thread (or find a way to pause the player)
+		if(pplayer != null) {
+			pplayer.pause();
+		}
 	}
 	
 	/**
@@ -55,6 +95,9 @@ public class Player {
 	 */
 	public void stop(){
 		//TODO stop song (player.close()), cleanup (song.cleanup)
+		if(pplayer != null) {
+			pplayer.stop();
+		}
 	}
 	
 	/**
@@ -80,8 +123,6 @@ public class Player {
 		else {
 			currentPos = i;
 		}
-		
-		song = playlist.getSong(currentPos);
 	}
 	
 	/**
