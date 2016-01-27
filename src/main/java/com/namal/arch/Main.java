@@ -2,16 +2,12 @@ package com.namal.arch;
 
 import java.io.IOException;
 
-import com.namal.arch.models.services.Soundcloud;
 import com.namal.arch.view.GeneralLayoutController;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
