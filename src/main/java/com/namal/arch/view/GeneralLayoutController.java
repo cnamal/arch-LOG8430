@@ -123,7 +123,7 @@ public class GeneralLayoutController {
     {
        try {
     	   //Loading the FXMLFile into an URL
-    	   URL url = getClass().getResource(FXMLFile);
+    	   URL url = getClass().getClassLoader().getResource(FXMLFile);
            FXMLLoader loader = new FXMLLoader();
            loader.setLocation(url);
            loader.setBuilderFactory(new JavaFXBuilderFactory());

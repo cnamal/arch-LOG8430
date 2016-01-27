@@ -2,6 +2,7 @@ package com.namal.arch;
 
 import java.io.IOException;
 
+import com.namal.arch.models.services.Soundcloud;
 import com.namal.arch.view.GeneralLayoutController;
 
 import javafx.application.Application;
@@ -35,7 +36,7 @@ public class Main extends Application{
 		try {
             // Load general overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("./view/GeneralLayout.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("GeneralLayout.fxml"));
             generalLayout = (AnchorPane) loader.load();
 
             // Show the scene containing the general layout.
