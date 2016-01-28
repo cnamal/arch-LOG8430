@@ -101,6 +101,15 @@ public class PlayerController {
 	}
 	
 	/**
+	 *  Resumes the current song
+	 */
+	public void resume(){
+		if(pplayer != null) {
+			pplayer.resume();
+		}
+	}
+	
+	/**
 	 * Sets the current song but does NOT play it.
 	 * This method should typically be called when the playlist is paused or stopped.
 	 * @param i if i is within the bounds of the playlist size then it is set to that index

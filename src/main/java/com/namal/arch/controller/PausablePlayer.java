@@ -6,6 +6,12 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
+/**
+ * Class managing the playing of songs. 
+ * 
+ * Source : http://stackoverflow.com/questions/12057214/jlayer-pause-and-resume-song
+ *
+ */
 public class PausablePlayer {
 
     private final static int NOTSTARTED = 0;
