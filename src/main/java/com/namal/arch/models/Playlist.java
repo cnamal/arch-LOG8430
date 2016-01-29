@@ -99,4 +99,8 @@ public class Playlist {
 		json+="]}}";
 		return json;
 	}
+	
+	public int getId(){
+		return id;
+	}
 }

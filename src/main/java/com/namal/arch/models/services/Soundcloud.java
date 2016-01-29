@@ -141,7 +141,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			return; // TODO add Exception system
 		URL url;
 		try {
-			url = new URL(PLAYLISTURL+"?oauth_token="+authToken);
+			url = new URL(PLAYLISTURL+playlist.getId()+"?oauth_token="+authToken);
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 			httpCon.setDoOutput(true);
 			httpCon.setRequestMethod("PUT");
