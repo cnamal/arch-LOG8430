@@ -19,3 +19,11 @@ hs_err_pid*
 .project
 .settings
 .metadata
+
+#latex
+*.aux
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
