@@ -19,7 +19,7 @@ Hi there ! Welcome to the developer's guide of \textbf{arch-LOG8430} - yes we ar
 
 This project was developed for the \href{http://www.polymtl.ca/etudes/cours/details.php?sigle=LOG8430}{Software Architecture} course (LOG8430) at Ecole Polytechnique de Montréal. The course teacher is Yann-Gaël Guéhéneuc and the laboratory teacher is Fábio Petrillo. \\
 
-We are three French exchange students; Fabien Berquez coming from \href{http://www.supelec.fr/}{Supélec} and Adrien Logut and Chathura Namalgamuwa coming from \href{http://ensimag.grenoble-inp.fr/}{ENSIMAG}. Fabien is a master's student in computer engineering, research-based, whereas Adrien and Chathura are master's student in computer engineering, professional-based.
+We are three French exchange students; Fabien Berquez coming from \href{http://www.supelec.fr/374_p_14603/welcome.html}{Supélec} and Adrien Logut and Chathura Namalgamuwa coming from \href{http://ensimag.grenoble-inp.fr/welcome/}{ENSIMAG}. Fabien is a master's student in computer engineering, research-based, whereas Adrien and Chathura are master's student in computer engineering, professional-based.
 
 \chapter{Presentation}
 
@@ -39,6 +39,25 @@ We started with implementing a service for Soundcloud because it was the easiest
 \chapter{Class Diagram}
 
 \chapter{Implementation}
+
+\section{View}
+In the MVC model, the view (ie. Graphical User Interface or GUI) is implemented apart the others. GUI was implemented with the pure API Java called JavaFX.
+Everything was implemented in the package view (for Java classes) and the JavaFX resources such as FXML files, CSS files and images are in the folder resources. 
+
+We had the choice between using an GUI (called SceneBuilder) to create our own GUI and save it into FXML files or to code it from scratch in a Java Controller. At the end, both methods were used. In order to organize our view, we used SceneBuilder. And when the view was "repetitive" it was done with Java.
+
+We need for each of or view a controller in order to control our view and react to the user inputs and actions.
+
+\subsection{Main UI Class}
+The main UI class is essential, everything is loaded from it and each controller has a reference to this class, to interact with other components of the UI. It extends the Application class, used by JavaFX.
+
+\subsection{UI Controller}
+Each controller of the UI extends the UI Controller which is a simple class with a reference to the UI element(Pane class for JavaFX), and 2 methods used to load a FXML file. Since almost every controller need the FXML loader, it seems it was useful and cleaner to refactor it a parent class.
+
+\subsection{Overview Controllers}
+The idea here was to create little modules of each function we want to implement instead of a big controller with everything in it. For example, the General Layout, which is the first thing we see is divided in 3 parts. The list at the left, controlled by the controller associated to General Layout, the part top right where the modules from the list will be loaded and the bottom where the player is. Each component is independent and can be loaded where we want. It allows a better maintainability and the possibility to use one module elsewhere without changing anything.
+
+
 
 \chapter{Limitations}
 

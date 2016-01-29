@@ -1,5 +1,6 @@
 package com.namal.arch.utils;
 
 public enum PlayerEventType {
-	TYPE_STATECHANGED
+	TYPE_STATECHANGED,
+	TYPE_NEWSONG
 }
