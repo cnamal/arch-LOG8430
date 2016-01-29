@@ -2,13 +2,17 @@ package com.namal.arch.models;
 
 import com.namal.arch.models.services.AudioServiceProvider;
 
+import javafx.scene.image.Image;
+
 public class SongBuilder {
 
 	String title;
 	String artist;
 	String uri;
-	String art;
+	Image albumCover = null;
 	AudioServiceProvider provider;
+	long duration;
+	boolean durationDefined;
 	
 	private SongBuilder() {}
 	
@@ -31,8 +35,8 @@ public class SongBuilder {
 		return this;
 	}
 	
-	public SongBuilder setArtworkUrl(String art){
-		this.art=art;
+	public SongBuilder setAlbumCover(Image albumCover){
+		this.albumCover=albumCover;
 		return this;
 	}
 	
@@ -40,6 +44,13 @@ public class SongBuilder {
 		this.provider=provider;
 		return this;
 	}
+	
+	public SongBuilder setDuration(long duration){
+		this.duration=duration;
+		durationDefined=true;
+		return this;
+	}
+	
 	
 	public Song build() throws SongMalformed{
 		validate();
@@ -54,6 +65,8 @@ public class SongBuilder {
 			throw new SongMalformed("Song artist is needed");
 		if(uri==null)
 			throw new SongMalformed("Song uri is needed");
+		if(!durationDefined)
+			throw new SongMalformed("Song duration is needed");
 		if(provider==null)
 			throw new SongMalformed("Song provider is needed");
 	}

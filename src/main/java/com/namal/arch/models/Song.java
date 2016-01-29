@@ -4,6 +4,8 @@ import java.io.InputStream;
 
 import com.namal.arch.models.services.AudioServiceProvider;
 
+import javafx.scene.image.Image;
+
 public class Song {
 
 	private String title;
@@ -11,7 +13,10 @@ public class Song {
 	private String album;
 	private AudioServiceProvider provider;
 	
+	
 	private String uri;
+	private long duration;
+	private Image albumCover;
 	
 	public InputStream getInputStream(){
 		return provider.getInputStream(uri);
@@ -27,6 +32,8 @@ public class Song {
 		artist=builder.artist;
 		uri=builder.uri;
 		provider=builder.provider;
+		duration = builder.duration;
+		albumCover=builder.albumCover;
 	}
 
 	public String getTitle() {
@@ -45,16 +52,22 @@ public class Song {
 		return provider;
 	}
 
-	public void setProvider(AudioServiceProvider provider) {
-		this.provider = provider;
-	}
 
 	public String getUri() {
 		return uri;
 	}
 
-	public void setUri(String uri) {
-		this.uri = uri;
+	
+	public long getDuration(){
+		return duration;
+	}
+	
+	/**
+	 * 
+	 * @return Album cover if defined, null otherwise
+	 */
+	public Image getAlbumCover(){
+		return albumCover;
 	}
 	
 	public String toString(){

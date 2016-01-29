@@ -128,13 +128,16 @@ public class Soundcloud implements AudioService, AudioServiceProvider {
 			Playlist playlist = new Playlist("Search results");
 			for (JsonObject result : results.getValuesAs(JsonObject.class)) {
 				if(result.getBoolean("streamable")){
-					Song song = SongBuilder.songBuilder()
+					SongBuilder builder = SongBuilder.songBuilder()
 							.setTitle(result.getString("title"))
 							.setArtist(result.getJsonObject("user").getString("username"))
 							.setUri(result.getString("stream_url"))
 							.setProvider(this)
-							.build();
-					playlist.addSong(song);
+							.setDuration(result.getInt("duration"));
+					if(!result.isNull("artwork_url"))
+						builder.setAlbumCover(new Image(result.getString("artwork_url")));
+					
+					playlist.addSong(builder.build());
 				}
 			}
 			return playlist;

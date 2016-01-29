@@ -9,6 +9,7 @@ import javazoom.jl.decoder.JavaLayerException;
  * Music player class. Provides the basic functionalities of a player (play, pause, ..).
  * The player always plays a playlist, even if a single Song is played. 
  * @author namalgac
+ * @author Fabien Berquez
  *
  */
 public class PlayerController {
@@ -17,6 +18,7 @@ public class PlayerController {
 	private Playlist playlist;
 	private int currentPos;
 	private PausablePlayer pplayer;
+	private int currentStatus;
 	private static PlayerController instance = new PlayerController();
 	
 	private PlayerController() {
@@ -68,6 +70,8 @@ public class PlayerController {
 		System.out.println(song);
 		try {
 			pplayer = new PausablePlayer(song.getInputStream());
+			currentStatus = PausablePlayerEvent.NOTSTARTED;
+			pplayer.attach(this);
 		} catch (JavaLayerException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -97,6 +101,15 @@ public class PlayerController {
 		//TODO stop song (player.close()), cleanup (song.cleanup)
 		if(pplayer != null) {
 			pplayer.stop();
+		}
+	}
+	
+	/**
+	 *  Resumes the current song
+	 */
+	public void resume(){
+		if(pplayer != null) {
+			pplayer.resume();
 		}
 	}
 	
@@ -176,7 +189,7 @@ public class PlayerController {
 	 */
 	public void nextAndPlay(){
 		setCurrentSongIndex(currentPos+1);
-		// TODO call play
+		play();
 	}
 	
 	/**
@@ -185,7 +198,7 @@ public class PlayerController {
 	 */
 	public void previousAndPlay(){
 		setCurrentSongIndex(currentPos-1);
-		// TODO call play
+		play();
 	}
 	
 	/**
@@ -215,12 +228,39 @@ public class PlayerController {
 	 * @return true if a music is playing, false otherwise.
 	 */
 	public boolean isPlaying(){
-		//TODO
-		return false;
+		return currentStatus == PausablePlayerEvent.PLAYING;
 	}
 	
+	/**
+	 * 
+	 * @return the playlist field value, representing the playlist currently playing.
+	 */
 	public Playlist getCurrentPlaylist() {
 		return playlist;
 	}
+
+	/**
+	 * This method is a callback method for the PausablePlayer being observed.
+	 * Dispatches the treatment of the event to specialized methods.
+	 * @param ev
+	 */
+	public void update(PausablePlayerEvent ev) {
+		if(ev.getEventType() == PausablePlayerEvent.TYPE_STATECHANGED) {
+			statusChanged(ev);		
+		}
+	}
 	
+	/**
+	 * Method treating all events related to changes in the status of the player.
+	 * This method should not be called otherwise than through the update method.
+	 * @param ev the PausablePlayerEvent to process.
+	 */
+	private void statusChanged(PausablePlayerEvent ev) {
+		if(ev.getEventInformation() == PausablePlayerEvent.FINISHED) {
+			if(currentStatus == PausablePlayerEvent.PLAYING) {
+				nextAndPlay();
+			}
+		}
+		currentStatus = ev.getEventInformation();
+	}
 }
