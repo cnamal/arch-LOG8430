@@ -12,7 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class GeneralLayoutController {
+public class GeneralLayoutController extends UIController{
 	
 	@FXML
 	private VBox playlistBox;
@@ -35,7 +35,7 @@ public class GeneralLayoutController {
 	
 	
 	// Reference to the main application.
-    private Main mainApp;
+    private UIMainClass mainApp;
     
     // The constructor
     public GeneralLayoutController() {
@@ -45,7 +45,7 @@ public class GeneralLayoutController {
      * Function called at the loading
      * @param mainApp Reference to the mainApp
      */
-    public void setMainApp(Main mainApp){
+    public void setMainApp(UIMainClass mainApp){
     	this.mainApp = mainApp;
     	loadPlayer();
     }
@@ -122,40 +122,7 @@ public class GeneralLayoutController {
     		resetAllBoxes();
     		settingsBox.getStyleClass().add("vboxSelected");
     		settingsBox.getStyleClass().remove("vbox");
+    		mainApp.loadAuthenticateWindow();
     	}
-    }
-    
-    /**
-     * Loading the module from an FXML file
-     * @param FXMLFile Path to the FXMLFile
-     * @return The loader, useful to load the controller from it
-     */
-    private FXMLLoader loadingModule(String FXMLFile, AnchorPane module)
-    {
-       try {
-    	   //Loading the FXMLFile into an URL
-    	   URL url = getClass().getClassLoader().getResource(FXMLFile);
-           FXMLLoader loader = new FXMLLoader();
-           loader.setLocation(url);
-           loader.setBuilderFactory(new JavaFXBuilderFactory());
-           //Loading the module and setting the anchors
-           AnchorPane newModule = (AnchorPane) loader.load(url.openStream());
-           AnchorPane.setBottomAnchor(newModule, 0.0);
-           AnchorPane.setTopAnchor(newModule, 0.0);
-           AnchorPane.setLeftAnchor(newModule, 0.0);
-           AnchorPane.setRightAnchor(newModule, 0.0);
-           
-           module.getChildren().clear();
-           module.getChildren().add(newModule);
-           
-           return loader;
-       } 
-       catch (IOException e) {
-           e.printStackTrace();
-           return null;
-       }
-    }
-    
-    
-
+    }  
 }

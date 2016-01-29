@@ -21,7 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class PlaylistOverview {
+public class PlaylistOverview extends UIController{
 	
 	//The scroll pane for the playlist
 	@FXML
@@ -95,29 +95,10 @@ public class PlaylistOverview {
 	 * @param playlist Playlist from which songs will be displayed
 	 */
 	private void loadPlaylistUI(Playlist playlist){
-		try {
-	    	   //Loading the FXMLFile into an URL
-	    	   URL url = getClass().getClassLoader().getResource("SongsOverview.fxml");
-	           FXMLLoader loader = new FXMLLoader();
-	           loader.setLocation(url);
-	           loader.setBuilderFactory(new JavaFXBuilderFactory());
-	           //Loading the module and setting the anchors
-	           AnchorPane newModule = (AnchorPane) loader.load(url.openStream());
-	           AnchorPane.setBottomAnchor(newModule, 0.0);
-	           AnchorPane.setTopAnchor(newModule, 0.0);
-	           AnchorPane.setLeftAnchor(newModule, 0.0);
-	           AnchorPane.setRightAnchor(newModule, 0.0);
-
-	           //Remove the already loaded module (if there is one) and add the new loaded one
-	           songsAnchorPane.getChildren().clear();
-	           songsAnchorPane.getChildren().add(newModule);
+		FXMLLoader loader = loadingModule("SongsOverview.fxml", songsAnchorPane);
 	           
-	           SongsOverviewController controller = loader.getController();
-	           controller.onLoad(playlist, playerOverviewController);
-	       } 
-	       catch (IOException e) {
-	           e.printStackTrace();
-	       }
+		SongsOverviewController controller = loader.getController();
+		controller.onLoad(playlist, playerOverviewController);
 	}
 	
 	/**
@@ -138,42 +119,6 @@ public class PlaylistOverview {
 		playlist1 = Soundcloud.getInstance().searchTrack("lucky");
 		playlist2 = Soundcloud.getInstance().searchTrack("bass");
 		playlist3 = Soundcloud.getInstance().searchTrack("hello");
-		/*try {
-			song = SongBuilder.songBuilder()
-					.setTitle("J'aime les bulles")
-					.setArtist("Bob l'éponge")
-					.setUri("")
-					.build();
-			playlist1.addSong(song);
-			song = SongBuilder.songBuilder()
-					.setTitle("J'aime les étoiles de mers")
-					.setArtist("Bob l'éponge")
-					.setUri("")
-					.build();
-			playlist1.addSong(song);
-			song = SongBuilder.songBuilder()
-					.setTitle("Y'a de la joie")
-					.setArtist("Badoit")
-					.setUri("")
-					.build();
-			playlist1.addSong(song);
-			song = SongBuilder.songBuilder()
-					.setTitle("Cui Cui")
-					.setArtist("Cuiiiii")
-					.setUri("")
-					.build();
-			playlist2.addSong(song);
-			song = SongBuilder.songBuilder()
-					.setTitle("Quand j'étais petit je n'étais pas grand")
-					.setArtist("Me")
-					.setUri("")
-					.build();
-			playlist3.addSong(song);
-		} catch (SongMalformed e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
 
 		playlists.add(playlist1);
 		playlists.add(playlist2);

@@ -15,14 +15,14 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class SongsOverviewController {
+public class SongsOverviewController extends UIController{
 	
 	@FXML
 	private AnchorPane songsPane;
 	
 	private Playlist playlist;
 	
-	private List<HBox> hboxList;
+	private List<AnchorPane> songList;
 	
 	private PlayerOverviewController playerOverviewController;
 
@@ -34,39 +34,37 @@ public class SongsOverviewController {
 	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController){
 		this.playerOverviewController = playerOverviewController;
 		this.playlist = playlist;
-		this.hboxList = new ArrayList<HBox>();
+		this.songList = new ArrayList<AnchorPane>();
 		createHBoxes();
 	}
 	
 	private void createHBoxes(){
 		Iterator<Song> it = playlist.getSongs();
 		while(it.hasNext()){
-			hboxList.add(createNewHBox(it.next()));
+			songList.add(createNewBox(it.next()));
 		}
-		refreshListHBox();
+		refreshListBox();
 	}
 
-	private void refreshListHBox() {
+	private void refreshListBox() {
 		songsPane.getChildren().clear();
-		if(!hboxList.isEmpty()){
-			songsPane.setPrefHeight(hboxList.size() * hboxList.get(0).getPrefHeight());
-			songsPane.getChildren().addAll(hboxList);
+		if(!songList.isEmpty()){
+			songsPane.setPrefHeight(songList.size() * songList.get(0).getPrefHeight());
+			songsPane.getChildren().addAll(songList);
 		}
 	}
 
-	private HBox createNewHBox(Song s) {
+	private AnchorPane createNewBox(Song s) {
 	       try {
 	    	   //Loading the FXMLFile into an URL
-	    	   URL url = getClass().getClassLoader().getResource("SongTemplate.fxml");
-	           FXMLLoader loader = new FXMLLoader();
-	           loader.setLocation(url);
-	           loader.setBuilderFactory(new JavaFXBuilderFactory());
-	           //Loading the module
-	           HBox newBox = (HBox) loader.load(url.openStream());
+	    	   FXMLLoader loader = getLoaderFromFile("SongTemplate.fxml");
+	           AnchorPane newBox = (AnchorPane) loader.load();
 	           newBox.setPrefWidth(songsPane.getPrefWidth());
-	           newBox.setLayoutY(newBox.getPrefHeight() * hboxList.size());
+	           newBox.setLayoutY(newBox.getPrefHeight() * songList.size());
+	           
 	           SongTemplateController controller = loader.getController();
 	           controller.onLoad(s, newBox, playlist, playerOverviewController);
+	           
 	           return newBox;
 	       } 
 	       catch (IOException e) {

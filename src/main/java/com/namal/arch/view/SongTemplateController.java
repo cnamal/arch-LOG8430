@@ -11,12 +11,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class SongTemplateController {
 	
 	@FXML
-	private HBox songBox;
+	private AnchorPane songBox;
 	
 	@FXML
 	private ImageView imageView;
@@ -40,7 +41,7 @@ public class SongTemplateController {
 	public SongTemplateController() {		
 	}
 
-	public void onLoad(Song song, HBox songBox, Playlist playlist, PlayerOverviewController playerOverviewController){
+	public void onLoad(Song song, AnchorPane songBox, Playlist playlist, PlayerOverviewController playerOverviewController){
 		this.playerOverviewController = playerOverviewController;
 		this.song = song;
 		this.title.setText(this.song.getTitle());
