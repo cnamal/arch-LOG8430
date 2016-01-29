@@ -13,12 +13,17 @@
 			<li ng-repeat="(key,value) in params">{{key}} : {{value}}</li>
 		</ul>
 		<script>
-			angular.module('namalArchApp', []).config(['$locationProvider', function($locationProvider) {
-				$locationProvider.html5Mode({
-					enabled: true,
-					requireBase: false
-				});
-			}]).controller("namalArchCtrl",function($scope,$location){
+/*
+	if ?get=toto do :
+	.module(..).config(['$locationProvider', function($locationProvider) {
+		$locationProvider.html5Mode({
+			enabled: true,
+			requireBase: false
+		});
+	}]).controller(..)
+
+*/
+			angular.module('namalArchApp', []).controller("namalArchCtrl",function($scope,$location){
 				$scope.params=$location.search();
 			});
 		</script>
