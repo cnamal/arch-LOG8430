@@ -2,6 +2,8 @@ package com.namal.arch.view;
 
 import java.io.IOException;
 
+import org.controlsfx.control.Notifications;
+
 import com.namal.arch.Main;
 
 import javafx.application.Application;
@@ -19,6 +21,7 @@ public class UIMainClass extends Application{
 	private AnchorPane generalLayout;
 	private AnchorPane authenticateWindow;
 	private UIController uiController;
+	private Notifications notif;
 	
 	private final String GENERAL_LAYOUT_FILE = "GeneralLayout.fxml";
 
@@ -66,6 +69,8 @@ public class UIMainClass extends Application{
 		authenticateController.onLoad(authenticateStage);
 	}
 	
-	
+	public Notifications getNotification(){
+		return notif;
+	}
 
 }

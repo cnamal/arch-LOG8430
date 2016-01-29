@@ -115,7 +115,7 @@ public class PlaylistOverview extends UIController{
 		Playlist playlist1 = new Playlist("La chorale de bubulle");
 		Playlist playlist2 = new Playlist("Les chants des oiseaux");
 		Playlist playlist3 = new Playlist("Throwback Thursday");
-		Song song;
+		List<Playlist> playlist4 = Soundcloud.getInstance().getPlaylists();
 		playlist1 = Soundcloud.getInstance().searchTrack("lucky");
 		playlist2 = Soundcloud.getInstance().searchTrack("bass");
 		playlist3 = Soundcloud.getInstance().searchTrack("hello");
@@ -123,6 +123,8 @@ public class PlaylistOverview extends UIController{
 		playlists.add(playlist1);
 		playlists.add(playlist2);
 		playlists.add(playlist3);
+		if(playlist4!=null)
+			playlists.addAll(playlist4);
 		
 		//Begin of the real function
 		for(Playlist p : playlists){
