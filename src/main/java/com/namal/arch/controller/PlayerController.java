@@ -259,12 +259,27 @@ public class PlayerController {
 	 * Dispatches the treatment of the event to specialized methods.
 	 * @param ev
 	 */
-	public void update(PlayerEvent ev) {
-		if(ev.getEventType() == PlayerEventType.TYPE_STATECHANGED) {
-			statusChanged(ev);		
+	public void update(PausablePlayerEvent ev) {
+		switch(ev.getEventType()) {
+			case TYPE_STATECHANGED: 
+				statusChanged(ev);
+				break;
+			case TYPE_NEWSONG:
+				onNewSong(ev);
+				break;
 		}
 	}
 	
+	/**
+	 * Method treating the events related to a new song being played.
+	 * This method should not be called otherwise than through the update method.
+	 * @param ev the PausablePlayerEvent to process.
+	 */
+	private void onNewSong(PausablePlayerEvent ev) {
+		PlayerControllerEvent pcev = new PlayerControllerEvent(getInstance(), PlayerEventType.TYPE_NEWSONG, ev.getEventInformation());
+		notifyObservers(pcev);
+	}
+
 	/**
 	 * Method treating all events related to changes in the status of the player.
 	 * This method should not be called otherwise than through the update method.
