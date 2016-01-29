@@ -1,10 +1,21 @@
 package com.namal.arch.view;
 
+import javax.naming.TimeLimitExceededException;
+
 import com.namal.arch.controller.PlayerController;
+import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.models.Playlist;
+import com.namal.arch.utils.IPlayerObserver;
+import com.namal.arch.utils.PlayerEventType;
 
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.Transition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -12,9 +23,10 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-public class PlayerOverviewController {
+public class PlayerOverviewController extends UIController implements IPlayerObserver {
 	
 	@FXML
 	private ImageView prevView;
@@ -46,6 +58,7 @@ public class PlayerOverviewController {
 	private long timeTotalInMs = 0;
 	private PlayerController player;
 	private Animation animation;
+	private Timeline timeline;
 	
 	//Constants for brightness
 	private final float BLACK = 0.0f;
@@ -55,7 +68,8 @@ public class PlayerOverviewController {
 	public PlayerOverviewController() {
 	}
 	
-	public void onLoad(){
+	public void onLoad(Pane refPane){
+		this.refPane = refPane;
 		title.setText("");
 		timeElapsed.setText("");
 		timeTotal.setText("");
@@ -64,6 +78,7 @@ public class PlayerOverviewController {
 		loadAndSetImages();
 		resetButton();
 		player = PlayerController.getInstance();
+		player.attach(this);
 	}
 	
 	public void onPlay(Playlist playlist, int currPos){
@@ -71,8 +86,6 @@ public class PlayerOverviewController {
 		this.currPlaylist = playlist;
 		this.currPos = currPos;
 		isPlaying = true;
-		//UI changes
-		newMusicSet();
 		//Playing the song
     	player.stop();
     	player.setPlaylist(playlist, currPos);
@@ -109,24 +122,28 @@ public class PlayerOverviewController {
 	}
 	
 	private void newMusicSet(){
+		currPos = player.getCurrentSongIndex();
+		currPlaylist = player.getCurrentPlaylist();
 		title.setText(currPlaylist.getSong(currPos).getTitle());
 		timeElapsedInMs = 0;
 		timeElapsed.setText(msToMin(timeElapsedInMs));
 		timeTotalInMs = currPlaylist.getSong(currPos).getDuration();
 		timeTotal.setText(msToMin(timeTotalInMs));
+		title.setMaxWidth(refPane.getWidth() - 4 * timeTotal.getWidth() - slider.getWidth() - 3 * nextView.getFitWidth());
 		resetButton();		
 		changePlayPauseImage();
-		setNewAnimationSlider();
+		//setNewAnimationSlider();
+		setSlider();
 	}
 	
 	@FXML
 	private void playPauseAction(){
 		if(isPlaying){
-			player.pause();
-			animation.pause();
+			timeline.pause();
+			player.pause();			
 		} else {
+			timeline.play();
 			player.resume();
-			animation.play();
 		}
 		isPlaying = !isPlaying;
 		changePlayPauseImage();
@@ -156,29 +173,36 @@ public class PlayerOverviewController {
 	}
 	
 	private String msToMin(long i){
-		return String.valueOf(i/(1000*60)) + ":" + String.valueOf(i%(1000*60)/1000);
+		return String.valueOf(i/(1000*60)) + ":" + ((i%(1000*60)/1000 < 10) ? "0" : "") + String.valueOf(i%(1000*60)/1000);
 	}
 	
-	private void setNewAnimationSlider(){
+	private void setSlider(){
 		slider.setMin(0);
 		slider.setMax(timeTotalInMs);
+		timeElapsedInMs = player.getPosition();
 		slider.setValue((double)timeElapsedInMs/timeTotalInMs);
-		if(animation != null)
-			animation.stop();
-		animation = new Transition() {
-		     {
-		         setCycleDuration(Duration.millis(timeTotalInMs - timeElapsedInMs));
-		     }
-		 
-		     protected void interpolate(double frac) {
-		    	 timeElapsedInMs = (long) (frac * timeTotalInMs);
-		         slider.setValue(timeElapsedInMs);
+		timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	timeElapsedInMs = player.getPosition();
+		    	slider.setValue(timeElapsedInMs);
 		         timeElapsed.setText(msToMin(timeElapsedInMs));
-		     }
-		 
-		 };
-		 if(isPlaying)
-			 animation.play();
+		    }
+		}));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		if(isPlaying)
+			timeline.play();
+	}
+	
+
+	@Override
+	public void update(PlayerEvent ev) {
+		if(ev.getEventType() == PlayerEventType.TYPE_NEWSONG){
+			Platform.runLater(()->{newMusicSet();});
+			//newMusicSet();
+		}
+		
 	}
 
 }

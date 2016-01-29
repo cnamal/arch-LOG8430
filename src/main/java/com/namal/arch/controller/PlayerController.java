@@ -319,4 +319,14 @@ public class PlayerController {
     		observer.update(ev);
     	}
     }
+    
+    /**
+     * Get the current position into the song in ms
+     */
+    public long getPosition(){
+    	if(pplayer != null){
+    		return pplayer.getPosition();
+    	}
+    	return 0;
+    }
 }

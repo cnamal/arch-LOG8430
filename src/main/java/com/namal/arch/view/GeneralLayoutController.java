@@ -54,7 +54,7 @@ public class GeneralLayoutController extends UIController{
 		FXMLLoader loader = loadingModule("PlayerOverview.fxml", playerPane);
         
         playerOverviewController = loader.getController();
-        playerOverviewController.onLoad();
+        playerOverviewController.onLoad(playerPane);
 	}
 
 	/**

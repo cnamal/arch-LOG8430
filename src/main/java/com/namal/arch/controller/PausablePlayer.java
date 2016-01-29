@@ -194,4 +194,14 @@ public class PausablePlayer {
             // ignore, we are terminating anyway
         }
     }
+    
+    /**
+     * Get the position into the song in ms
+     */
+    public long getPosition(){
+    	if(player != null){
+    		return player.getPosition();
+    	}
+    	return 0;
+    }
 }
