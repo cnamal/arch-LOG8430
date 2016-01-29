@@ -1,6 +1,7 @@
 package com.namal.arch.controller;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javazoom.jl.decoder.JavaLayerException;
@@ -31,10 +32,12 @@ public class PausablePlayer {
 
     public PausablePlayer(final InputStream inputStream) throws JavaLayerException {
         this.player = new Player(inputStream);
+        this.observers = new ArrayList<PlayerController>();
     }
 
     public PausablePlayer(final InputStream inputStream, final AudioDevice audioDevice) throws JavaLayerException {
         this.player = new Player(inputStream, audioDevice);
+        this.observers = new ArrayList<PlayerController>();
     }
     
     /**

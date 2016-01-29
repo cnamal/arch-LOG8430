@@ -69,9 +69,16 @@ public class PlayerController {
 		song = playlist.getSong(currentPos);
 		System.out.println(song);
 		try {
+			// If pplayer is not null, we ensure that the music
+			// will be stopped and the thread will be closed,
+			// so we call stop() on the PausablePlayer.
+			if(pplayer!=null) {
+				pplayer.stop();
+				pplayer = null;
+			}
 			pplayer = new PausablePlayer(song.getInputStream());
 			currentStatus = PausablePlayerEvent.NOTSTARTED;
-			pplayer.attach(this);
+			pplayer.attach(getInstance());
 		} catch (JavaLayerException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
