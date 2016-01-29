@@ -27,7 +27,7 @@
 			function parse(){
 				var callbackResponse = (document.URL).split("#")[1];
 				var responseParameters = (callbackResponse).split("&");
-				var parameterMap = [];
+				var parameterMap = {};
 				for(var i = 0; i < responseParameters.length; i++) {
 					parameterMap[responseParameters[i].split("=")[0]] = responseParameters[i].split("=")[1];
 				}
