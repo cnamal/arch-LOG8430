@@ -1,7 +1,13 @@
 package com.namal.arch.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
+import com.namal.arch.utils.IPlayerObserver;
+import com.namal.arch.utils.PlayerEventType;
+import com.namal.arch.utils.PlayerStatus;
 
 import javazoom.jl.decoder.JavaLayerException;
 
@@ -18,10 +24,12 @@ public class PlayerController {
 	private Playlist playlist;
 	private int currentPos;
 	private PausablePlayer pplayer;
-	private int currentStatus;
+	private PlayerStatus currentStatus;
+	private List<IPlayerObserver> observers;
 	private static PlayerController instance = new PlayerController();
 	
 	private PlayerController() {
+		observers = new ArrayList<IPlayerObserver>();
 	}
 	
 	public static PlayerController getInstance() {
@@ -77,7 +85,7 @@ public class PlayerController {
 				pplayer = null;
 			}
 			pplayer = new PausablePlayer(song.getInputStream());
-			currentStatus = PausablePlayerEvent.NOTSTARTED;
+			currentStatus = PlayerStatus.NOTSTARTED;
 			pplayer.attach(getInstance());
 		} catch (JavaLayerException e1) {
 			// TODO Auto-generated catch block
@@ -235,7 +243,7 @@ public class PlayerController {
 	 * @return true if a music is playing, false otherwise.
 	 */
 	public boolean isPlaying(){
-		return currentStatus == PausablePlayerEvent.PLAYING;
+		return currentStatus == PlayerStatus.PLAYING;
 	}
 	
 	/**
@@ -251,8 +259,8 @@ public class PlayerController {
 	 * Dispatches the treatment of the event to specialized methods.
 	 * @param ev
 	 */
-	public void update(PausablePlayerEvent ev) {
-		if(ev.getEventType() == PausablePlayerEvent.TYPE_STATECHANGED) {
+	public void update(PlayerEvent ev) {
+		if(ev.getEventType() == PlayerEventType.TYPE_STATECHANGED) {
 			statusChanged(ev);		
 		}
 	}
@@ -262,12 +270,38 @@ public class PlayerController {
 	 * This method should not be called otherwise than through the update method.
 	 * @param ev the PausablePlayerEvent to process.
 	 */
-	private void statusChanged(PausablePlayerEvent ev) {
-		if(ev.getEventInformation() == PausablePlayerEvent.FINISHED) {
-			if(currentStatus == PausablePlayerEvent.PLAYING) {
+	private void statusChanged(PlayerEvent ev) {
+		if(ev.getEventInformation() == PlayerStatus.FINISHED) {
+			if(currentStatus == PlayerStatus.PLAYING) {
 				nextAndPlay();
 			}
 		}
 		currentStatus = ev.getEventInformation();
+		PlayerControllerEvent pcev = new PlayerControllerEvent(getInstance(), PlayerEventType.TYPE_STATECHANGED, ev.getEventInformation());
+		notifyObservers(pcev);
 	}
+	
+	/**
+     * Attach an observer to this player
+     */
+    public void attach(IPlayerObserver observer) {
+    	observers.add(observer);
+    }
+    /**
+     * Detach the observer passed as a parameter
+     * @param observer
+     */
+    public void detach(IPlayerObserver observer) {
+    	observers.remove(observer);
+    }
+    
+    /**
+     * Notifies all the observers attached to this player
+     * @param ev the PlayerControllerEvent which will be transmitted
+     */
+    public void notifyObservers(PlayerControllerEvent ev) {
+    	for(IPlayerObserver observer : observers) {
+    		observer.update(ev);
+    	}
+    }
 }

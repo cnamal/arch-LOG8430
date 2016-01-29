@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.namal.arch.utils.PlayerEventType;
+import com.namal.arch.utils.PlayerStatus;
+
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
@@ -28,7 +31,7 @@ public class PausablePlayer {
     private final Object playerLock = new Object();
 
     // status variable what player thread is doing/supposed to do
-    private int playerStatus = PausablePlayerEvent.NOTSTARTED;
+    private PlayerStatus playerStatus = PlayerStatus.NOTSTARTED;
 
     public PausablePlayer(final InputStream inputStream) throws JavaLayerException {
         this.player = new Player(inputStream);
@@ -60,7 +63,7 @@ public class PausablePlayer {
      * if needed.
      * @param ev a PausablePlayerEvent
      */
-    public void notifyObservers(PausablePlayerEvent ev) {
+    public void notifyObservers(PlayerEvent ev) {
     	for(PlayerController observer : observers) {
     		observer.update(ev);
     	}
@@ -73,9 +76,9 @@ public class PausablePlayer {
      * to this object.
      * @param newStatus
      */
-    public void changeStatus(int newStatus) {
+    public void changeStatus(PlayerStatus newStatus) {
     	playerStatus = newStatus;
-    	PausablePlayerEvent ev = new PausablePlayerEvent(PausablePlayerEvent.TYPE_STATECHANGED, newStatus);
+    	PlayerEvent ev = new PlayerEvent(this, PlayerEventType.TYPE_STATECHANGED, newStatus);
     	notifyObservers(ev);
     }
     
@@ -85,7 +88,7 @@ public class PausablePlayer {
     public void play() throws JavaLayerException {
         synchronized (playerLock) {
             switch (playerStatus) {
-                case PausablePlayerEvent.NOTSTARTED:
+                case NOTSTARTED:
                     final Runnable r = new Runnable() {
                         public void run() {
                             playInternal();
@@ -94,10 +97,10 @@ public class PausablePlayer {
                     final Thread t = new Thread(r);
                     t.setDaemon(true);
                     t.setPriority(Thread.MAX_PRIORITY);
-                    changeStatus(PausablePlayerEvent.PLAYING);
+                    changeStatus(PlayerStatus.PLAYING);
                     t.start();
                     break;
-                case PausablePlayerEvent.PAUSED:
+                case PAUSED:
                     resume();
                     break;
                 default:
@@ -111,10 +114,10 @@ public class PausablePlayer {
      */
     public boolean pause() {
         synchronized (playerLock) {
-            if (playerStatus == PausablePlayerEvent.PLAYING) {
-                changeStatus(PausablePlayerEvent.PAUSED);
+            if (playerStatus == PlayerStatus.PLAYING) {
+                changeStatus(PlayerStatus.PAUSED);
             }
-            return playerStatus == PausablePlayerEvent.PAUSED;
+            return playerStatus == PlayerStatus.PAUSED;
         }
     }
 
@@ -123,11 +126,11 @@ public class PausablePlayer {
      */
     public boolean resume() {
         synchronized (playerLock) {
-            if (playerStatus == PausablePlayerEvent.PAUSED) {
-                changeStatus(PausablePlayerEvent.PLAYING);
+            if (playerStatus == PlayerStatus.PAUSED) {
+                changeStatus(PlayerStatus.PLAYING);
                 playerLock.notifyAll();
             }
-            return playerStatus == PausablePlayerEvent.PLAYING;
+            return playerStatus == PlayerStatus.PLAYING;
         }
     }
 
@@ -136,13 +139,13 @@ public class PausablePlayer {
      */
     public void stop() {
         synchronized (playerLock) {
-            changeStatus(PausablePlayerEvent.STOPPED);
+            changeStatus(PlayerStatus.STOPPED);
             playerLock.notifyAll();
         }
     }
 
     private void playInternal() {
-        while (playerStatus != PausablePlayerEvent.FINISHED && playerStatus != PausablePlayerEvent.STOPPED) {
+        while (playerStatus != PlayerStatus.FINISHED && playerStatus != PlayerStatus.STOPPED) {
             try {
                 if (!player.play(1)) {
                     break;
@@ -152,7 +155,7 @@ public class PausablePlayer {
             }
             // check if PausablePlayerEvent.PAUSED or terminated
             synchronized (playerLock) {
-                while (playerStatus == PausablePlayerEvent.PAUSED) {
+                while (playerStatus == PlayerStatus.PAUSED) {
                     try {
                         playerLock.wait();
                     } catch (final InterruptedException e) {
@@ -170,7 +173,7 @@ public class PausablePlayer {
      */
     public void close() {
         synchronized (playerLock) {
-            changeStatus(PausablePlayerEvent.FINISHED);
+            changeStatus(PlayerStatus.FINISHED);
         }
         try {
             player.close();
