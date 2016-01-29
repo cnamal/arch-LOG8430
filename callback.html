@@ -23,6 +23,7 @@
 	}]).controller(..)
 
 */
+			//source : https://blog.nraboy.com/2015/03/using-oauth-2-0-in-your-web-browser-with-angularjs/
 			function parse(){
 				var callbackResponse = (document.URL).split("#")[1];
 				var responseParameters = (callbackResponse).split("&");
@@ -32,6 +33,7 @@
 				}
 				return parameterMap;
 			}
+
 			angular.module('namalArchApp', []).controller("namalArchCtrl",function($scope,$location){
 				$scope.params=parse();
 			});
