@@ -53,6 +53,10 @@ public class Playlist {
 	public String getName(){
 		return name;
 	}
+	
+	public int getPos(Song song){
+		return playlist.indexOf(song);
+	}
 
 	/*
 	 * TO REMOVE IF NOT OK
@@ -66,10 +70,6 @@ public class Playlist {
 	//ONLY FOR TESTING
 	public void addSong(Song song){
 		playlist.add(song);
-	}
-	
-	public List<Song> getListSongs(){
-		return playlist;
 	}
 	
 	public String toString(){

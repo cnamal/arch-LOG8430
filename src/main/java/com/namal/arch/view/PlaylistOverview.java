@@ -41,6 +41,8 @@ public class PlaylistOverview {
 	//List of all the playlist saved
 	private List<HBox> playlistList;
 	
+	private PlayerOverviewController playerOverviewController;
+	
 	/**
 	 * Constructor, initialize a empty list
 	 */
@@ -111,7 +113,7 @@ public class PlaylistOverview {
 	           songsAnchorPane.getChildren().add(newModule);
 	           
 	           SongsOverviewController controller = loader.getController();
-	           controller.onLoad(playlist);
+	           controller.onLoad(playlist, playerOverviewController);
 	       } 
 	       catch (IOException e) {
 	           e.printStackTrace();
@@ -123,7 +125,8 @@ public class PlaylistOverview {
 	 * Get the playlists saved by the user and display them
 	 * Need to be called when the Playlist layout is selected
 	 */
-	public void onLoad(){
+	public void onLoad(PlayerOverviewController controller){
+		this.playerOverviewController = controller;
 		//Get the list of saved playlist
 		// TODO
 		List<Playlist> playlists = new ArrayList<Playlist>();

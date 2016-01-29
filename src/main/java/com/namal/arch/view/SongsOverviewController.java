@@ -22,14 +22,17 @@ public class SongsOverviewController {
 	
 	private Playlist playlist;
 	
-	private List<HBox> hboxList; 
+	private List<HBox> hboxList;
+	
+	private PlayerOverviewController playerOverviewController;
 
 	public SongsOverviewController() {
 		
 	}
 	
 	
-	public void onLoad(Playlist playlist){
+	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController){
+		this.playerOverviewController = playerOverviewController;
 		this.playlist = playlist;
 		this.hboxList = new ArrayList<HBox>();
 		createHBoxes();
@@ -63,7 +66,7 @@ public class SongsOverviewController {
 	           newBox.setPrefWidth(songsPane.getPrefWidth());
 	           newBox.setLayoutY(newBox.getPrefHeight() * hboxList.size());
 	           SongTemplateController controller = loader.getController();
-	           controller.onLoad(s, newBox);
+	           controller.onLoad(s, newBox, playlist, playerOverviewController);
 	           return newBox;
 	       } 
 	       catch (IOException e) {

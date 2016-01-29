@@ -25,10 +25,12 @@ public class GeneralLayoutController {
 	
 	//Where the modules will be loaded 
 	@FXML
-	private AnchorPane modulePlane;
+	private AnchorPane modulePane;
 	
 	@FXML
-	private AnchorPane currentlyPlayedPane;
+	private AnchorPane playerPane;
+	
+	private PlayerOverviewController playerOverviewController;
 	
 	
 	
@@ -45,8 +47,16 @@ public class GeneralLayoutController {
      */
     public void setMainApp(Main mainApp){
     	this.mainApp = mainApp;
+    	loadPlayer();
     }
     
+	private void loadPlayer() {		
+		FXMLLoader loader = loadingModule("PlayerOverview.fxml", playerPane);
+        
+        playerOverviewController = loader.getController();
+        playerOverviewController.onLoad();
+	}
+
 	/**
 	 * Reset all the boxes to the class vbox
 	 */
@@ -73,12 +83,12 @@ public class GeneralLayoutController {
     		playlistBox.getStyleClass().add("vboxSelected");
     		playlistBox.getStyleClass().remove("vbox");
     		//Load the module
-    		FXMLLoader loader = loadingModule("./PlaylistOverview.fxml");
+    		FXMLLoader loader = loadingModule("./PlaylistOverview.fxml", modulePane);
     		if(loader == null)
     			throw new Exception("Loading failed");
     		//Create the controller if loading ok
     		PlaylistOverview controller = loader.getController();
-            controller.onLoad();
+            controller.onLoad(playerOverviewController);
     		} catch (Exception e){
     			e.printStackTrace();
     		}
@@ -120,7 +130,7 @@ public class GeneralLayoutController {
      * @param FXMLFile Path to the FXMLFile
      * @return The loader, useful to load the controller from it
      */
-    private FXMLLoader loadingModule(String FXMLFile)
+    private FXMLLoader loadingModule(String FXMLFile, AnchorPane module)
     {
        try {
     	   //Loading the FXMLFile into an URL
@@ -134,10 +144,10 @@ public class GeneralLayoutController {
            AnchorPane.setTopAnchor(newModule, 0.0);
            AnchorPane.setLeftAnchor(newModule, 0.0);
            AnchorPane.setRightAnchor(newModule, 0.0);
-
-           //Remove the already loaded module (if there is one) and add the new loaded one
-           modulePlane.getChildren().clear();
-           modulePlane.getChildren().add(newModule);
+           
+           module.getChildren().clear();
+           module.getChildren().add(newModule);
+           
            return loader;
        } 
        catch (IOException e) {

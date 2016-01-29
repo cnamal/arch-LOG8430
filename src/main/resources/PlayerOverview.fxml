@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="50.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.namal.arch.view.PlayerOverviewController">
+   <children>
+      <ImageView fx:id="prevView" disable="true" fitHeight="50.0" fitWidth="30.0" onMouseClicked="#prevAction" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
+         <image>
+            <Image url="@previous.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="playPauseView" disable="true" fitHeight="50.0" fitWidth="30.0" layoutX="50.0" onMouseClicked="#playPauseAction" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0">
+         <image>
+            <Image url="@play.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="nextView" disable="true" fitHeight="50.0" fitWidth="30.0" layoutX="100.0" onMouseClicked="#nextAction" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="10.0">
+         <image>
+            <Image url="@next.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="title" layoutX="159.0" layoutY="17.0" maxWidth="115.0" prefHeight="30.0" text="Title" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <HBox fillHeight="false" prefWidth="425.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <Label fx:id="timeElapsed" minWidth="40.0" text="T_elapsed" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Slider fx:id="slider" onMouseClicked="#sliderAction" prefHeight="14.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="timeTotal" minWidth="40.0" text="T_Total" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
