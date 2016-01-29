@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 
 public class Song {
 
+	private int id;
 	private String title;
 	private String artist;
 	private String album;
@@ -34,6 +35,7 @@ public class Song {
 		provider=builder.provider;
 		duration = builder.duration;
 		albumCover=builder.albumCover;
+		id=builder.id;
 	}
 
 	public String getTitle() {
@@ -68,6 +70,10 @@ public class Song {
 	 */
 	public Image getAlbumCover(){
 		return albumCover;
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	public String toString(){

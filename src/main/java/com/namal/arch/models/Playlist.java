@@ -11,6 +11,7 @@ public class Playlist {
 	private List<Song> playlist;
 	private AudioServiceProvider provider;
 	private String name;
+	private int id;
 	
 	/**
 	 * 
@@ -48,6 +49,14 @@ public class Playlist {
 		// TODO add song 
 		// TODO check provider : if same -> use provider to save playlist
 		// TODO else -> modify provider for cross-platform provider and save playlist
+		if(id!=Integer.MIN_VALUE){
+			playlist.add(index,song);
+			if(provider!=song.getProvider()){
+				//TODO
+			}else{
+				provider.savePlaylist(this);
+			}
+		}
 	}
 	
 	public String getName(){
@@ -58,11 +67,15 @@ public class Playlist {
 		return playlist.indexOf(song);
 	}
 
-	/*
-	 * TO REMOVE IF NOT OK
-	 * By Adrien
-	 */
+	
+	public Playlist(String name,int id) {
+		this.id=id;
+		this.name = name;
+		this.playlist = new ArrayList<Song>();
+	}
+	
 	public Playlist(String name) {
+		this.id=Integer.MIN_VALUE;
 		this.name = name;
 		this.playlist = new ArrayList<Song>();
 	}
@@ -74,5 +87,20 @@ public class Playlist {
 	
 	public String toString(){
 		return playlist.toString();
+	}
+	
+	public String toJson(){
+		//{"playlist":{"tracks":[{"id":201415513},{"id":201201304},{"id":96379023}]}}
+		String json ="{\"playlist\":{\"tracks\":[";
+		for(int i=0;i<playlist.size()-1;i++){
+			json+="{\"id\":" +playlist.get(i).getId()+"},";
+		}
+		json+="{\"id\":" +playlist.get(playlist.size()-1).getId()+"},";
+		json+="]}}";
+		return json;
+	}
+	
+	public int getId(){
+		return id;
 	}
 }

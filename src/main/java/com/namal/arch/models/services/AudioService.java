@@ -42,4 +42,6 @@ public interface AudioService {
 	}
 	
 	public AudioServiceProvider getAudioServiceProvider();
+	
+	public IAuthentification getAuthentification();
 }
