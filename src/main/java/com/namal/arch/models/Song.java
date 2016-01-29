@@ -60,4 +60,12 @@ public class Song {
 	public String toString(){
 		return "Title : "+title + "\n Artist : "+artist+ "\n Uri : "+uri+"\n";
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Song){
+			return uri.equals(((Song)o).uri);
+		}
+		return false;
+	}
 }
