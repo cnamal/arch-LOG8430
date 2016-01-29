@@ -63,7 +63,7 @@ public class PausablePlayer {
      * if needed.
      * @param ev a PausablePlayerEvent
      */
-    public void notifyObservers(PlayerEvent ev) {
+    public void notifyObservers(PausablePlayerEvent ev) {
     	for(PlayerController observer : observers) {
     		observer.update(ev);
     	}
@@ -78,7 +78,19 @@ public class PausablePlayer {
      */
     public void changeStatus(PlayerStatus newStatus) {
     	playerStatus = newStatus;
-    	PlayerEvent ev = new PlayerEvent(this, PlayerEventType.TYPE_STATECHANGED, newStatus);
+    	PausablePlayerEvent ev = new PausablePlayerEvent(this, PlayerEventType.TYPE_STATECHANGED, newStatus);
+    	notifyObservers(ev);
+    }
+    
+    /**
+     * Executes when a new song is played. This method also generates
+     * a PausablePlayerEvent of type "New Song" and 
+     * calls the notifyObservers method to notify all the observers attached
+     * to this object.
+     * @param newStatus
+     */
+    public void onNewSong() {
+    	PausablePlayerEvent ev = new PausablePlayerEvent(this, PlayerEventType.TYPE_NEWSONG, null);
     	notifyObservers(ev);
     }
     
@@ -98,6 +110,7 @@ public class PausablePlayer {
                     t.setDaemon(true);
                     t.setPriority(Thread.MAX_PRIORITY);
                     changeStatus(PlayerStatus.PLAYING);
+                    onNewSong();
                     t.start();
                     break;
                 case PAUSED:
