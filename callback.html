@@ -25,7 +25,7 @@
 */
 			//source : https://blog.nraboy.com/2015/03/using-oauth-2-0-in-your-web-browser-with-angularjs/
 			function parse(){
-				var callbackResponse = (document.URL).split("#")[1];
+				var callbackResponse = (document.URL).split("#")[1].substring(1);
 				var responseParameters = (callbackResponse).split("&");
 				var parameterMap = {};
 				for(var i = 0; i < responseParameters.length; i++) {
