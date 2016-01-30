@@ -16,6 +16,7 @@ public class UIController {
 	
 	//Each class will have a ref to its own pane
 	protected Pane refPane;
+	protected UIMainClass mainApp;
 	
 	public FXMLLoader getLoaderFromFile(String FXMLFile)
     {

@@ -13,6 +13,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,7 +59,6 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 	private long timeElapsedInMs = 0;
 	private long timeTotalInMs = 0;
 	private PlayerController player;
-	private Animation animation;
 	private Timeline timeline;
 	
 	//Constants for brightness
@@ -68,7 +69,8 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 	public PlayerOverviewController() {
 	}
 	
-	public void onLoad(Pane refPane){
+	public void onLoad(Pane refPane, UIMainClass mainApp){
+		this.mainApp = mainApp;
 		this.refPane = refPane;
 		title.setText("");
 		timeElapsed.setText("");
@@ -79,6 +81,13 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		resetButton();
 		player = PlayerController.getInstance();
 		player.attach(this);
+		
+		//Resize the player (for the text)
+		mainApp.getPrimaryStage().getScene().widthProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+				resizeText(newSceneWidth, oldSceneWidth);
+		    }
+		});
 	}
 	
 	public void onPlay(Playlist playlist, int currPos){
@@ -129,11 +138,15 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		timeElapsed.setText(msToMin(timeElapsedInMs));
 		timeTotalInMs = currPlaylist.getSong(currPos).getDuration();
 		timeTotal.setText(msToMin(timeTotalInMs));
-		title.setMaxWidth(refPane.getWidth() - 4 * timeTotal.getWidth() - slider.getWidth() - 3 * nextView.getFitWidth());
 		resetButton();		
 		changePlayPauseImage();
+		resizeText(refPane.getWidth() - 4 * timeTotal.getWidth() - slider.getWidth() - 3 * nextView.getFitWidth(), title.getMaxWidth());
 		//setNewAnimationSlider();
 		setSlider();
+	}
+	
+	private void resizeText(Number newSceneWidth, Number oldSceneWidth){
+		title.setMaxWidth(title.getMaxWidth() + (newSceneWidth.intValue() - oldSceneWidth.intValue()));
 	}
 	
 	@FXML
@@ -172,7 +185,7 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		//TODO
 	}
 	
-	private String msToMin(long i){
+	public static String msToMin(long i){
 		return String.valueOf(i/(1000*60)) + ":" + ((i%(1000*60)/1000 < 10) ? "0" : "") + String.valueOf(i%(1000*60)/1000);
 	}
 	

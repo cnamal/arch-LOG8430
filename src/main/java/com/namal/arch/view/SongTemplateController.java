@@ -8,6 +8,8 @@ import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceLoader;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,7 +22,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class SongTemplateController {
+public class SongTemplateController extends UIController{
+	
+	//Resizing UI
+	private double titlePurcent;
+	private double singerPurcent;
+	private double albumPurcent;
+	private double timePurcent;
+	private double menuButtonPurcent;
 	
 	@FXML
 	private AnchorPane songBox;
@@ -50,18 +59,27 @@ public class SongTemplateController {
 	public SongTemplateController() {		
 	}
 
-	public void onLoad(Song song, AnchorPane songBox, Playlist playlist, PlayerOverviewController playerOverviewController){
+	public void onLoad(Song song, AnchorPane songBox, Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
+		this.mainApp = mainApp;
 		this.playerOverviewController = playerOverviewController;
 		this.song = song;
 		this.title.setText(this.song.getTitle());
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
-		this.time.setText("Unknown");
+		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
 		this.imageView.setImage(song.getProvider().getProviderInformation().getLogo());
 		this.songBox = songBox;
 		this.playlist = playlist;
 		connectAction();
 		createAddPlaylistMenu();
+		generatePurcentageBasedOnFile();
+		
+		//Resize the player (for the text)
+		mainApp.getPrimaryStage().getScene().widthProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+		    	resizeComponents(newSceneWidth, oldSceneWidth);
+		    }
+		});
 	}
 	
 	private void connectAction() {
@@ -111,6 +129,24 @@ public class SongTemplateController {
 	@FXML
 	private void play(){
 		playerOverviewController.onPlay(playlist, playlist.getPos(song));
+	}
+	
+	private void resizeComponents(Number newSceneWidth, Number oldSceneWidth){
+		double diff = newSceneWidth.doubleValue() - oldSceneWidth.doubleValue();
+		title.setMaxWidth(title.getMaxWidth() + diff * titlePurcent);
+		singer.setMaxWidth(singer.getMaxWidth() + diff * singerPurcent);
+		album.setMaxWidth(album.getMaxWidth() + diff * albumPurcent);
+		time.setMaxWidth(time.getMaxWidth() + diff * timePurcent);
+		menuButton.setMaxWidth(menuButton.getMaxWidth() + diff * menuButtonPurcent);
+	}
+	
+	private void generatePurcentageBasedOnFile(){
+		double prefSize = songBox.getPrefWidth() - imageView.getFitWidth();
+		titlePurcent = title.getMaxWidth() / prefSize;
+		singerPurcent = singer.getMaxWidth()/ prefSize;
+		albumPurcent = album.getMaxWidth()/ prefSize;
+		timePurcent = time.getMaxWidth() / prefSize;
+		menuButtonPurcent = menuButton.getMaxWidth() / prefSize;
 	}
 
 }

@@ -31,11 +31,6 @@ public class GeneralLayoutController extends UIController{
 	private AnchorPane playerPane;
 	
 	private PlayerOverviewController playerOverviewController;
-	
-	
-	
-	// Reference to the main application.
-    private UIMainClass mainApp;
     
     // The constructor
     public GeneralLayoutController() {
@@ -54,7 +49,7 @@ public class GeneralLayoutController extends UIController{
 		FXMLLoader loader = loadingModule("PlayerOverview.fxml", playerPane);
         
         playerOverviewController = loader.getController();
-        playerOverviewController.onLoad(playerPane);
+        playerOverviewController.onLoad(playerPane, mainApp);
 	}
 
 	/**
@@ -88,7 +83,7 @@ public class GeneralLayoutController extends UIController{
     			throw new Exception("Loading failed");
     		//Create the controller if loading ok
     		PlaylistOverview controller = loader.getController();
-            controller.onLoad(playerOverviewController);
+            controller.onLoad(playerOverviewController, mainApp);
     		} catch (Exception e){
     			e.printStackTrace();
     		}
@@ -104,9 +99,20 @@ public class GeneralLayoutController extends UIController{
     private void searchLoading(){
     	//If we're not in browse yet
     	if(!searchBox.getStyleClass().contains("vboxSelected")){
-    		resetAllBoxes();
-    		searchBox.getStyleClass().add("vboxSelected");
-    		searchBox.getStyleClass().remove("vbox");
+    		try{
+        		resetAllBoxes();
+        		searchBox.getStyleClass().add("vboxSelected");
+        		searchBox.getStyleClass().remove("vbox");
+        		//Load the module
+        		FXMLLoader loader = loadingModule("SearchOverview.fxml", modulePane);
+        		if(loader == null)
+        			throw new Exception("Loading failed");
+        		//Create the controller if loading ok
+        		SearchOverviewController controller = loader.getController();
+                controller.onLoad(mainApp, playerOverviewController);
+        		} catch (Exception e){
+        			e.printStackTrace();
+    		}
     	}
     }
     

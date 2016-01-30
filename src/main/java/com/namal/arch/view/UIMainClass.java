@@ -2,9 +2,6 @@ package com.namal.arch.view;
 
 import java.io.IOException;
 
-import com.namal.arch.Main;
-import com.namal.arch.models.services.Soundcloud;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +15,6 @@ public class UIMainClass extends Application{
 	private Stage authenticateStage;
 	
 	private AnchorPane generalLayout;
-	private AnchorPane authenticateWindow;
 	private UIController uiController;
 
 	
@@ -35,7 +31,9 @@ public class UIMainClass extends Application{
 	@Override
 	public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Archi");
+        this.primaryStage.setTitle("Arch-LOG8430 - Streaming playlists gatherer");
+        primaryStage.setMinWidth(800);
+        
         
         loadGeneraLayout();
     }
@@ -67,6 +65,10 @@ public class UIMainClass extends Application{
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
 		authenticateController.onLoadListServices(authenticateStage);
+	}
+	
+	public Stage getPrimaryStage(){
+		return primaryStage;
 	}
 	
 

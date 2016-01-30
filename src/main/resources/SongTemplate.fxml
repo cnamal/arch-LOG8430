@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.namal.arch.view.SongTemplateController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.namal.arch.view.SongTemplateController">
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="imageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="title" prefHeight="30.0" prefWidth="150.0" text="Title" />
-            <Label fx:id="singer" prefHeight="30.0" prefWidth="100.0" text="Singer" />
-            <Label fx:id="album" prefHeight="30.0" prefWidth="100.0" text="Album" />
-            <Label fx:id="time" prefHeight="30.0" prefWidth="50.0" text="Time" />
-            <MenuButton fx:id="menuButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="...">
+            <ImageView fx:id="imageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+            <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="150.0" text="Title" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+            <Label fx:id="singer" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="100.0" text="Singer" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+            <Label fx:id="album" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="56.0" text="Album" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+            <Label fx:id="time" alignment="CENTER" maxWidth="40.0" prefHeight="30.0" prefWidth="30.0" text="00:00" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+            <MenuButton fx:id="menuButton" maxWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" text="..." HBox.hgrow="ALWAYS">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#play" text="Play" />
                   <Menu fx:id="addPlaylistMenu" mnemonicParsing="false" text="AddToPlaylist" />

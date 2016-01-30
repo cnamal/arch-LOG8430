@@ -31,7 +31,8 @@ public class SongsOverviewController extends UIController{
 	}
 	
 	
-	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController){
+	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
+		this.mainApp = mainApp;
 		this.playerOverviewController = playerOverviewController;
 		this.playlist = playlist;
 		this.songList = new ArrayList<AnchorPane>();
@@ -61,9 +62,11 @@ public class SongsOverviewController extends UIController{
 	           AnchorPane newBox = (AnchorPane) loader.load();
 	           newBox.setPrefWidth(songsPane.getPrefWidth());
 	           newBox.setLayoutY(newBox.getPrefHeight() * songList.size());
+	           AnchorPane.setLeftAnchor(newBox, 0.0);
+	           AnchorPane.setRightAnchor(newBox, 0.0);
 	           
 	           SongTemplateController controller = loader.getController();
-	           controller.onLoad(s, newBox, playlist, playerOverviewController);
+	           controller.onLoad(s, newBox, playlist, playerOverviewController, mainApp);
 	           
 	           return newBox;
 	       } 

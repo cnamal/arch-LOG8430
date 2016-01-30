@@ -98,7 +98,7 @@ public class PlaylistOverview extends UIController{
 		FXMLLoader loader = loadingModule("SongsOverview.fxml", songsAnchorPane);
 	           
 		SongsOverviewController controller = loader.getController();
-		controller.onLoad(playlist, playerOverviewController);
+		controller.onLoad(playlist, playerOverviewController, mainApp);
 	}
 	
 	/**
@@ -106,7 +106,8 @@ public class PlaylistOverview extends UIController{
 	 * Get the playlists saved by the user and display them
 	 * Need to be called when the Playlist layout is selected
 	 */
-	public void onLoad(PlayerOverviewController controller){
+	public void onLoad(PlayerOverviewController controller, UIMainClass mainApp){
+		this.mainApp = mainApp;
 		this.playerOverviewController = controller;
 		//Get the list of saved playlist
 		// TODO
