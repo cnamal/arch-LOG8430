@@ -3,6 +3,7 @@ package com.namal.arch.view;
 import java.io.IOException;
 
 import com.namal.arch.Main;
+import com.namal.arch.models.services.Soundcloud;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +65,7 @@ public class UIMainClass extends Application{
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoad(authenticateStage);
+		authenticateController.onLoad(authenticateStage, Soundcloud.getInstance().getAuthentification());
 	}
 	
 

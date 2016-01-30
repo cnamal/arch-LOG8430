@@ -20,9 +20,7 @@ public class AuthentificationOverviewController {
 	public AuthentificationOverviewController() {
 	}
 	
-	public void onLoad(Stage stage){
-		//TODO remove this auth variable
-		IAuthentification auth = Soundcloud.getInstance().getAuthentification();
+	public void onLoad(Stage stage, IAuthentification auth){
 		
 		stage.setTitle("Authentification");
         stage.setWidth(800);
@@ -43,6 +41,7 @@ public class AuthentificationOverviewController {
 
                   if (newState == Worker.State.SUCCEEDED) {
                 	  String url= webEngine.getLocation();
+                	  System.out.println(url);
                 	  if(url.indexOf(auth.testString())>=0){
                 		  boolean test=auth.serverResponse(url);
                 		  if(test){
@@ -51,7 +50,7 @@ public class AuthentificationOverviewController {
                 		  }else{
                 			  //TODO error notification
                 		  }
-                		  stage.close();
+                		 // stage.close();
                 	  }
                 }
                   

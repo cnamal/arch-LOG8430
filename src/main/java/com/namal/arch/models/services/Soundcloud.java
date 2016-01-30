@@ -104,7 +104,9 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 					Playlist p = new Playlist(playlist.getString("title"));
 					JsonArray songs = playlist.getJsonArray("tracks");
 					for (JsonObject song : songs.getValuesAs(JsonObject.class)){
-						p.addSong(songBuilder(song));
+						if(song.getBoolean("streamable")){
+							p.addSong(songBuilder(song));
+						}
 					}
 					playlists.add(p);
 				}
