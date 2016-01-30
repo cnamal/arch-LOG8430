@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
@@ -18,8 +19,8 @@
             <Label fx:id="time" prefHeight="30.0" prefWidth="50.0" text="Time" />
             <MenuButton fx:id="menuButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="...">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
-                  <MenuItem mnemonicParsing="false" text="Action 2" />
+                  <MenuItem mnemonicParsing="false" onAction="#play" text="Play" />
+                  <Menu fx:id="addPlaylistMenu" mnemonicParsing="false" text="AddToPlaylist" />
                </items>
             </MenuButton>
          </children>

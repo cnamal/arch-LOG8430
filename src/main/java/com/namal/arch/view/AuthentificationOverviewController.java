@@ -1,5 +1,9 @@
 package com.namal.arch.view;
 
+import java.util.Iterator;
+
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.models.services.Soundcloud;
 
@@ -7,9 +11,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -20,11 +28,12 @@ public class AuthentificationOverviewController {
 	public AuthentificationOverviewController() {
 	}
 	
-	public void onLoad(Stage stage, IAuthentification auth){
+	private void onLoadService(Stage stage, IAuthentification auth){
 		
-		stage.setTitle("Authentification");
+		stage.setTitle("Authentification " + auth.getProviderInformation().getName());
         stage.setWidth(800);
         stage.setHeight(500);
+        stage.setResizable(true);
         Scene scene = new Scene(new Group());
 
         AnchorPane root = new AnchorPane();     
@@ -50,7 +59,7 @@ public class AuthentificationOverviewController {
                 		  }else{
                 			  //TODO error notification
                 		  }
-                		 // stage.close();
+                		  stage.close();
                 	  }
                 }
                   
@@ -62,6 +71,43 @@ public class AuthentificationOverviewController {
         scene.setRoot(root);
 
         stage.setScene(scene);
-        stage.showAndWait();
+	}
+	
+	public void onLoadListServices(Stage stage){
+		stage.setTitle("Authentification");
+		stage.setWidth(500);
+        Scene scene = new Scene(new Group());
+
+        AnchorPane root = new AnchorPane(); 
+        stage.setResizable(false);
+        
+        Iterator<AudioService> list = AudioServiceLoader.getAudioServices();
+        
+        Label text = new Label("Select a service to authenticate");
+        text.setLayoutX(165);
+        
+        root.getChildren().add(text);
+        
+        int layoutY = 40;
+        
+        while(list.hasNext()){
+        	AudioService serv = list.next();
+        	Button button = new Button(serv.getProviderInformation().getName());
+        	button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			    @Override
+			    public void handle(MouseEvent mouseEvent) {
+			    	onLoadService(stage, serv.getAuthentification());
+			    }
+		    });
+        	button.setLayoutX((stage.getWidth()-100)/2);
+        	button.setLayoutY(layoutY);
+        	layoutY += button.getHeight() + 10;
+        	root.getChildren().add(button);
         }
+        
+        scene.setRoot(root);
+
+        stage.setScene(scene);
+        stage.showAndWait();
+	}
 }

@@ -17,6 +17,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import org.apache.commons.io.IOUtils;
+
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
@@ -35,6 +37,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 	private static final String PLAYLISTURL = BASEURL+"playlists/";
 	private String authToken;
 	private boolean isAuthenticated=false;
+	private List<Playlist> playlists = null;
 	
 	private InputStream inputStream;
 	
@@ -92,6 +95,8 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 		if(!isAuthenticated)
 			return null; // TODO add Exception system
 		URL url;
+		if(playlists != null)
+			return playlists;
 		try {
 			url = new URL(MYPLAYLISTS+"?oauth_token="+authToken);
 
@@ -101,7 +106,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			JsonArray results = rdr.readArray();
 			for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
 				if(!playlist.isNull("streamable") && playlist.getBoolean("streamable")){
-					Playlist p = new Playlist(playlist.getString("title"));
+					Playlist p = new Playlist(playlist.getString("title"), playlist.getInt("id"),this);
 					JsonArray songs = playlist.getJsonArray("tracks");
 					for (JsonObject song : songs.getValuesAs(JsonObject.class)){
 						if(song.getBoolean("streamable")){
@@ -111,6 +116,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 					playlists.add(p);
 				}
 			}
+			this.playlists = playlists;
 			return playlists;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -139,19 +145,27 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 
 	@Override
 	public void savePlaylist(Playlist playlist) {
+		System.out.println("savePlaylist");
 		if(!isAuthenticated)
 			return; // TODO add Exception system
 		URL url;
+		
 		try {
+			System.out.println("savePlaylist");
 			url = new URL(PLAYLISTURL+playlist.getId()+"?oauth_token="+authToken);
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 			httpCon.setDoOutput(true);
 			httpCon.setRequestMethod("PUT");
+			httpCon.setRequestProperty(
+				    "Content-Type", "application/json" );
 			OutputStreamWriter out = new OutputStreamWriter(
 			    httpCon.getOutputStream());
+			System.out.println(playlist.toJson());
 			out.write(playlist.toJson());
 			out.close();
-			httpCon.getInputStream();
+			//httpCon.getInputStream();
+			String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
+			System.out.println(theString);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

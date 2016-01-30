@@ -60,12 +60,13 @@ public class UIMainClass extends Application{
         controller.setMainApp(this);
 	}
 	
+	
 	public void loadAuthenticateWindow(){
 		authenticateStage = new Stage();
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoad(authenticateStage, Soundcloud.getInstance().getAuthentification());
+		authenticateController.onLoadListServices(authenticateStage);
 	}
 	
 

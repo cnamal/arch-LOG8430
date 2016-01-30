@@ -51,7 +51,9 @@ public class Playlist {
 		// TODO else -> modify provider for cross-platform provider and save playlist
 		if(id!=Integer.MIN_VALUE){
 			playlist.add(index,song);
-			if(provider!=song.getProvider()){
+			System.out.println(provider);
+			System.out.println(song.getProvider());
+			if(!provider.equals(song.getProvider())){
 				//TODO
 			}else{
 				provider.savePlaylist(this);
@@ -68,9 +70,10 @@ public class Playlist {
 	}
 
 	
-	public Playlist(String name,int id) {
+	public Playlist(String name,int id,AudioServiceProvider p) {
 		this.id=id;
 		this.name = name;
+		this.provider=p;
 		this.playlist = new ArrayList<Song>();
 	}
 	
@@ -95,7 +98,7 @@ public class Playlist {
 		for(int i=0;i<playlist.size()-1;i++){
 			json+="{\"id\":" +playlist.get(i).getId()+"},";
 		}
-		json+="{\"id\":" +playlist.get(playlist.size()-1).getId()+"},";
+		json+="{\"id\":" +playlist.get(playlist.size()-1).getId()+"}";
 		json+="]}}";
 		return json;
 	}

@@ -1,18 +1,24 @@
 package com.namal.arch.view;
 
-import com.namal.arch.controller.PlayerController;
+import java.util.Iterator;
+import java.util.List;
+
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 
 public class SongTemplateController {
 	
@@ -34,6 +40,9 @@ public class SongTemplateController {
 	@FXML
 	private MenuButton menuButton;
 	
+	@FXML
+	private Menu addPlaylistMenu;
+	
 	private Song song;
 	private Playlist playlist;
 	private PlayerOverviewController playerOverviewController;
@@ -52,6 +61,7 @@ public class SongTemplateController {
 		this.songBox = songBox;
 		this.playlist = playlist;
 		connectAction();
+		createAddPlaylistMenu();
 	}
 	
 	private void connectAction() {
@@ -64,12 +74,43 @@ public class SongTemplateController {
 		            	int pos = playlist.getPos(song);
 		            	if(pos != -1){
 			                System.out.println("PLAY");
-			                playerOverviewController.onPlay(playlist, playlist.getPos(song));
+			                play();
 		            	}
 		            }
 		        }
 		    }
 		});
+	}
+	
+	private void createAddPlaylistMenu(){
+		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
+		while(it.hasNext()){
+			AudioService serv = it.next();
+			List<Playlist> playlists = serv.getPlaylists();
+			if(playlists != null){
+				for(Playlist p : playlists){
+					if(p.getId() != playlist.getId()){
+						addMenuItem(p);
+					}
+				}
+			}
+		}
+	}
+	
+	private void addMenuItem(Playlist p){
+		MenuItem menuItem = new MenuItem(p.getName());
+		menuItem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        p.addSong(p.getTotalNumberSongs(), song);
+		    }
+		});
+		addPlaylistMenu.getItems().add(menuItem);
+	}
+	
+	@FXML
+	private void play(){
+		playerOverviewController.onPlay(playlist, playlist.getPos(song));
 	}
 
 }
