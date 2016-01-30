@@ -49,8 +49,8 @@ public class Playlist {
 		// TODO add song 
 		// TODO check provider : if same -> use provider to save playlist
 		// TODO else -> modify provider for cross-platform provider and save playlist
-		if(id!=Integer.MIN_VALUE){
-			playlist.add(index,song);
+		playlist.add(index,song);
+		if(id!=Integer.MIN_VALUE){			
 			System.out.println(provider);
 			System.out.println(song.getProvider());
 			if(!provider.equals(song.getProvider())){

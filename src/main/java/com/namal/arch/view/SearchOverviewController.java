@@ -73,7 +73,7 @@ public class SearchOverviewController extends UIController{
 	@FXML
 	private void search(){
 		//TODO When we'll have other providers
-		results = new Playlist("Search Results", -524, Soundcloud.getInstance());
+		results = new Playlist("Search Results");
 		for(AudioService serv : providerListChecked){
 			Playlist aux = serv.searchTrack(searchText.getText());			
 			Iterator<Song> it = aux.getSongs();
