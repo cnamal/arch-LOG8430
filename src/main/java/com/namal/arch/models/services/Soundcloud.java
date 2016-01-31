@@ -106,11 +106,11 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			JsonArray results = rdr.readArray();
 			for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
 				if(!playlist.isNull("streamable") && playlist.getBoolean("streamable")){
-					Playlist p = new Playlist(playlist.getString("title"), playlist.getInt("id"),this);
+					Playlist p = new Playlist(playlist.getString("title"), playlist.getInt("id"),this,playlist.getString("sharing").equals("public"));
 					JsonArray songs = playlist.getJsonArray("tracks");
 					for (JsonObject song : songs.getValuesAs(JsonObject.class)){
 						if(song.getBoolean("streamable")){
-							p.addSong(songBuilder(song));
+							p.addSongWithoutUpdating(songBuilder(song));
 						}
 					}
 					playlists.add(p);
@@ -143,8 +143,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 		return false;
 	}
 
-	@Override
-	public void savePlaylist(Playlist playlist) {
+	private void updatePlaylist(Playlist playlist){
 		System.out.println("savePlaylist");
 		if(!isAuthenticated)
 			return; // TODO add Exception system
@@ -173,9 +172,62 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	
+	@Override
+	public void addSongToPlaylist(Playlist playlist,Song addedSong) {
+		updatePlaylist(playlist);
 	}
 
+	@Override
+	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
+		updatePlaylist(playlist);
+	}
+	
+	@Override
+	public void createPlaylist(Playlist playlist) {
+		System.out.println("createPlaylist");
+		if(!isAuthenticated)
+			return; // TODO add Exception system
+		URL url;
+		
+		try {
+			System.out.println("savePlaylist");
+			url = new URL(PLAYLISTURL+"?client_id="+clientId);
+			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+			httpCon.setDoOutput(true);
+			httpCon.setRequestMethod("POST");
+			httpCon.setRequestProperty(
+				    "Content-Type", "application/x-www-form-urlencoded" );
+			httpCon.setRequestProperty(
+				    "Authorization", "OAuth "+authToken );
+			OutputStreamWriter out = new OutputStreamWriter(
+			    httpCon.getOutputStream());
+			String data = URLEncoder.encode("playlist[title]", "UTF-8");
+			data+="=";
+			data+=URLEncoder.encode(playlist.getName(), "UTF-8");
+			data+="&";
+			data+=URLEncoder.encode("playlist[sharing]", "UTF-8");
+			data+=playlist.getPub()?"public":"private";
+			System.out.println(data);
+			out.write(data);
+			out.close();
+			//httpCon.getInputStream();
+			
+			//String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
+			JsonReader rdr = Json.createReader(httpCon.getInputStream());
+			JsonObject results = rdr.readObject();
+			playlist.setId(results.getInt("id"));	
+			playlist.setName(results.getString("title"));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public ProviderInformation getProviderInformation() {
 		return SoundcloudProviderInformation.getInstance();
@@ -211,11 +263,11 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			JsonReader rdr = Json.createReader(is);
 
 			JsonArray results = rdr.readArray();
-			Playlist playlist = new Playlist("Search results");
+			Playlist playlist = new Playlist("Search results",true,true);
 			for (JsonObject result : results.getValuesAs(JsonObject.class)) {
 				if(result.getBoolean("streamable")){
 					
-					playlist.addSong(songBuilder(result));
+					playlist.addSongWithoutUpdating(songBuilder(result));
 				}
 			}
 			return playlist;

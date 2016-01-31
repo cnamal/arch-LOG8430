@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
+import com.namal.arch.models.Song;
 
 public interface AudioServiceProvider {
 
@@ -23,8 +24,11 @@ public interface AudioServiceProvider {
 	 * Save a playlist
 	 * @param playlist
 	 */
-	public void savePlaylist(Playlist playlist);
+	public void addSongToPlaylist(Playlist playlist, Song addedSong);
 	
+	public void removerSongFromPlaylist(Playlist playlist,Song removedSong);
+	
+	public void createPlaylist(Playlist playlist);
 	/**
 	 * 
 	 * @return ProviderInformation of the AudioService

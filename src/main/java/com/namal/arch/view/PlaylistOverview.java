@@ -113,13 +113,10 @@ public class PlaylistOverview extends UIController{
 		// TODO
 		List<Playlist> playlists = new ArrayList<Playlist>();
 		//For testing, we create a few playlists
-		Playlist playlist1 = new Playlist("La chorale de bubulle");
-		Playlist playlist2 = new Playlist("Les chants des oiseaux");
-		Playlist playlist3 = new Playlist("Throwback Thursday");
 		List<Playlist> playlist4 = Soundcloud.getInstance().getPlaylists();
-		playlist1 = Soundcloud.getInstance().searchTrack("lucky");
-		playlist2 = Soundcloud.getInstance().searchTrack("bass");
-		playlist3 = Soundcloud.getInstance().searchTrack("hello");
+		Playlist playlist1 = Soundcloud.getInstance().searchTrack("lucky");
+		Playlist playlist2 = Soundcloud.getInstance().searchTrack("bass");
+		Playlist playlist3 = Soundcloud.getInstance().searchTrack("hello");
 
 		playlists.add(playlist1);
 		playlists.add(playlist2);

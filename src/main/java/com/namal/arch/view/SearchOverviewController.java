@@ -73,12 +73,12 @@ public class SearchOverviewController extends UIController{
 	@FXML
 	private void search(){
 		//TODO When we'll have other providers
-		results = new Playlist("Search Results");
+		results = new Playlist("Search Results",true,true);
 		for(AudioService serv : providerListChecked){
 			Playlist aux = serv.searchTrack(searchText.getText());			
 			Iterator<Song> it = aux.getSongs();
 			while(it.hasNext()){
-				results.addSong(results.getTotalNumberSongs(), it.next());
+				results.addSongWithoutUpdating(it.next());
 			}
 		}
 		showResults();

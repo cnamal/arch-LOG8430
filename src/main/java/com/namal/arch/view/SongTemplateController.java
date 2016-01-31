@@ -120,7 +120,7 @@ public class SongTemplateController extends UIController{
 		menuItem.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent event) {
-		        p.addSong(p.getTotalNumberSongs(), song);
+		        p.addSongAndUpdate(p.getTotalNumberSongs(), song);
 		    }
 		});
 		addPlaylistMenu.getItems().add(menuItem);

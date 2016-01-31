@@ -11,6 +11,11 @@ public class Playlist {
 	private List<Song> playlist;
 	private AudioServiceProvider provider;
 	private String name;
+	private boolean searchPlaylist;
+	/**
+	 * Is the playlist public or private
+	 */
+	private boolean pub;
 	private int id;
 	
 	/**
@@ -40,23 +45,33 @@ public class Playlist {
 		return playlist.size();
 	}
 	
+	private void findProvider(){
+		AudioServiceProvider prev=playlist.get(0).getProvider();
+		for(int i=1;i<playlist.size();i++)
+			if(prev!=playlist.get(i).getProvider())
+				throw new UnsupportedOperationException("Multiplatform playlist aren't implemented yet");
+		provider=prev;
+	}
+	
 	/**
 	 * Adds the song to the playlist and saves the playlist.
 	 * @param index index at which the song should be added (not used currently)
 	 * @param song 
 	 */
-	public void addSong(int index, Song song){
+	public void addSongAndUpdate(int index, Song song){
 		// TODO add song 
 		// TODO check provider : if same -> use provider to save playlist
 		// TODO else -> modify provider for cross-platform provider and save playlist
 		playlist.add(index,song);
-		if(id!=Integer.MIN_VALUE){			
-			System.out.println(provider);
-			System.out.println(song.getProvider());
+		if(!searchPlaylist){			
+			if(id==Integer.MIN_VALUE){
+				findProvider();
+				provider.createPlaylist(this);
+			}
 			if(!provider.equals(song.getProvider())){
-				//TODO
+				throw new UnsupportedOperationException("Multiplatform playlist aren't implemented yet");
 			}else{
-				provider.savePlaylist(this);
+				provider.addSongToPlaylist(this,song);
 			}
 		}
 	}
@@ -70,21 +85,24 @@ public class Playlist {
 	}
 
 	
-	public Playlist(String name,int id,AudioServiceProvider p) {
+	public Playlist(String name,int id,AudioServiceProvider p,boolean pub) {
 		this.id=id;
 		this.name = name;
 		this.provider=p;
+		this.pub=pub;
 		this.playlist = new ArrayList<Song>();
 	}
 	
-	public Playlist(String name) {
+	public Playlist(String name,boolean searchPlaylist,boolean pub) {
 		this.id=Integer.MIN_VALUE;
+		this.searchPlaylist=searchPlaylist;
 		this.name = name;
+		this.pub=pub;
 		this.playlist = new ArrayList<Song>();
 	}
 	
 	//ONLY FOR TESTING
-	public void addSong(Song song){
+	public void addSongWithoutUpdating(Song song){
 		playlist.add(song);
 	}
 	
@@ -106,4 +124,18 @@ public class Playlist {
 	public int getId(){
 		return id;
 	}
+	
+	public void setId(int id){
+		//TODO add test
+		this.id=id;
+	}
+	
+	public boolean getPub(){
+		return pub;
+	}
+
+	public void setName(String name) {
+		this.name=name;
+	}
+	
 }

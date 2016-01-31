@@ -41,8 +41,8 @@ public class PlayerController {
 	 * @param song Song played
 	 */
 	public void play(Song song){
-		playlist = new Playlist(song.getTitle());
-		playlist.addSong(song);
+		playlist = new Playlist(song.getTitle(),true,true);
+		playlist.addSongWithoutUpdating(song);
 		currentPos = 0;
 		play();
 	}
