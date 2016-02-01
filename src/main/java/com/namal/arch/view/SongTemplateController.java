@@ -13,6 +13,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
@@ -113,6 +116,15 @@ public class SongTemplateController extends UIController{
 				}
 			}
 		}
+		//New playlist
+		MenuItem menuItem = new MenuItem("New playlist...");
+		menuItem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        mainApp.createNewPlaylist(song);
+		    }
+		});
+		addPlaylistMenu.getItems().add(menuItem);
 	}
 	
 	private void addMenuItem(Playlist p){

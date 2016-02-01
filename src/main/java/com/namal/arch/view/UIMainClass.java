@@ -2,8 +2,11 @@ package com.namal.arch.view;
 
 import java.io.IOException;
 
+import com.namal.arch.models.Song;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -13,6 +16,7 @@ public class UIMainClass extends Application{
 	
 	private Stage primaryStage;
 	private Stage authenticateStage;
+	private Stage newPlaylistStage;
 	
 	private AnchorPane generalLayout;
 	private UIController uiController;
@@ -69,6 +73,20 @@ public class UIMainClass extends Application{
 	
 	public Stage getPrimaryStage(){
 		return primaryStage;
+	}
+	
+	public void createNewPlaylist(Song song){
+		Stage newPlaylistStage = new Stage();
+		newPlaylistStage.setTitle("Create new playlist...");
+		Scene scene = new Scene(new Group());
+		AnchorPane root = new AnchorPane();
+		FXMLLoader loader = uiController.loadingModule("NewPlaylistPopup.fxml", root);
+		NewPlaylistPopupController controller = loader.getController();
+		controller.onLoad(song, newPlaylistStage);
+		scene.setRoot(root);
+		
+		newPlaylistStage.setScene(scene);
+		newPlaylistStage.showAndWait();
 	}
 	
 
