@@ -24,6 +24,7 @@ import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
+import com.namal.arch.utils.SharedPreferences;
 
 import javafx.scene.image.Image;
 
@@ -41,7 +42,13 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 	
 	private InputStream inputStream;
 	
-	private Soundcloud(){}
+	private Soundcloud(){
+		String token=SharedPreferences.getPreferences().node("soundcloud").get("oauth_token","RANDOMBUTNOTRANDOM");
+		if(!token.equals("RANDOMBUTNOTRANDOM")){
+			isAuthenticated=true;
+			authToken=token;
+		}
+	}
 	
 	public static Soundcloud getInstance(){
 		return instance;
@@ -293,7 +300,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 	@Override
 	public String getAuthentificationUrl() {
 		// TODO Auto-generated method stub
-		return "https://soundcloud.com/connect?client_id=467af8ca6a20d82958569c3c248446f3&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token";
+		return "https://soundcloud.com/connect?client_id=467af8ca6a20d82958569c3c248446f3&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&scope=non-expiring";
 	}
 
 	@Override
@@ -315,6 +322,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 		if(paramsMap.get("access_token")!=null){
 			authToken=paramsMap.get("access_token");
 			isAuthenticated=true;
+			SharedPreferences.getPreferences().node("soundcloud").put("oauth_token", authToken);
 			return true;
 		}
 		return false;
