@@ -138,13 +138,6 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 		return null;
 	}
 
-	
-	@Override
-	public void authenticate() {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public boolean authenticationNeeded() {
 		return false;
@@ -332,5 +325,16 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 	public IAuthentification getAuthentification() {
 		// TODO Auto-generated method stub
 		return this;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return isAuthenticated;
+	}
+
+	@Override
+	public void disconnect() {
+		//FIXME NOT ONLY
+		isAuthenticated = false;		
 	}
 }

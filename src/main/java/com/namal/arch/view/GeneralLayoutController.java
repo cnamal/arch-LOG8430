@@ -128,7 +128,8 @@ public class GeneralLayoutController extends UIController{
     		resetAllBoxes();
     		settingsBox.getStyleClass().add("vboxSelected");
     		settingsBox.getStyleClass().remove("vbox");
-    		mainApp.loadAuthenticateWindow();
+    		modulePane.getChildren().clear();
+    		mainApp.loadAuthenticateWindow(modulePane);
     	}
     }  
 }

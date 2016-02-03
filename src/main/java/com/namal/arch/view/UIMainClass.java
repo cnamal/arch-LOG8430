@@ -70,12 +70,12 @@ public class UIMainClass extends Application{
 	}
 	
 	
-	public void loadAuthenticateWindow(){
+	public void loadAuthenticateWindow(AnchorPane module){
 		authenticateStage = new Stage();
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoadListServices(authenticateStage);
+		authenticateController.onLoadListServices(module, authenticateStage);
 	}
 	
 	public Stage getPrimaryStage(){

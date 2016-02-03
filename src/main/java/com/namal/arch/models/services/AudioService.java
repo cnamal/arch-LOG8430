@@ -15,9 +15,15 @@ public interface AudioService {
 	public List<Playlist> getPlaylists();
 	
 	/**
-	 * authenticate the user
+	 * @return True if the service is connected
 	 */
-	public void authenticate();
+	public boolean isConnected();
+	
+	
+	/**
+	 * Disconnect the service
+	 */
+	public void disconnect();
 	
 	/**
 	 * 

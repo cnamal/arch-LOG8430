@@ -45,7 +45,7 @@
                   </VBox>
                   <VBox fx:id="settingsBox" layoutX="9.0" layoutY="147.0" onMouseClicked="#settingsLoading" prefHeight="60.0" prefWidth="100.0" styleClass="vbox" stylesheets="@GeneralLayout.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <Label prefHeight="67.0" prefWidth="309.0" text="Settings">
+                        <Label prefHeight="67.0" prefWidth="309.0" text="Services">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="25.0" />
                            </font>
