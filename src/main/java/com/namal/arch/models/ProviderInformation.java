@@ -5,11 +5,11 @@ import javafx.scene.image.Image;
 public abstract class ProviderInformation {
 
 	private String name;
-	private Image logo;
+	private String logoUrl;
 	
-	public ProviderInformation(String name,Image logo){
+	public ProviderInformation(String name,String logo){
 		this.name=name;
-		this.logo=logo;
+		this.logoUrl=logo;
 	}
 	
 	/**
@@ -24,8 +24,8 @@ public abstract class ProviderInformation {
 	 * 
 	 * @return logo of the AudioService
 	 */
-	public Image getLogo(){
-		return logo;
+	public String getLogoUrl(){
+		return logoUrl;
 	}
 	
 	public String toString(){

@@ -17,7 +17,7 @@ public class Song {
 	
 	private String uri;
 	private long duration;
-	private Image albumCover;
+	private String albumCoverUrl;
 	
 	public InputStream getInputStream(){
 		return provider.getInputStream(uri);
@@ -34,7 +34,7 @@ public class Song {
 		uri=builder.uri;
 		provider=builder.provider;
 		duration = builder.duration;
-		albumCover=builder.albumCover;
+		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
 	}
 
@@ -68,8 +68,8 @@ public class Song {
 	 * 
 	 * @return Album cover if defined, null otherwise
 	 */
-	public Image getAlbumCover(){
-		return albumCover;
+	public String getAlbumCoverUrl(){
+		return albumCoverUrl;
 	}
 	
 	public int getId(){

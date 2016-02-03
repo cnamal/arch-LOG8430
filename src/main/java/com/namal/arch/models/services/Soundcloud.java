@@ -92,7 +92,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 				.setProvider(this)
 				.setDuration(result.getInt("duration"));
 		if(!result.isNull("artwork_url"))
-			builder.setAlbumCover(new Image(result.getString("artwork_url")));
+			builder.setAlbumCoverUrl(result.getString("artwork_url"));
 		return builder.build();
 	}
 
@@ -251,7 +251,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 		private static final SoundcloudProviderInformation instance = new SoundcloudProviderInformation();
 		
 		private SoundcloudProviderInformation(){
-			super(name,new Image(logoURL));
+			super(name,logoURL);
 			
 		}
 		

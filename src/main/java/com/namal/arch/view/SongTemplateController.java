@@ -13,13 +13,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -70,7 +68,9 @@ public class SongTemplateController extends UIController{
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
-		this.imageView.setImage(song.getProvider().getProviderInformation().getLogo());
+		// FIXME Adrien
+		// use a singletion for images
+		this.imageView.setImage(new Image(song.getProvider().getProviderInformation().getLogoUrl()));
 		this.songBox = songBox;
 		this.playlist = playlist;
 		connectAction();
