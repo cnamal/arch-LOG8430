@@ -1,9 +1,11 @@
 package com.namal.arch.view;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.namal.arch.models.Song;
-
+import com.namal.arch.models.services.AudioServiceProvider;
+import javafx.scene.image.Image;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -20,12 +22,17 @@ public class UIMainClass extends Application{
 	
 	private AnchorPane generalLayout;
 	private UIController uiController;
+	
+	//Attribute used to load each image only once
+	//Access with getLogoProvider
+	private HashMap<AudioServiceProvider, Image> logos;
 
 	
 	private final String GENERAL_LAYOUT_FILE = "GeneralLayout.fxml";
 
 	public UIMainClass() {
 		uiController = new UIController();
+		logos = new HashMap<AudioServiceProvider, Image>();
 	}
 	
 	public void firstLoad(String[] args){
@@ -89,5 +96,9 @@ public class UIMainClass extends Application{
 		newPlaylistStage.showAndWait();
 	}
 	
-
+	public Image getLogoProvider(AudioServiceProvider prov){
+		if(!logos.containsKey(prov))
+			logos.put(prov, new Image(prov.getProviderInformation().getLogoUrl()));
+		return logos.get(prov);
+	}
 }

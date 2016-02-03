@@ -68,9 +68,7 @@ public class SongTemplateController extends UIController{
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
-		// FIXME Adrien
-		// use a singletion for images
-		this.imageView.setImage(new Image(song.getProvider().getProviderInformation().getLogoUrl()));
+		this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
 		this.songBox = songBox;
 		this.playlist = playlist;
 		connectAction();
