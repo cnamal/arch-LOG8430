@@ -246,7 +246,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 	
 	private static class SoundcloudProviderInformation extends ProviderInformation{
 		
-		private static final String name = "Soundclound";
+		private static final String name = "Soundcloud";
 		private static final String logoURL = "https://developers.soundcloud.com/assets/logo_big_black-4fbe88aa0bf28767bbfc65a08c828c76.png";
 		private static final SoundcloudProviderInformation instance = new SoundcloudProviderInformation();
 		
