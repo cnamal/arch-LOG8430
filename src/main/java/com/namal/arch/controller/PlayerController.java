@@ -329,4 +329,12 @@ public class PlayerController {
     	}
     	return 0;
     }
+    
+    /**
+     * Get the current player status
+     */
+    public PlayerStatus getStatus(){
+    	
+    	return currentStatus;
+    }
 }

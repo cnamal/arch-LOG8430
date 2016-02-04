@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.models.Song;
 
 public interface AudioService {
 
@@ -15,9 +14,15 @@ public interface AudioService {
 	public List<Playlist> getPlaylists();
 	
 	/**
-	 * authenticate the user
+	 * @return True if the service is connected
 	 */
-	public void authenticate();
+	public boolean isConnected();
+	
+	
+	/**
+	 * Disconnect the service
+	 */
+	public void disconnect();
 	
 	/**
 	 * 

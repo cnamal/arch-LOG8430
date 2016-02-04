@@ -2,14 +2,12 @@ package com.namal.arch.models;
 
 import com.namal.arch.models.services.AudioServiceProvider;
 
-import javafx.scene.image.Image;
-
 public class SongBuilder {
 
 	String title;
 	String artist;
 	String uri;
-	Image albumCover = null;
+	String albumCoverUrl = null;
 	Integer id;
 	AudioServiceProvider provider;
 	Long duration;
@@ -39,8 +37,8 @@ public class SongBuilder {
 		return this;
 	}
 	
-	public SongBuilder setAlbumCover(Image albumCover){
-		this.albumCover=albumCover;
+	public SongBuilder setAlbumCoverUrl(String albumCoverUrl){
+		this.albumCoverUrl=albumCoverUrl;
 		return this;
 	}
 	

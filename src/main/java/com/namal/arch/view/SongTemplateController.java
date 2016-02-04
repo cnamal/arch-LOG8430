@@ -67,7 +67,7 @@ public class SongTemplateController extends UIController{
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
-		this.imageView.setImage(song.getProvider().getProviderInformation().getLogo());
+		this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
 		this.songBox = songBox;
 		this.playlist = playlist;
 		connectAction();
@@ -113,6 +113,15 @@ public class SongTemplateController extends UIController{
 				}
 			}
 		}
+		//New playlist
+		MenuItem menuItem = new MenuItem("New playlist...");
+		menuItem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        mainApp.createNewPlaylist(song);
+		    }
+		});
+		addPlaylistMenu.getItems().add(menuItem);
 	}
 	
 	private void addMenuItem(Playlist p){

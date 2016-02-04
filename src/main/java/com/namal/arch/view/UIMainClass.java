@@ -1,10 +1,16 @@
 package com.namal.arch.view;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioServiceProvider;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,15 +19,21 @@ public class UIMainClass extends Application{
 	
 	private Stage primaryStage;
 	private Stage authenticateStage;
+	private Stage newPlaylistStage;
 	
 	private AnchorPane generalLayout;
 	private UIController uiController;
+	
+	//Attribute used to load each image only once
+	//Access with getLogoProvider
+	private HashMap<AudioServiceProvider, Image> logos;
 
 	
 	private final String GENERAL_LAYOUT_FILE = "GeneralLayout.fxml";
 
 	public UIMainClass() {
 		uiController = new UIController();
+		logos = new HashMap<AudioServiceProvider, Image>();
 	}
 	
 	public void firstLoad(String[] args){
@@ -59,17 +71,35 @@ public class UIMainClass extends Application{
 	}
 	
 	
-	public void loadAuthenticateWindow(){
+	public void loadAuthenticateWindow(AnchorPane module){
 		authenticateStage = new Stage();
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoadListServices(authenticateStage);
+		authenticateController.onLoadListServices(module, authenticateStage);
 	}
 	
 	public Stage getPrimaryStage(){
 		return primaryStage;
 	}
 	
-
+	public void createNewPlaylist(Song song){
+		Stage newPlaylistStage = new Stage();
+		newPlaylistStage.setTitle("Create new playlist...");
+		Scene scene = new Scene(new Group());
+		AnchorPane root = new AnchorPane();
+		FXMLLoader loader = uiController.loadingModule("NewPlaylistPopup.fxml", root);
+		NewPlaylistPopupController controller = loader.getController();
+		controller.onLoad(song, newPlaylistStage);
+		scene.setRoot(root);
+		
+		newPlaylistStage.setScene(scene);
+		newPlaylistStage.showAndWait();
+	}
+	
+	public Image getLogoProvider(AudioServiceProvider prov){
+		if(!logos.containsKey(prov))
+			logos.put(prov, new Image(prov.getProviderInformation().getLogoUrl()));
+		return logos.get(prov);
+	}
 }
