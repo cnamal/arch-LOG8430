@@ -75,6 +75,16 @@ We decide to use maven because early on we knew we were going to use external li
 \end{enumerate}
 
 \subsection{Windows}
+\begin{enumerate}
+\item Open Eclipse and be sure that Maven and Git are both installed (it should be by default, but we are never cautious enough)
+\item Open the Git Perspective (Window/Perspective/Open Perspective/Other/Git)
+\item Clone a Git \href{https://github.com/cnamal/arch-LOG8430}{repository}
+\item After cloning, in the perspective, unwrap the new arch-LOG8430 item and right-click on Working Directory/Import Projects
+\item Import it as General Project
+\item Go back into the Java Perspective, Right Click on the new project arch-LOG8430/Configure/Convert to Maven Project 
+\item We have got an issue when converting to Maven \emph{could} set the JDK to 1.4. If you have compiler error, Right Click on the project/Properties/Uncheck JDK Compilance and set the compilance level to 1.8.
+\end{enumerate}
+
 
 \subsection{Eclipse}
 Normally, you shouldn't have any problems using Eclipse if you have installed e(fx)clipse (and done \textbf{mvn eclipse:eclipse} on Mac/Linux). However, if you have any problems, make sure the project is configured to use Java 8 (maven should do that for you).

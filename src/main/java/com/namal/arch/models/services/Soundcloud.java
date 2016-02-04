@@ -217,6 +217,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getInt("id"));	
 			playlist.setName(results.getString("title"));
+			playlists = null;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
