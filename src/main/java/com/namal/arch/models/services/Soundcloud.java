@@ -332,7 +332,7 @@ public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentif
 
 	@Override
 	public void disconnect() {
-		//FIXME NOT ONLY
-		isAuthenticated = false;		
+		isAuthenticated = false;
+		SharedPreferences.getPreferences().node("soundcloud").remove("oauth_token");
 	}
 }
