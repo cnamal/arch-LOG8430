@@ -1,21 +1,16 @@
 package com.namal.arch.view;
 
-import javax.naming.TimeLimitExceededException;
-
 import com.namal.arch.controller.PlayerController;
 import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,7 +19,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 

@@ -64,7 +64,6 @@ public class TestPlaySong {
 		PlayerController pc = PlayerController.getInstance();
 		pc.setPlaylist(results);
 		assertTrue(pc.getCurrentPlaylist()==results);
-		Song song = results.getSong(0);
 		pc.play();
 		assertTrue(pc.getStatus()==PlayerStatus.PLAYING);
 		assertTrue(pc.getCurrentSongIndex()==0);

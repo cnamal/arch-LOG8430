@@ -4,9 +4,7 @@ import java.util.Iterator;
 
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceLoader;
-import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.models.services.Soundcloud;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,8 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;

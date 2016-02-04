@@ -4,12 +4,8 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class NewPlaylistPopupController extends UIController {

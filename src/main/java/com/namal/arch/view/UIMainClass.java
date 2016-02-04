@@ -5,11 +5,12 @@ import java.util.HashMap;
 
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
-import javafx.scene.image.Image;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;

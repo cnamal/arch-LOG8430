@@ -1,7 +1,5 @@
 package com.namal.arch.models;
 
-import javafx.scene.image.Image;
-
 public abstract class ProviderInformation {
 
 	private String name;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.models.Song;
 
 public interface AudioService {
 

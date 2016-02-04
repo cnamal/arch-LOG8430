@@ -2,8 +2,6 @@ package com.namal.arch.models;
 
 import com.namal.arch.models.services.AudioServiceProvider;
 
-import javafx.scene.image.Image;
-
 public class SongBuilder {
 
 	String title;

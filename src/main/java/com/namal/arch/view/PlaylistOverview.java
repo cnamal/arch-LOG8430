@@ -1,20 +1,14 @@
 package com.namal.arch.view;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.namal.arch.models.Playlist;
-import com.namal.arch.models.Song;
-import com.namal.arch.models.SongBuilder;
-import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.Soundcloud;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;

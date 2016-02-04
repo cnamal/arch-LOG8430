@@ -26,8 +26,6 @@ import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
 import com.namal.arch.utils.SharedPreferences;
 
-import javafx.scene.image.Image;
-
 public class Soundcloud implements AudioService, AudioServiceProvider,IAuthentification {
 
 	private static Soundcloud instance= new Soundcloud();

@@ -1,6 +1,5 @@
 package com.namal.arch;
 
-import java.io.IOException;
 import com.namal.arch.view.UIMainClass;
 
 /**
