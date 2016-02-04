@@ -1,10 +1,12 @@
 package com.namal.arch.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.Playlist;
-import com.namal.arch.models.services.Soundcloud;
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -104,20 +106,13 @@ public class PlaylistOverview extends UIController{
 		this.mainApp = mainApp;
 		this.playerOverviewController = controller;
 		//Get the list of saved playlist
-		// TODO
+		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
 		List<Playlist> playlists = new ArrayList<Playlist>();
-		//For testing, we create a few playlists
-		List<Playlist> playlist4 = Soundcloud.getInstance().getPlaylists();
-		Playlist playlist1 = Soundcloud.getInstance().searchTrack("lucky");
-		Playlist playlist2 = Soundcloud.getInstance().searchTrack("bass");
-		Playlist playlist3 = Soundcloud.getInstance().searchTrack("hello");
-
-		playlists.add(playlist1);
-		playlists.add(playlist2);
-		playlists.add(playlist3);
-		if(playlist4!=null)
-			playlists.addAll(playlist4);
-		
+		while(it.hasNext()){
+			List<Playlist> playlist = it.next().getPlaylists();
+			if(playlist!=null)
+				playlists.addAll(playlist);
+		}
 		//Begin of the real function
 		for(Playlist p : playlists){
 			HBox v = createHBoxPlaylist(p);
