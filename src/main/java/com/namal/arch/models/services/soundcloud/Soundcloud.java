@@ -2,22 +2,16 @@ package com.namal.arch.models.services.soundcloud;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-
-import org.apache.commons.io.IOUtils;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
@@ -27,7 +21,6 @@ import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.utils.SharedPreferences;
 
 public class Soundcloud implements AudioService {
 

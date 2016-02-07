@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -44,7 +43,7 @@ class SoundcloudProvider implements AudioServiceProvider {
 		URLConnection urlConnection;
 		try {
 			//Might be able to refact this code
-			urlConnection = new URL ( uri+"?client_id="+service.clientId ).openConnection();
+			urlConnection = new URL ( uri+"?client_id="+Soundcloud.clientId ).openConnection();
 			urlConnection.connect ();
 			return inputStream=urlConnection.getInputStream();
 		} catch (MalformedURLException e) {
