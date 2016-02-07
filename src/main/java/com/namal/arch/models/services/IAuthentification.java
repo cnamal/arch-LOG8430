@@ -8,4 +8,6 @@ public interface IAuthentification {
 	public String testString();
 	public boolean serverResponse(String response);
 	public ProviderInformation getProviderInformation();
+	public boolean isConnected();
+	public void disconnect();
 }
