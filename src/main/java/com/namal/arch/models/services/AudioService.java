@@ -42,10 +42,18 @@ public interface AudioService {
 	 */
 	public ProviderInformation getProviderInformation();
 	
+	/**
+	 * 
+	 * @return the unique instance of this AudioService
+	 */
 	public static AudioService getInstance() {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @return the AudioServiceProvider associated with the AudioService
+	 */
 	public AudioServiceProvider getAudioServiceProvider();
 	
 	public IAuthentification getAuthentification();

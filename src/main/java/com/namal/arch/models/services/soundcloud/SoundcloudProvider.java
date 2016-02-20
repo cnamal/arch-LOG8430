@@ -109,6 +109,10 @@ class SoundcloudProvider implements AudioServiceProvider {
 		updatePlaylist(playlist);
 	}
 
+	/**
+	 * Creates a playlist on the provider server from a Playlist of the software
+	 * @param playlist the Playlist to save
+	 */
 	@Override
 	public void createPlaylist(Playlist playlist) {
 		// TODO Auto-generated method stub

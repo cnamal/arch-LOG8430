@@ -29,7 +29,7 @@ public class Playlist {
 	}
 	
 	/**
-	 * 
+	 * Gets the list of the songs in the playlist
 	 * @return iterator on all the songs of the playlist
 	 */
 	public Iterator<Song> getSongs(){
@@ -39,12 +39,16 @@ public class Playlist {
 	
 	/**
 	 * Number of Songs in the playlist
-	 * @return 
+	 * @return the number of songs in the playlist 
 	 */
 	public int getTotalNumberSongs(){
 		return playlist.size();
 	}
 	
+	/**
+	 * Finds the provider (or providers) of the songs in the playlist, to determine who are
+	 * the providers of the playlist
+	 */
 	private void findProvider(){
 		AudioServiceProvider prev=playlist.get(0).getProvider();
 		for(int i=1;i<playlist.size();i++)
@@ -56,7 +60,7 @@ public class Playlist {
 	/**
 	 * Adds the song to the playlist and saves the playlist.
 	 * @param index index at which the song should be added (not used currently)
-	 * @param song 
+	 * @param song the song to be added
 	 */
 	public void addSongAndUpdate(int index, Song song){
 		// TODO add song 
@@ -76,15 +80,30 @@ public class Playlist {
 		}
 	}
 	
+	/**
+	 * Gets the name of the Playlist
+	 * @return name the name of the playlist.
+	 */
 	public String getName(){
 		return name;
 	}
 	
+	/**
+	 * Gets the position of the desired song in the playlist.
+	 * @param song the desired song
+	 * @return pos the position of the song in the playlist
+	 */
 	public int getPos(Song song){
 		return playlist.indexOf(song);
 	}
 
-	
+	/**
+	 * Creates a new playlist (constructor)
+	 * @param name the name of the playlist
+	 * @param id the id of the playlist
+	 * @param p the AudioServiceProvider of the playlist
+	 * @param pub a boolean, true if the playlist is public, false otherwise.
+	 */	
 	public Playlist(String name,int id,AudioServiceProvider p,boolean pub) {
 		this.id=id;
 		this.name = name;
@@ -93,6 +112,13 @@ public class Playlist {
 		this.playlist = new ArrayList<Song>();
 	}
 	
+	/**
+	 * Creates a new playlist (constructor)
+	 * @param name the name of the playlist
+	 * @param id the id of the playlist
+	 * @param searchPlaylist true if this playlist is a search result, false otherwise
+	 * @param pub a boolean, true if the playlist is public, false otherwise.
+	 */	
 	public Playlist(String name,boolean searchPlaylist,boolean pub) {
 		this.id=Integer.MIN_VALUE;
 		this.searchPlaylist=searchPlaylist;

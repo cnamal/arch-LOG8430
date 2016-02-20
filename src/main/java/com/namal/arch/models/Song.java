@@ -17,15 +17,25 @@ public class Song {
 	private long duration;
 	private String albumCoverUrl;
 	
+	/**
+	 * 
+	 * @return the inputStream of the song, to be used in the player
+	 */
 	public InputStream getInputStream(){
 		return provider.getInputStream(uri);
 	}
 	
+	/**
+	 * Closes the inputStream
+	 */
 	public void cleanup(){
 		provider.closeInputStream();
 	}
 	
-	
+	/**
+	 * Uses the SongBuilder to create a Song, initialising the attributes
+	 * @param builder a SongBuilder
+	 */
 	Song(SongBuilder builder){
 		title=builder.title;
 		artist=builder.artist;
@@ -36,28 +46,51 @@ public class Song {
 		id=builder.id;
 	}
 
+	/**
+	 * 
+	 * @return the title of the song
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * 
+	 * @return the artist of the song
+	 */
 	public String getArtist() {
 		return artist;
 	}
 	
+	/**
+	 * 
+	 * @return the album name of the song
+	 */
 	public String getAlbum() {
 		return album;
 	}
 
+	/**
+	 * 
+	 * @return the AudioServiceProvider of the song
+	 */
 	public AudioServiceProvider getProvider() {
 		return provider;
 	}
 
 
+	/**
+	 * 
+	 * @return the stream uri of the song
+	 */
 	public String getUri() {
 		return uri;
 	}
 
-	
+	/**
+	 * 
+	 * @return the duration of the song (in s)
+	 */
 	public long getDuration(){
 		return duration;
 	}
@@ -70,6 +103,10 @@ public class Song {
 		return albumCoverUrl;
 	}
 	
+	/**
+	 * 
+	 * @return the id of the song (related to the provider)
+	 */
 	public int getId(){
 		return id;
 	}

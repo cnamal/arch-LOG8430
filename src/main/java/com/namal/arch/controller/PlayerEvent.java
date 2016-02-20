@@ -32,7 +32,7 @@ public class PlayerEvent {
     /**
      * Returns the eventType as an int. Use the constants of this class to compare
      * in conditionnal statements
-     * @return eventType
+     * @return the event type (PlayerEventType enum)
      */
 	public PlayerEventType getEventType() {
 		return eventType;
@@ -42,7 +42,7 @@ public class PlayerEvent {
 	 * Sets the eventType. Use the constants of this class as parameters.
 	 * Should not be used alone, as the events should logically be created
 	 * using the given constructor.
-	 * @param eventType
+	 * @param eventType a PlayerEventType.
 	 */
 	public void setEventType(PlayerEventType eventType) {
 		this.eventType = eventType;
@@ -61,7 +61,7 @@ public class PlayerEvent {
 	 * Sets the eventInformation. Use the constants of this class as parameters.
 	 * Should not be used alone, as the events should logically be created
 	 * using the given constructor.
-	 * @param eventInformation
+	 * @param eventInformation the PlayerStatus (can be null for new song)
 	 */
 	public void setEventInformation(PlayerStatus eventInformation) {
 		this.eventInformation = eventInformation;
@@ -70,7 +70,7 @@ public class PlayerEvent {
 	/**
 	 * Returns the source object of the event
 	 * To be overriden in the subclasses to reflect the concrete class of the source.
-	 * @return eventSource
+	 * @return eventSource a reference to the source of the event.
 	 */
 	public Object getEventSource() {
 		return eventSource;
