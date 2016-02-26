@@ -7,7 +7,9 @@ import java.util.List;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceLoader;
+import com.namal.arch.utils.ServiceListener;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +40,10 @@ public class PlaylistOverview extends UIController{
 	private List<HBox> playlistList;
 	
 	private PlayerOverviewController playerOverviewController;
+	
+	private Object mutexLock = new Object();
+	
+	private List<Playlist> playlists=null;
 	
 	/**
 	 * Constructor, initialize a empty list
@@ -107,20 +113,28 @@ public class PlaylistOverview extends UIController{
 		this.playerOverviewController = controller;
 		//Get the list of saved playlist
 		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
-		List<Playlist> playlists = new ArrayList<Playlist>();
+		playlists = new ArrayList<>();
 		while(it.hasNext()){
-			List<Playlist> playlist = it.next().getPlaylists();
-			if(playlist!=null)
-				playlists.addAll(playlist);
+			it.next().getPlaylists(new ServiceListener<List<Playlist>>() {
+				
+				@Override
+				public void done(List<Playlist> result) {
+					if(result!=null){
+						synchronized(mutexLock){
+							playlists.addAll(result);
+							Platform.runLater(new Runnable() {
+								
+								@Override
+								public void run() {
+									showResults();
+								}
+							});
+						}
+					}
+				}
+			});
+			
 		}
-		//Begin of the real function
-		for(Playlist p : playlists){
-			HBox v = createHBoxPlaylist(p);
-			playlistList.add(v);
-			playlistAnchorPane.getChildren().add(v);
-		}
-		resizePlaylistAnchorPane();
-		resetAllBoxes();
 	}
 	
 	/**
@@ -134,4 +148,14 @@ public class PlaylistOverview extends UIController{
     	}
     }
 
+    private void showResults(){
+    	//Begin of the real function
+    			for(Playlist p : playlists){
+    				HBox v = createHBoxPlaylist(p);
+    				playlistList.add(v);
+    				playlistAnchorPane.getChildren().add(v);
+    			}
+    			resizePlaylistAnchorPane();
+    			resetAllBoxes();
+    }
 }

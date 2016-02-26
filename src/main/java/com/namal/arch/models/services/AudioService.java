@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
+import com.namal.arch.utils.ServiceListener;
 
 public interface AudioService {
 
@@ -11,7 +12,7 @@ public interface AudioService {
 	 * 
 	 * @return List of all the playlist for this AudioService
 	 */
-	public List<Playlist> getPlaylists();
+	public void getPlaylists(ServiceListener<List<Playlist>> callback);
 	
 	/**
 	 * @return True if the service is connected
@@ -34,7 +35,7 @@ public interface AudioService {
 	 * 
 	 * @return list of tracks found 
 	 */
-	public Playlist searchTrack(String track);
+	public void searchTrack(String track, ServiceListener<Playlist> callback);
 	
 	/**
 	 * 

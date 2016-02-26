@@ -8,13 +8,16 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceLoader;
+import com.namal.arch.utils.ServiceListener;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -32,6 +35,8 @@ public class SearchOverviewController extends UIController{
 	private List<AudioService> providerListChecked;
 	private Playlist results;
 	private PlayerOverviewController playerController;
+	
+	private Object mutexLock = new Object();
 
 	public SearchOverviewController() {
 		providerListChecked = new ArrayList<AudioService>();
@@ -73,13 +78,25 @@ public class SearchOverviewController extends UIController{
 	private void search(){
 		results = new Playlist("Search Results",true,true);
 		for(AudioService serv : providerListChecked){
-			Playlist aux = serv.searchTrack(searchText.getText());			
-			Iterator<Song> it = aux.getSongs();
-			while(it.hasNext()){
-				results.addSongWithoutUpdating(it.next());
-			}
+			serv.searchTrack(searchText.getText(), new ServiceListener<Playlist>() {
+				
+				@Override
+				public void done(Playlist result) {
+					Iterator<Song> it = result.getSongs();
+					while(it.hasNext()){
+						synchronized(mutexLock){
+							results.addSongWithoutUpdating(it.next());
+							Platform.runLater(new Runnable(){
+								@Override
+								public void run() {
+									showResults();
+								}
+							});
+						}
+					}
+				}
+			});
 		}
-		showResults();
 	}
 
 	private void showResults() {

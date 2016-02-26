@@ -99,13 +99,11 @@ class SoundcloudProvider implements AudioServiceProvider {
 	
 	@Override
 	public void addSongToPlaylist(Playlist playlist, Song addedSong) {
-		// TODO Auto-generated method stub
 		updatePlaylist(playlist);
 	}
 
 	@Override
 	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
-		// TODO Auto-generated method stub
 		updatePlaylist(playlist);
 	}
 
@@ -158,7 +156,6 @@ class SoundcloudProvider implements AudioServiceProvider {
 
 	@Override
 	public ProviderInformation getProviderInformation() {
-		// TODO Auto-generated method stub
 		return SoundcloudProviderInformation.getInstance();
 	}
 
