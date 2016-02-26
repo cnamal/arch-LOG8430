@@ -11,6 +11,10 @@ public class AudioServiceLoader {
 
 	private static List<AudioService> audioServices;
 	
+	/**
+	 * 
+	 * @return an iterator on the list of the AudioServices available
+	 */
 	public static Iterator<AudioService> getAudioServices(){
 		if(audioServices==null){
 			audioServices=new ArrayList<>();

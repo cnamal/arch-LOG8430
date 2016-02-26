@@ -87,7 +87,6 @@ public class PausablePlayer {
      * a PausablePlayerEvent of type "New Song" and 
      * calls the notifyObservers method to notify all the observers attached
      * to this object.
-     * @param newStatus
      */
     public void onNewSong() {
     	PausablePlayerEvent ev = new PausablePlayerEvent(this, PlayerEventType.TYPE_NEWSONG, null);
@@ -197,6 +196,7 @@ public class PausablePlayer {
     
     /**
      * Get the position into the song in ms
+     * @return the position in the song (in ms)
      */
     public long getPosition(){
     	if(player != null){

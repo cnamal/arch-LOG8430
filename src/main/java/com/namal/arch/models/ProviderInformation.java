@@ -5,6 +5,11 @@ public abstract class ProviderInformation {
 	private String name;
 	private String logoUrl;
 	
+	/**
+	 * Creates a new ProviderInformation
+	 * @param name name of the provider
+	 * @param logo URL to the logo of the provider
+	 */
 	public ProviderInformation(String name,String logo){
 		this.name=name;
 		this.logoUrl=logo;
@@ -12,7 +17,7 @@ public abstract class ProviderInformation {
 	
 	/**
 	 * 
-	 * @return Name of the AudioService
+	 * @return name name of the AudioService
 	 */
 	public String getName(){
 		return name;

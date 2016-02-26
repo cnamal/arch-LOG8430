@@ -6,6 +6,8 @@
 \usepackage{etoolbox}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage{float}
+\usepackage{ulem}
 \edef\restoreparindent{\parindent=\the\parindent\relax}
 \usepackage[parfill]{parskip}
 \restoreparindent
@@ -13,7 +15,7 @@
 
 \title{Developer's Guide}
 \author{BERQUEZ Fabien  (1800325), LOGUT Adrien (1815142) \\ \& NAMALGAMUWA Chathura (1815118)}
-\date{}
+\date{Updated on 19/02/2016}
 
 \begin{document}
 \maketitle
@@ -25,9 +27,13 @@
 \toggletrue{diag}
 %\togglefalse{paper}
 
+\chapter{Preliminary note on the update}
+
+This Developer's Guide has been updated after the first time we submitted the assignment. All the changes made are listed with a comparison in the update section of this guide (the last section), with the explanation of why we did these changes to the initial work.
+
 \chapter{Introduction}
 
-Hi there ! Welcome to the developer's guide of \textbf{arch-LOG8430} - yes we are fully aware that this name sucks-. \\
+Hi there ! Welcome to the developer's guide of \textbf{arch-LOG8430} \\
 
 This project was developed for the \href{http://www.polymtl.ca/etudes/cours/details.php?sigle=LOG8430}{Software Architecture} course (LOG8430) at Ecole Polytechnique de Montréal. The course teacher is Yann-Gaël Guéhéneuc and the laboratory teacher is Fábio Petrillo. \\
 
@@ -38,7 +44,7 @@ We are three French exchange students; Fabien Berquez coming from \href{http://w
 Note : We advise you to use a \textit{real} pdf reader (and not the one integrated to your web browser for instance) as there are a lot of clickable links that might not be displayed otherwise.
 \chapter{Presentation}
 
-You can find all complete assignments (in French) in the \textit{assignment} folder. The objective of this project is to create a multi-platform web music player (eg. Soundcloud, Spotify, etc.) in Java. The source code of this project and all it's documentation are available on \href{https://github.com/cnamal/arch-LOG8430}{GitHub}.
+You can find all complete assignments (in French) in the \textit{assignment} folder. The objective of this project is to create a multi-platform web music player (eg. Soundcloud, Spotify, etc.) in Java. The source code of this project and all its documentation are available on \href{https://github.com/cnamal/arch-LOG8430}{GitHub}.
 
 \section{Laboratory n$\degree$1}
 
@@ -156,7 +162,7 @@ The figures \ref{Controller} and \ref{Services} are class diagrams of the Contro
 
 \begin{figure}[H]
 
-  \includegraphics[scale=0.4]{class/Services.png}
+  \includegraphics[scale=0.4]{class/Services2.png}
   \caption{Services package diagram}
   \label{Services}
 \end{figure}
@@ -231,8 +237,9 @@ The \texttt{AudioServiceLoader} is a singleton class that acts as a bridge betwe
 \begin{enumerate}
 \item Urgent 
 \begin{itemize}
-\item \hypertarget{blob}{Souncloud} has become a \textit{blob} class. We should be able to break the class in different \textit{sub-classes} since the interfaces are already done. The possible issue is if the sub-classes are dependant on each other.
-\item The authorization process is a bit messy and is currently entirely implemented in the Soundcloud class. However, the authorization process is the same for Souncloud and Spotify (and possibly Deezer), so the code can be refactored in a helper \textit{generic} class.
+\item \sout{Souncloud has become a \textit{blob} class. We should be able to break the class in different \textit{sub-classes} since the interfaces are already done. The possible issue is if the sub-classes are dependant on each other.}
+\item \sout{The authorization process is a bit messy and is currently entirely implemented in the Soundcloud class. However, the authorization process is the same for Souncloud and Spotify (and possibly Deezer), so the code can be refactored in a helper \textit{generic} class.}
+\item These changes have been made (cf Update section)
 \end{itemize}
 \item Intermediate
 \begin{itemize}
@@ -246,4 +253,43 @@ The \texttt{AudioServiceLoader} is a singleton class that acts as a bridge betwe
 
 %\section{Laboratory n$\degree$2}
 %\section{Laboratory n$\degree$3}
+
+\chapter{Updates}
+\section{Class Diagramm}
+\subsection{Comparison}
+The Class Diagramm has been updated to accurately show the changes made to the architecture of the software between the first and the second edition of this guide. The changes have essentially been made to the services package. The \texttt{Soundcloud} class has been split into several classes, each of whom having a smaller and more precise responsibility, instead of one "God Class". Here are the differences between the two class diagramm for this package :
+\iftoggle{diag}{
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/Services.png}
+  \caption{Former Services package diagram}
+  \label{UpdateFormerServices}
+\end{figure}
+
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/Services2.png}
+  \caption{New Services package diagram, including the SoundCloud package.}
+  \label{UpdateServices}
+\end{figure}
+}
+
+\subsection{Explanations}
+The \texttt{Soundcloud} class was implementing on its own three interfaces, ie at least three different responsibilities. In detail, the \texttt{Soundcloud} class was managing the authentication, the audio service, and was an audio service provider at the same time. The authentication on Soundcloud follows a quite common process, which is also used with many other providers. It was then easier to create a new class \texttt{GenericAuthenticationService}, which enabled to define standard methods used in the authentication process of the providers, and give the responsibility of dealing with the authentication on Soundcloud to one dedicated class (the \texttt{SoundcloudAuthentication} class) who inherits the \texttt{GenericAuthenticationService} class. \\
+An enumeration has been created to make the type of the Soundcloud event easier to manipulate.\\
+A class defining the behaviour of \texttt{AudioServiceProvider} of Soundcloud has also been created to separate the actions that can be performed (as a provider of services) from  the representation of Soundcloud as a service inside the software. Indeed, the \texttt{Soundcloud} class is supposed to represent one of the web-services the software handles and not a direct interface to the Soundcloud API.
+
+\section{JavaDoc}
+The group who reviewed our project suggested us to make a more comprehensive Java Documentation, we tried to improve the Java Documentation available into our source code. We hope that we managed to improve it, even if it remains very subjective.
+
+\section{Other recommendations}
+The other group also advised us to split the \texttt{PlayerController} class, as it could be seen as a "God Class" with too many responsibilities. We took this suggestion into account, of course, but we went to the conclusion that it would maybe not be as suitable as it was for the \texttt{Soundcloud} class. Here is the explanation :
+
+\begin{itemize}
+\item The \texttt{PlayerController} is made of two major parts : the Observer pattern, as a subject of some View and as an observer of the \texttt{PausablePlayer}, and the player controlling methods.
+\item The Observer pattern cannot be split or implemented on another class, because it needs to be able to  observe the \texttt{PausablePlayer} and transmit this observation to the view, while updating its own state.
+\item All the other methods have the responsibility to manage the state of the controller but also of the \texttt{PausablePlayer}, the concrete implementation of the music player. Some of them give feedbacks to the view of the current state of the music player, but they have a quite high cohesion and would be hard to split into two classes.
+\item We could have managed the current song index and similar matters directly into the \texttt{Playlist} class, but we wanted to keep the \texttt{Playlist} class as a data structure to encapsulate a list of songs, with limited responsibilities otherwise than giving easier access through appropriate getters and setters.
+\end{itemize}
+
 \end{document}

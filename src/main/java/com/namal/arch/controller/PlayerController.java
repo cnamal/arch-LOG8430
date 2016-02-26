@@ -155,16 +155,16 @@ public class PlayerController {
 	
 	/**
 	 * Sets the current song and plays it right after.
-	 * @param i
+	 * @param i the new song index
 	 */
 	public void setCurrentSongIndexAndPlay(int i){
 		setCurrentSongIndex(i);
-		// TODO call play
+		play();
 	}
 	
 	/**
 	 * Index of the current song in the playlist
-	 * @return 
+	 * @return the index of the current song in the playlist
 	 */
 	public int getCurrentSongIndex(){
 		return currentPos;
@@ -172,7 +172,7 @@ public class PlayerController {
 	
 	/**
 	 * Number of Songs in the playlist
-	 * @return 
+	 * @return the total number of songs in the current playlist
 	 */
 	public int getTotalNumberSongs(){
 		return playlist.getTotalNumberSongs();
@@ -257,7 +257,7 @@ public class PlayerController {
 	/**
 	 * This method is a callback method for the PausablePlayer being observed.
 	 * Dispatches the treatment of the event to specialized methods.
-	 * @param ev
+	 * @param ev the PausablePlayerEvent from the PausablePlayer
 	 */
 	public void update(PausablePlayerEvent ev) {
 		switch(ev.getEventType()) {
@@ -298,13 +298,14 @@ public class PlayerController {
 	
 	/**
      * Attach an observer to this player
+     * @param observer an observer of this controller (generally a view) that implements IPlayerObserver.
      */
     public void attach(IPlayerObserver observer) {
     	observers.add(observer);
     }
     /**
      * Detach the observer passed as a parameter
-     * @param observer
+     * @param observer an observer that is currently attached to this controller
      */
     public void detach(IPlayerObserver observer) {
     	observers.remove(observer);
@@ -322,6 +323,7 @@ public class PlayerController {
     
     /**
      * Get the current position into the song in ms
+     * @return the current position in the song, in ms.
      */
     public long getPosition(){
     	if(pplayer != null){
@@ -332,6 +334,7 @@ public class PlayerController {
     
     /**
      * Get the current player status
+     * @return the current status of the player, which is one of the possible values of the PlayerStatus enum.
      */
     public PlayerStatus getStatus(){
     	
