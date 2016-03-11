@@ -45,7 +45,7 @@ public class AuthentificationOverviewController {
         
         webEngine.getLoadWorker().stateProperty().addListener(
             new ChangeListener<State>() {
-              @Override public void changed(ObservableValue ov, State oldState, State newState) {
+              @Override public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
 
                   if (newState == Worker.State.SUCCEEDED) {
                 	  String url= webEngine.getLocation();

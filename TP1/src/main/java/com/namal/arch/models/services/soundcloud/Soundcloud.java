@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 
 import javax.json.Json;
 import javax.json.JsonArray;
