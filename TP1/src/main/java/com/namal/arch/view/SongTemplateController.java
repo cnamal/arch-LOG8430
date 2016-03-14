@@ -75,7 +75,7 @@ public class SongTemplateController extends UIController{
 		generatePurcentageBasedOnFile();
 		
 		//Resize the player (for the text)
-		mainApp.getPrimaryStage().getScene().widthProperty().addListener(new ChangeListener<Number>() {
+		mainApp.getPrimaryScene().widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 		    	resizeComponents(newSceneWidth, oldSceneWidth);
 		    }
