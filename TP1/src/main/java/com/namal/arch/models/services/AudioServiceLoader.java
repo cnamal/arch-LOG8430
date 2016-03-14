@@ -7,15 +7,15 @@ import java.util.List;
 import com.namal.arch.models.services.soundcloud.Soundcloud;
 
 
-public class AudioServiceLoader {
+public class AudioServiceLoader implements IAudioServiceLoader{
 
 	private static List<AudioService> audioServices;
-	
+	private static AudioServiceLoader instance = new AudioServiceLoader();
 	/**
 	 * 
 	 * @return an iterator on the list of the AudioServices available
 	 */
-	public static Iterator<AudioService> getAudioServices(){
+	public Iterator<AudioService> getAudioServices(){
 		if(audioServices==null){
 			audioServices=new ArrayList<>();
 			audioServices.add(Soundcloud.getInstance());
@@ -23,7 +23,9 @@ public class AudioServiceLoader {
 		return audioServices.iterator();
 	}
 	
-	
+	public static IAudioServiceLoader getInstance(){
+		return instance;
+	}
 	
 	private AudioServiceLoader(){};
 	

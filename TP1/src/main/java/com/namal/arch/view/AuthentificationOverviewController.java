@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceLoader;
+import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.models.services.IAuthentification;
 
 import javafx.beans.value.ChangeListener;
@@ -74,8 +75,8 @@ public class AuthentificationOverviewController {
         stage.showAndWait();
 	}
 	
-	public void onLoadListServices(AnchorPane module, Stage stage){
-		Iterator<AudioService> list = AudioServiceLoader.getAudioServices();
+	public void onLoadListServices(AnchorPane module, Stage stage, IAudioServiceLoader serviceLoader){
+		Iterator<AudioService> list = serviceLoader.getAudioServices();
 		Label text = new Label("Select a service to authenticate");
 		text.setLayoutX(module.getWidth()/2 - 50);
 		module.getChildren().add(text);

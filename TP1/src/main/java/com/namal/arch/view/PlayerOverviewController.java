@@ -77,7 +77,7 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		player.attach(this);
 		
 		//Resize the player (for the text)
-		mainApp.getPrimaryStage().getScene().widthProperty().addListener(new ChangeListener<Number>() {
+		mainApp.getPrimaryScene().widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 				resizeText(newSceneWidth, oldSceneWidth);
 		    }

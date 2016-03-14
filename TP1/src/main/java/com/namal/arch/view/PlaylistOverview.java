@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.ServiceListener;
 
 import javafx.application.Platform;
@@ -112,7 +111,7 @@ public class PlaylistOverview extends UIController{
 		this.mainApp = mainApp;
 		this.playerOverviewController = controller;
 		//Get the list of saved playlist
-		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
+		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
 		playlists = new ArrayList<>();
 		while(it.hasNext()){
 			it.next().getPlaylists(new ServiceListener<List<Playlist>>() {

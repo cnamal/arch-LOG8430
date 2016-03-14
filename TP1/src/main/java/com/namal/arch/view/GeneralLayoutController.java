@@ -71,7 +71,7 @@ public class GeneralLayoutController extends UIController{
     		playlistBox.getStyleClass().add("vboxSelected");
     		playlistBox.getStyleClass().remove("vbox");
     		//Load the module
-    		FXMLLoader loader = loadingModule("./PlaylistOverview.fxml", modulePane);
+    		FXMLLoader loader = loadingModule("PlaylistOverview.fxml", modulePane);
     		if(loader == null)
     			throw new Exception("Loading failed");
     		//Create the controller if loading ok

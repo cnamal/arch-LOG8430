@@ -6,7 +6,6 @@ import java.util.List;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.ServiceListener;
 
 import javafx.beans.value.ChangeListener;
@@ -102,7 +101,7 @@ public class SongTemplateController extends UIController{
 	}
 	
 	private void createAddPlaylistMenu(){
-		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
+		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
 		while(it.hasNext()){
 			AudioService serv = it.next();
 			serv.getPlaylists(new ServiceListener<List<Playlist>>() {

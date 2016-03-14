@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.IAudioServiceLoader;
+import com.namal.arch.utils.Configuration;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +19,14 @@ import javafx.stage.Stage;
 
 public class UIMainClass extends Application{
 	
+	
 	private Stage primaryStage;
 	private Stage authenticateStage;
 	private Stage newPlaylistStage;
+	private Scene primaryScene;
+	
+	private IAudioServiceLoader serviceLoader;
+	private boolean showApp;
 	
 	private AnchorPane generalLayout;
 	private UIController uiController;
@@ -34,6 +41,11 @@ public class UIMainClass extends Application{
 	public UIMainClass() {
 		uiController = new UIController();
 		logos = new HashMap<AudioServiceProvider, Image>();
+		showApp = Configuration.getShow();
+		serviceLoader = Configuration.getAudioServiceLoader();
+		if(serviceLoader == null){
+			throw new RuntimeException("Please set the Audio Service Loader in the Configuration");
+		}
 	}
 	
 	public void firstLoad(String[] args){
@@ -61,11 +73,13 @@ public class UIMainClass extends Application{
 		}
 
         // Show the scene containing the general layout.
-        Scene scene = new Scene(generalLayout);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryScene = new Scene(generalLayout);
+        if(showApp){
+	        primaryStage.setScene(primaryScene);
+	        primaryStage.show();
+        }
         
-     // Give the controller access to the main app.
+        // Give the controller access to the main app.
         GeneralLayoutController controller = loader.getController();
         controller.setMainApp(this);
 	}
@@ -76,11 +90,19 @@ public class UIMainClass extends Application{
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoadListServices(module, authenticateStage);
+		authenticateController.onLoadListServices(module, authenticateStage,serviceLoader);
 	}
 	
 	public Stage getPrimaryStage(){
 		return primaryStage;
+	}
+	
+	public Scene getPrimaryScene(){
+		return primaryScene;
+	}
+	
+	public IAudioServiceLoader getServiceLoader(){
+		return serviceLoader;
 	}
 	
 	public void createNewPlaylist(Song song){

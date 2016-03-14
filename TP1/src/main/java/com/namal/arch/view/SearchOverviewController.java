@@ -7,7 +7,6 @@ import java.util.List;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.ServiceListener;
 
 import javafx.application.Platform;
@@ -46,7 +45,7 @@ public class SearchOverviewController extends UIController{
 		this.mainApp = mainApp;
 		
 		//Providers
-		Iterator<AudioService> it = AudioServiceLoader.getAudioServices();
+		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
 		while(it.hasNext()){
 			providersListMenu.getItems().add(createMenuCheckProvider(it.next()));
 		}		
