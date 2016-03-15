@@ -52,13 +52,17 @@ The first laboratory's objective is to create a basis for the whole project. A b
 
 We started with implementing a service for Soundcloud because it was the easiest. Indeed, Soundcloud's Web API can be used without authentication. It allowed us to test the code really quickly just using a \textit{client\_id}. 
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+
+The second laboratory's objective was to create an RCP application of the first project. \scriptsize \textit{The reason for such a project still eludes us.} \normalsize
 %\section{Laboratory n$\degree$3}
 
 \section{Requirements}
 
+\subsection{Laboratory n$\degree$1}
+
 \begin{enumerate}
-\item Java 8
+\item Java 8 (Oracle)
 \item Git
 \item Mac/Linux : maven
 \item (optional) e(fx)clipse for Eclipse
@@ -67,10 +71,32 @@ We started with implementing a service for Soundcloud because it was the easiest
 
 We decide to use maven because early on we knew we were going to use external libraries -especially \href{http://www.javazoom.net/javalayer/javalayer.html}{JLayer}- and using maven is \textit{way} simpler.
 
+\subsection{Laboratory n$\degree$2}
+
+\begin{enumerate}
+\item Java 8 (Oracle)
+\item Git
+\item e(fx)clipse for Eclipse
+\item (optional) ObjectAid for Eclipse
+\end{enumerate}
+
+\ \\
+To install e(fx)clipse :
+
+\begin{itemize}
+\item Open Eclipse
+\item Help -\textgreater Install New Software...
+\item If in the list of \textit{Work with} you already have \textit{http://download.eclipse.org/releases/mars} please skip the next step
+\item Click on Add and enter \textit{Mars} as the name and \textit{http://download.eclipse.org/releases/mars} as the location
+\item Select the \textit{http://download.eclipse.org/releases/mars} location
+\item In the text filter, type ``e(" you should see e(fx)clipse come up. Install it.
+\end{itemize}
+
 \section{Usage}
 
+\subsection{Laboratory n$\degree$1}
 
-\subsection{Linux}
+\subsubsection{Linux}
 
 \begin{enumerate}
 \item Clone the \href{https://github.com/cnamal/arch-LOG8430}{repository}
@@ -80,7 +106,7 @@ We decide to use maven because early on we knew we were going to use external li
 \item Profit!
 \end{enumerate}
 
-\subsection{Windows}
+\subsubsection{Windows}
 \begin{enumerate}
 \item Open Eclipse and be sure that Maven and Git are both installed (it should be by default, but we are never cautious enough)
 \item Open the Git Perspective (Window/Perspective/Open Perspective/Other/Git)
@@ -92,10 +118,37 @@ We decide to use maven because early on we knew we were going to use external li
 \end{enumerate}
 
 
-\subsection{Eclipse}
+\subsubsection{Eclipse}
 Normally, you shouldn't have any problems using Eclipse if you have installed e(fx)clipse (and done \textbf{mvn eclipse:eclipse} on Mac/Linux). However, if you have any problems, make sure the project is configured to use Java 8 (maven should do that for you).
 
-\subsection{ObjectAid}
+\subsection{Laboratory n$\degree$2}
+\label{Usage::lab2}
+
+\begin{enumerate}
+\item Clone the \href{https://github.com/cnamal/arch-LOG8430}{repository}
+\item Open Eclipse
+\item File -\textgreater New -\textgreater Java Project (if not available, click on other and then find Java Project)
+\item Uncheck \textit{Use default location} and Browse the location of \textit{CorePlugin}. Click on Finish. 
+\item In the Package Explorer, right click on the CorePlugin project -\textgreater Configure (it's towards the end) -\textgreater Configure to Plug-in projects... -\textgreater Select the project and click on Finish.
+\item At this point, Eclipse shouldn't show you errors anymore. If not, please send me an email or \href{https://twitter.com/cnamalgamuwa}{tweet} me.
+\item Open the \textbf{MANIFEST.MF} in \textit{META-INF}. Add in \textit{Runtime} -\textgreater \textit{ Exported Packages} : 
+\begin{itemize}
+\item com.namal.arch.models
+\item com.namal.arch.models.services
+\item com.namal.arch.utils
+\end{itemize}
+\item In the Package Explorer, right click on the CorePlugin project -\textgreater Build Path -\textgreater Configure Build Path... -\textgreater Order and Export -\textgreater Select Core.jar -\textgreater Ok
+
+\item For each plugin (Soundcloud, etc.) you want to add: Repeat steps 3 to 5.
+\item To run, right click on any project (Core or plugin) -\textgreater Run As -\textgreater Eclipse Application. \textbf{Linux users need to see next section before hand.}
+\item Please use the User Guide to see how you can use our plugin.
+\item Profit!
+\end{enumerate}
+
+\subsubsection{Linux}
+JavaFX which is used for our view has some compatibility issues with Linux and GTK3 (\#Oracle anyone?). To solve this issue, you need to disable GTK3 when running the Eclipse Application (\textit{fair warning: the resulting Eclipse UI Interface is ugly}): Right click on any project (Core or plugin) -\textgreater Run As -\textgreater Run Configurations -\textgreater Eclipse Application -\textgreater Environment tab -\textgreater New -\textgreater Set \textit{SWT\_GTK3} as Name and \textit{0} as it's Value. You can then Run the project \href{http://i.imgur.com/l9EHHWA.gif}{smoothly}.
+
+\section{ObjectAid}
 ObjectAid is an Eclipse plugin that automatically draws the UML diagrams of your project. If you have installed it, you can use it to open the \textbf{*.ucls} files in the documentation folder.
 \chapter{Sequence Diagram}
 
@@ -118,7 +171,8 @@ The figures \ref{play} and \ref{search} are  play sequence and a search sequence
 \end{figure}
 }
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+The sequence is identical to the first laboratory.
 %\section{Laboratory n$\degree$3}
 
 \chapter{Class Diagram}
@@ -178,7 +232,33 @@ The figures \ref{Controller} and \ref{Services} are class diagrams of the Contro
 \item \href{http://weknowmemes.com/generator/uploads/generated/g1406353714448670979.jpg}{Singletons} have been used profusely. It allows us to have only one \textit{entry point} -like the Soundcloud class-, and it solves a lot of potential errors : for example having multiple players could lead to multiple songs being played at the same time, or worse multi-threading issues which would have been very hard to debug. 
 \end{itemize}
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+
+\subsection{Methodology}
+
+The initial goal of the second laboratory was to create an RCP project. However, we found that idea \textit{boring}. Like we said in the presentation, we don't understand the goal of this laboratory; so why not have at least some fun with it? After discussion with our professor, we were given the green light to create an Eclipse plugin, ie. the service/player is directly integrated to the Eclipse IDE. We did have a few issues to deal with:
+
+\begin{enumerate}
+\item Manage to keep the code of the first laboratory. Indeed, Adrien work very hard on the view, to give a good user experience. We didn't want to tell him to code the view again using SWT (which is arguably worst). 
+\item Manage to make work JavaFX in an Eclipse plugin, especially on Linux.
+\item Manage to export the plugin (so that you, \textit{reader}, are able to compile/run the code).
+\end{enumerate}
+
+These will be addressed in the Implementation section.
+
+\subsection{Figures}
+
+We completely reused the code of the first laboratory. The only modification made was to have a different ServiceLoader in the first laboratory and the second one. Therefore instead of using a utility AudioServiceLoader, we created an interface which does the same thing. We then have one AudioServiceLoader for the first laboratory and another one for the second laboratory. The view only has an interface.
+
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/AudioServiceLoader.png}
+  \caption{Controller package diagram}
+  \label{AudioServiceLoader}
+\end{figure}
+\end{center}
+
 %\section{Laboratory n$\degree$3}
 \chapter{Implementation}
 
@@ -216,7 +296,22 @@ Songs have a lot attributes and worse, some are optional! A solution could have 
 The main interface is \texttt{AudioService},  and \texttt{AudioServiceProvider} and \texttt{IAuthentification} are just helper interfaces to have a distinct interfaces for distinct parts. It offers a certain modularity. \\
 The \texttt{AudioServiceLoader} is a singleton class that acts as a bridge between the view and the services. 
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+
+\subsection{\href{https://31.media.tumblr.com/tumblr_m6ppniq7uX1r54kwx.gif}{Manage to keep the code of the first laboratory}}
+
+We didn't want to change our code of the first laboratory. Not only did we work hard on it, but we felt like it was a bad practice to copy the code of the first lab \footnote{``Paradoxical in a software architecture class"(Comment by Chathura Namalgamuwa)}. Therefore, we decide to use the first project as a library (by creating jars) that would be used by our second project. The main issue was to manage and plug JavaFX in an Eclipse plugin which usually works using SWT.
+
+However, when it finally worked, this was the proof that our previous architecture was quite robust. Only a minor interface was added.
+
+\subsection{Manage to make work JavaFX in an Eclipse plugin}
+
+The lack of documentation and tutorials was the biggest obstacle in this process. Furthermore, when we tried to run JavaFX plugins on Linux, the application would crash, with a Segmentation Fault (yes a SegFault in Java). To simplify our lives, no logs were written. Turns out, JavaFX uses GTK2 and SWT GTK3, which creates a conflict resulting in the SegFault. It took approximately 10h to solve all the issues related to JavaFX.
+
+\subsection{\href{http://truegif.com/pictures/gif/4461.gif}{Manage to export the plugin}}
+
+This was the last issue. Indeed, using Maven seemed way to complicated in this laboratory, since there were our dependencies (the jars of the previous laboratory, and all the libraries it depended on) but also the dependencies for eclipse plugin development. Therefore after a lot of trial and error, we came up with the solution given in the \hyperref[Usage::lab2]{Usage section}.
+
 %\section{Laboratory n$\degree$3}
 \chapter{Limitations}
 
@@ -226,10 +321,20 @@ The \texttt{AudioServiceLoader} is a singleton class that acts as a bridge betwe
 \item Even though they weren't yet implemented, Spotify and Deezer services don't allow third-party apps to stream their music, even if the user is authenticated. Only 30 seconds of the song will be played. Playlist management and song displays should however be functional.
 \item Threads are only created for the player. Therefore, any communication with a Web service blocks the main thread.
 \item Testing is very hard for this project, hence the lack of tests. Indeed, a lot of testing requires user interaction (even without the view).
-\item \hypertarget{db}{The architecture}, \textit{it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
+\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
 \end{itemize}
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+
+No new limitations were added except on Linux, where you cannot use GTK3. Here are the updated limitations that are inherited from the previous laboratory. 
+
+\begin{itemize}
+\item The authentication services were rushed towards the end, so they are not perfect. For instance, a failed authentication doesn't throw an exception but only returns false, or if the Soundcloud account is modified (especially if the user's password is modified), the program will not handle it -but shouldn't crash-. The only solution is to \href{http://img.pandawhale.com/post-16780-have-you-tried-forcing-an-unex-uQSY.gif}{disconnect and reconnect}. 
+\item Even though they weren't yet implemented, Spotify and Deezer services don't allow third-party apps to stream their music, even if the user is authenticated. Only 30 seconds of the song will be played. Playlist management and song displays should however be functional.
+\item Testing is very hard for this project, hence the lack of tests. Indeed, a lot of testing requires user interaction (even without the view).
+\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
+\end{itemize}
+
 %\section{Laboratory n$\degree$3}
 \chapter{Future fixes}
 
@@ -251,7 +356,22 @@ The \texttt{AudioServiceLoader} is a singleton class that acts as a bridge betwe
 \end{itemize}
 \end{enumerate}
 
-%\section{Laboratory n$\degree$2}
+\section{Laboratory n$\degree$2}
+
+No new bugs were introduced.
+
+\begin{enumerate}
+\item Urgent 
+\begin{itemize}
+\item Add new services, namely Spotify and Deezer. We should have more to add these. It shouldn't take too long.
+\item Do the Javadoc.
+\end{itemize}
+\item Intermediate
+\begin{itemize}
+\item Create cross-platform playlists. Beside the obvious difficulty of the task, the current architecture might need to be slightly \hyperlink{db}{modified}.
+\end{itemize}
+\end{enumerate}
+
 %\section{Laboratory n$\degree$3}
 
 \chapter{Updates}
