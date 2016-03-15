@@ -141,7 +141,13 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 
 \item For each plugin (Soundcloud, etc.) you want to add: Repeat steps 3 to 5.
 \item To run, right click on any project (Core or plugin) -\textgreater Run As -\textgreater Eclipse Application. \textbf{Linux users need to see next section before hand.}
-\item Please use the User Guide to see how you can use our plugin.
+\item We have \hyperref[lim::toolbar]{(for now)} only a View (by that we mean an Eclipse View) that is basically the same view (as in MVC) as in the first laboratory. To access that view, you have multiple possibilities :
+\begin{itemize}
+\item Window -\textgreater Show View -\textgreater Other -\textgreater Type Namal and you should find the Namal Audio Plugin View.
+\item (faster) Click on Quick Access (in the toolbar) and type Namal. You should find the Namal Audio Plugin View
+\item (even faster) \textbf{Ctrl+3} opens the Quick Access. Cf previous point to continue.
+\end{itemize}
+\item To use our application afterwards, please use the User Guide.
 \item Profit!
 \end{enumerate}
 
@@ -305,7 +311,7 @@ We didn't want to change our code of the first laboratory. Not only did we work 
 However, when it finally worked, this was the proof that our previous architecture was quite robust. Only a minor interface was added.
 
 \subsection{Manage to make work JavaFX in an Eclipse plugin}
-
+\label{implem::long}
 The lack of documentation and tutorials was the biggest obstacle in this process. Furthermore, when we tried to run JavaFX plugins on Linux, the application would crash, with a Segmentation Fault (yes a SegFault in Java). To simplify our lives, no logs were written. Turns out, JavaFX uses GTK2 and SWT GTK3, which creates a conflict resulting in the SegFault. It took approximately 10h to solve all the issues related to JavaFX.
 
 \subsection{\href{http://truegif.com/pictures/gif/4461.gif}{Manage to export the plugin}}
@@ -326,14 +332,22 @@ This was the last issue. Indeed, using Maven seemed way to complicated in this l
 
 \section{Laboratory n$\degree$2}
 
-No new limitations were added except on Linux, where you cannot use GTK3. Here are the updated limitations that are inherited from the previous laboratory. 
-
 \begin{itemize}
+\item New
+\begin{itemize}
+\item We have \hyperref[lim::toolbar]{(for now)} only a View (by that we mean an Eclipse View) that is basically the same view (as in MVC) as in the first laboratory
+\item On Linux, you cannot use GTK3.
+\end{itemize}
+\item Previous
+\begin{itemize}
+
 \item The authentication services were rushed towards the end, so they are not perfect. For instance, a failed authentication doesn't throw an exception but only returns false, or if the Soundcloud account is modified (especially if the user's password is modified), the program will not handle it -but shouldn't crash-. The only solution is to \href{http://img.pandawhale.com/post-16780-have-you-tried-forcing-an-unex-uQSY.gif}{disconnect and reconnect}. 
 \item Even though they weren't yet implemented, Spotify and Deezer services don't allow third-party apps to stream their music, even if the user is authenticated. Only 30 seconds of the song will be played. Playlist management and song displays should however be functional.
 \item Testing is very hard for this project, hence the lack of tests. Indeed, a lot of testing requires user interaction (even without the view).
 \item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
 \end{itemize}
+\end{itemize}
+
 
 %\section{Laboratory n$\degree$3}
 \chapter{Future fixes}
@@ -363,8 +377,9 @@ No new bugs were introduced.
 \begin{enumerate}
 \item Urgent 
 \begin{itemize}
-\item Add buttons to control the player in the toolbar. A few updates should be made to the player observers (detect that the player is paused for instance). Overall, it shouldn't be too complicated.
-\item Add new services, namely Spotify and Deezer. We should have more to add these. It shouldn't take too long.
+\label{lim::toolbar}
+\item We didn't have \hyperref[implem::long]{time} to add buttons to control the player in the toolbar. A few updates should be made to the player observers (detect that the player is paused for instance). Overall, it shouldn't be too complicated.
+\item Add new services, namely Spotify and Deezer. It shouldn't take too long.
 \item Do the Javadoc.
 \end{itemize}
 \item Intermediate
@@ -376,8 +391,11 @@ No new bugs were introduced.
 %\section{Laboratory n$\degree$3}
 
 \chapter{Updates}
-\section{Class Diagramm}
-\subsection{Comparison}
+
+\section{Laboratory n$\degree$1}
+
+\subsection{Class Diagramm}
+\subsubsection{Comparison}
 The Class Diagramm has been updated to accurately show the changes made to the architecture of the software between the first and the second edition of this guide. The changes have essentially been made to the services package. The \texttt{Soundcloud} class has been split into several classes, each of whom having a smaller and more precise responsibility, instead of one "God Class". Here are the differences between the two class diagramm for this package :
 \iftoggle{diag}{
 \begin{figure}[H]
@@ -395,15 +413,15 @@ The Class Diagramm has been updated to accurately show the changes made to the a
 \end{figure}
 }
 
-\subsection{Explanations}
+\subsubsection{Explanations}
 The \texttt{Soundcloud} class was implementing on its own three interfaces, ie at least three different responsibilities. In detail, the \texttt{Soundcloud} class was managing the authentication, the audio service, and was an audio service provider at the same time. The authentication on Soundcloud follows a quite common process, which is also used with many other providers. It was then easier to create a new class \texttt{GenericAuthenticationService}, which enabled to define standard methods used in the authentication process of the providers, and give the responsibility of dealing with the authentication on Soundcloud to one dedicated class (the \texttt{SoundcloudAuthentication} class) who inherits the \texttt{GenericAuthenticationService} class. \\
 An enumeration has been created to make the type of the Soundcloud event easier to manipulate.\\
 A class defining the behaviour of \texttt{AudioServiceProvider} of Soundcloud has also been created to separate the actions that can be performed (as a provider of services) from  the representation of Soundcloud as a service inside the software. Indeed, the \texttt{Soundcloud} class is supposed to represent one of the web-services the software handles and not a direct interface to the Soundcloud API.
 
-\section{JavaDoc}
+\subsection{JavaDoc}
 The group who reviewed our project suggested us to make a more comprehensive Java Documentation, we tried to improve the Java Documentation available into our source code. We hope that we managed to improve it, even if it remains very subjective.
 
-\section{Other recommendations}
+\subsection{Other recommendations}
 The other group also advised us to split the \texttt{PlayerController} class, as it could be seen as a "God Class" with too many responsibilities. We took this suggestion into account, of course, but we went to the conclusion that it would maybe not be as suitable as it was for the \texttt{Soundcloud} class. Here is the explanation :
 
 \begin{itemize}
@@ -412,5 +430,7 @@ The other group also advised us to split the \texttt{PlayerController} class, as
 \item All the other methods have the responsibility to manage the state of the controller but also of the \texttt{PausablePlayer}, the concrete implementation of the music player. Some of them give feedbacks to the view of the current state of the music player, but they have a quite high cohesion and would be hard to split into two classes.
 \item We could have managed the current song index and similar matters directly into the \texttt{Playlist} class, but we wanted to keep the \texttt{Playlist} class as a data structure to encapsulate a list of songs, with limited responsibilities otherwise than giving easier access through appropriate getters and setters.
 \end{itemize}
+
+%\section{Laboratory n$\degree$2}
 
 \end{document}
