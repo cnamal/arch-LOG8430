@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_1M650OmIEeWpXr_Px4-8TA">
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_2ChsIOmIEeWpXr_Px4-8TA" featurename="menuContributions" parentElementId="org.eclipse.e4.legacy.ide.application">
-    <elements xsi:type="menu:MenuContribution" xmi:id="_4UrU8OmIEeWpXr_Px4-8TA" elementId="coreplugin.menucontribution.0" positionInParent="after=additions" parentId="org.eclipse.ui.main.menu">
-      <children xsi:type="menu:Menu" xmi:id="_D6_30OmJEeWpXr_Px4-8TA" elementId="id.hal" label="HAL">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_lMRrQOmJEeWpXr_Px4-8TA" elementId="coreplugin.handledmenuitem.here" label="HERE" enabled="false"/>
-      </children>
-    </elements>
-  </fragments>
-</fragment:ModelFragments>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_1M650OmIEeWpXr_Px4-8TA"/>
