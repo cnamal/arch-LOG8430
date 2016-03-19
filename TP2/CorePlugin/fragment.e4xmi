@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_1M650OmIEeWpXr_Px4-8TA"/>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_1M650OmIEeWpXr_Px4-8TA">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_JyNX0OxzEeWma9BAhkjYRg" featurename="trimContributions" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="menu:TrimContribution" xmi:id="_dAvpQOxzEeWma9BAhkjYRg" elementId="coreplugin.trimcontribution.0" parentId="org.eclipse.ui.main.toolbar">
+      <children xsi:type="menu:ToolBar" xmi:id="_fqfSsOxzEeWma9BAhkjYRg" elementId="coreplugin.toolbar.0">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_TaG9sO4JEeWlsKsC3fgDbA" elementId="coreplugin.handledtoolitem.2" iconURI="platform:/plugin/CorePlugin/icons/previous.png" command="_9ueiQO4JEeWlsKsC3fgDbA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_hGLNkOxzEeWma9BAhkjYRg" elementId="coreplugin.handledtoolitem.0" iconURI="platform:/plugin/CorePlugin/icons/play.png" command="_H39cMOx0EeWma9BAhkjYRg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_yklSIO4IEeWlsKsC3fgDbA" elementId="coreplugin.handledtoolitem.1" iconURI="platform:/plugin/CorePlugin/icons/next.png" command="_S1n7IO4KEeWlsKsC3fgDbA"/>
+      </children>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="__zzYgOxzEeWma9BAhkjYRg" featurename="handlers" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_KAtRYOx0EeWma9BAhkjYRg" elementId="coreplugin.handler.0" contributionURI="bundleclass://CorePlugin/com.namal.arch.plugin.handlers.PlayHandler" command="_H39cMOx0EeWma9BAhkjYRg"/>
+    <elements xsi:type="commands:Handler" xmi:id="_LDDMIO4JEeWlsKsC3fgDbA" elementId="coreplugin.handler.1" contributionURI="bundleclass://CorePlugin/com.namal.arch.plugin.handlers.NextHandler" command="_S1n7IO4KEeWlsKsC3fgDbA"/>
+    <elements xsi:type="commands:Handler" xmi:id="_VE3PUO4JEeWlsKsC3fgDbA" elementId="coreplugin.handler.2" contributionURI="bundleclass://CorePlugin/com.namal.arch.plugin.handlers.PreviousHandler" command="_9ueiQO4JEeWlsKsC3fgDbA"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_DqrjcOx0EeWma9BAhkjYRg" featurename="commands" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_H39cMOx0EeWma9BAhkjYRg" elementId="coreplugin.command.play" commandName="Play"/>
+    <elements xsi:type="commands:Command" xmi:id="_9ueiQO4JEeWlsKsC3fgDbA" elementId="coreplugin.command.previous" commandName="Previous"/>
+    <elements xsi:type="commands:Command" xmi:id="_S1n7IO4KEeWlsKsC3fgDbA" elementId="coreplugin.command.next" commandName="Next"/>
+  </fragments>
+</fragment:ModelFragments>

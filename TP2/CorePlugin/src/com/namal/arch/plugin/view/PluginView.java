@@ -9,6 +9,7 @@ import com.namal.arch.view.UIMainClass;
 import javafx.scene.Scene;
 
 public class PluginView extends FXViewPart {
+	
 	@Override
 	protected Scene createFxScene() {
 		Configuration.setAudioServiceLoader(PluginAudioServiceLoader.getInstance());
