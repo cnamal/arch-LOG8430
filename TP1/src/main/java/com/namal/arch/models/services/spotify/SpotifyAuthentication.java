@@ -1,6 +1,5 @@
 package com.namal.arch.models.services.spotify;
 
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -11,8 +10,6 @@ import javax.json.JsonReader;
 
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.GenericAuthenticationService;
-import com.namal.arch.utils.WebListener;
-import com.namal.arch.utils.WebThread;
 
 public class SpotifyAuthentication extends GenericAuthenticationService{
 

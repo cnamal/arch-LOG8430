@@ -7,15 +7,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Iterator;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-
-import org.apache.commons.io.IOUtils;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;

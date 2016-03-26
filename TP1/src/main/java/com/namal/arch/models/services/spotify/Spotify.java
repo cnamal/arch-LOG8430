@@ -26,8 +26,6 @@ import com.namal.arch.utils.ServiceListener;
 import com.namal.arch.utils.WebListener;
 import com.namal.arch.utils.WebThread;
 
-import netscape.javascript.JSObject;
-
 public class Spotify implements AudioService {
 
 	private static Spotify instance = new Spotify();
