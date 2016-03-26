@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="CorePlugin.com.namal.arch.plugin">
+      <client
+            class="com.namal.arch.plugin.deezer.Deezer">
+      </client>
+   </extension>
+
+</plugin>
