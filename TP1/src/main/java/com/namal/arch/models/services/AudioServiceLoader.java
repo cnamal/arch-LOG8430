@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.namal.arch.models.services.deezer.Deezer;
 import com.namal.arch.models.services.soundcloud.Soundcloud;
 import com.namal.arch.models.services.spotify.Spotify;
 
@@ -21,6 +22,7 @@ public class AudioServiceLoader implements IAudioServiceLoader{
 			audioServices=new ArrayList<>();
 			audioServices.add(Soundcloud.getInstance());
 			audioServices.add(Spotify.getInstance());
+			audioServices.add(Deezer.getInstance());
 		}
 		return audioServices.iterator();
 	}
