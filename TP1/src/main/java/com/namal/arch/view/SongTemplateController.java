@@ -70,6 +70,7 @@ public class SongTemplateController extends UIController{
 		this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
 		this.songBox = songBox;
 		this.playlist = playlist;
+		menuButton.getItems().get(0).setDisable(song.getUri()==null);
 		connectAction();
 		createAddPlaylistMenu();
 		generatePurcentageBasedOnFile();

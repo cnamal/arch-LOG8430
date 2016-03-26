@@ -125,7 +125,7 @@ public class PlaylistOverview extends UIController{
 								
 								@Override
 								public void run() {
-									showResults();
+									showResults(result);
 								}
 							});
 						}
@@ -147,14 +147,14 @@ public class PlaylistOverview extends UIController{
     	}
     }
 
-    private void showResults(){
+    private void showResults(List<Playlist> playlists){
     	//Begin of the real function
-    			for(Playlist p : playlists){
-    				HBox v = createHBoxPlaylist(p);
-    				playlistList.add(v);
-    				playlistAnchorPane.getChildren().add(v);
-    			}
-    			resizePlaylistAnchorPane();
-    			resetAllBoxes();
+		for(Playlist p : playlists){
+			HBox v = createHBoxPlaylist(p);
+			playlistList.add(v);
+			playlistAnchorPane.getChildren().add(v);
+		}
+		resizePlaylistAnchorPane();
+		resetAllBoxes();
     }
 }

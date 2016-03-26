@@ -82,7 +82,7 @@ public class SearchOverviewController extends UIController{
 				public void done(Playlist result) {
 					Iterator<Song> it = result.getSongs();
 					while(it.hasNext()){
-						synchronized(mutexLock){
+						synchronized(results){
 							results.addSongWithoutUpdating(it.next());
 							Platform.runLater(new Runnable(){
 								@Override

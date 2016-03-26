@@ -16,7 +16,7 @@ public class Playlist {
 	 * Is the playlist public or private
 	 */
 	private boolean pub;
-	private int id;
+	private String id;
 	
 	/**
 	 * 
@@ -67,8 +67,8 @@ public class Playlist {
 		// TODO check provider : if same -> use provider to save playlist
 		// TODO else -> modify provider for cross-platform provider and save playlist
 		playlist.add(index,song);
-		if(!searchPlaylist){			
-			if(id==Integer.MIN_VALUE){
+		if(!searchPlaylist){
+			if(id.equals(Integer.MIN_VALUE+"")){
 				findProvider();
 				provider.createPlaylist(this);
 			}
@@ -105,11 +105,19 @@ public class Playlist {
 	 * @param pub a boolean, true if the playlist is public, false otherwise.
 	 */	
 	public Playlist(String name,int id,AudioServiceProvider p,boolean pub) {
+		this.id=id+"";
+		this.name = name;
+		this.provider=p;
+		this.pub=pub;
+		this.playlist = new ArrayList<>();
+	}
+	
+	public Playlist(String name,String id,AudioServiceProvider p,boolean pub) {
 		this.id=id;
 		this.name = name;
 		this.provider=p;
 		this.pub=pub;
-		this.playlist = new ArrayList<Song>();
+		this.playlist = new ArrayList<>();
 	}
 	
 	/**
@@ -120,11 +128,11 @@ public class Playlist {
 	 * @param pub a boolean, true if the playlist is public, false otherwise.
 	 */	
 	public Playlist(String name,boolean searchPlaylist,boolean pub) {
-		this.id=Integer.MIN_VALUE;
+		this.id=Integer.MIN_VALUE+"";
 		this.searchPlaylist=searchPlaylist;
 		this.name = name;
 		this.pub=pub;
-		this.playlist = new ArrayList<Song>();
+		this.playlist = new ArrayList<>();
 	}
 	
 	//ONLY FOR TESTING
@@ -147,11 +155,16 @@ public class Playlist {
 		return json;
 	}
 	
-	public int getId(){
+	public String getId(){
 		return id;
 	}
 	
 	public void setId(int id){
+		//TODO add test
+		this.id=id+"";
+	}
+	
+	public void setId(String id){
 		//TODO add test
 		this.id=id;
 	}

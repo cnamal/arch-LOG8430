@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.services.soundcloud.Soundcloud;
+import com.namal.arch.models.services.spotify.Spotify;
 
 
 public class AudioServiceLoader implements IAudioServiceLoader{
@@ -19,6 +20,7 @@ public class AudioServiceLoader implements IAudioServiceLoader{
 		if(audioServices==null){
 			audioServices=new ArrayList<>();
 			audioServices.add(Soundcloud.getInstance());
+			audioServices.add(Spotify.getInstance());
 		}
 		return audioServices.iterator();
 	}

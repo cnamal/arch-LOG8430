@@ -6,7 +6,7 @@ import com.namal.arch.models.services.AudioServiceProvider;
 
 public class Song {
 
-	private int id;
+	private String id;
 	private String title;
 	private String artist;
 	private String album;
@@ -107,7 +107,7 @@ public class Song {
 	 * 
 	 * @return the id of the song (related to the provider)
 	 */
-	public int getId(){
+	public String getId(){
 		return id;
 	}
 	

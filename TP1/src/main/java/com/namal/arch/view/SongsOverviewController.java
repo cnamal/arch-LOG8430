@@ -37,11 +37,13 @@ public class SongsOverviewController extends UIController{
 	}
 	
 	private void createHBoxes(){
-		Iterator<Song> it = playlist.getSongs();
-		while(it.hasNext()){
-			songList.add(createNewBox(it.next()));
+		synchronized(playlist){
+			Iterator<Song> it = playlist.getSongs();
+			while(it.hasNext()){
+				songList.add(createNewBox(it.next()));
+			}
+			refreshListBox();
 		}
-		refreshListBox();
 	}
 
 	private void refreshListBox() {
