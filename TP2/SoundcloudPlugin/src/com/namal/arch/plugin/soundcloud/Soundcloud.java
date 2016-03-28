@@ -53,4 +53,9 @@ public class Soundcloud implements AudioService {
 		return soundcloud.getAuthentification();
 	}
 
+	@Override
+	public boolean searchAvailable() {
+		return soundcloud.searchAvailable();
+	}
+
 }

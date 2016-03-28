@@ -54,4 +54,9 @@ public class Spotify implements AudioService {
 		return spotify.getAuthentification();
 	}
 
+	@Override
+	public boolean searchAvailable() {
+		return spotify.searchAvailable();
+	}
+
 }

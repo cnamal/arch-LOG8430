@@ -67,7 +67,6 @@ public class Spotify implements AudioService {
 			builder.setAlbumCoverUrl(result.getString("artwork_url"));*/
 		if(!result.isNull("preview_url"))
 			builder.setUri(result.getString("preview_url"));
-		
 		return builder.build();
 	}
 
@@ -262,5 +261,10 @@ public class Spotify implements AudioService {
 			playlists = null;
 		else
 			throw new UnsupportedOperationException(ev + " is not supported");
+	}
+
+	@Override
+	public boolean searchAvailable() {
+		return true;
 	}
 }

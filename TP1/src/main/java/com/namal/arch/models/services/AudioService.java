@@ -7,7 +7,7 @@ import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.utils.ServiceListener;
 
 public interface AudioService {
-
+	
 	/**
 	 * 
 	 * @return List of all the playlist for this AudioService
@@ -58,4 +58,6 @@ public interface AudioService {
 	public AudioServiceProvider getAudioServiceProvider();
 	
 	public IAuthentification getAuthentification();
+
+	public boolean searchAvailable();
 }

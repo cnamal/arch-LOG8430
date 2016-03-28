@@ -40,3 +40,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.namal.arch.models,
  com.namal.arch.models.services,
  com.namal.arch.utils
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: com.namal.arch.plugin.Activator

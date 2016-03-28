@@ -28,3 +28,5 @@ hs_err_pid*
 *.pdf
 *.synctex.gz
 *.toc
+
+config.properties

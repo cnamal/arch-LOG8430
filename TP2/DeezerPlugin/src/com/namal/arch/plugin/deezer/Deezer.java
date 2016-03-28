@@ -52,4 +52,9 @@ public class Deezer implements AudioService {
 		return deezer.getAuthentification();
 	}
 
+	@Override
+	public boolean searchAvailable() {
+		return deezer.searchAvailable();
+	}
+
 }

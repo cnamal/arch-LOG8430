@@ -5,13 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.cp.CrossPlatform;
 
 public class Playlist {
 
 	private List<Song> playlist;
 	private AudioServiceProvider provider;
 	private String name;
-	private boolean searchPlaylist;
+	private boolean searchPlaylist=false;
 	/**
 	 * Is the playlist public or private
 	 */
@@ -52,8 +53,10 @@ public class Playlist {
 	private void findProvider(){
 		AudioServiceProvider prev=playlist.get(0).getProvider();
 		for(int i=1;i<playlist.size();i++)
-			if(prev!=playlist.get(i).getProvider())
-				throw new UnsupportedOperationException("Multiplatform playlist aren't implemented yet");
+			if(prev!=playlist.get(i).getProvider()){
+				provider=CrossPlatform.getInstance().getAudioServiceProvider();
+				return;
+			}
 		provider=prev;
 	}
 	
@@ -63,20 +66,18 @@ public class Playlist {
 	 * @param song the song to be added
 	 */
 	public void addSongAndUpdate(int index, Song song){
-		// TODO add song 
-		// TODO check provider : if same -> use provider to save playlist
-		// TODO else -> modify provider for cross-platform provider and save playlist
 		playlist.add(index,song);
 		if(!searchPlaylist){
 			if(id.equals(Integer.MIN_VALUE+"")){
 				findProvider();
 				provider.createPlaylist(this);
 			}
-			if(!provider.equals(song.getProvider())){
-				throw new UnsupportedOperationException("Multiplatform playlist aren't implemented yet");
-			}else{
-				provider.addSongToPlaylist(this,song);
+			AudioServiceProvider cp = CrossPlatform.getInstance().getAudioServiceProvider();
+			if(!provider.equals(cp)&&!provider.equals(song.getProvider())){
+				provider=cp;
+				provider.createPlaylist(this);
 			}
+			provider.addSongToPlaylist(this,song);
 		}
 	}
 	
@@ -97,6 +98,14 @@ public class Playlist {
 		return playlist.indexOf(song);
 	}
 
+	private void init(String name,AudioServiceProvider p,boolean pub){
+		this.name = name;
+		this.pub=pub;
+		this.playlist = new ArrayList<>();
+		if(p!=null)
+			this.provider=p;
+	}
+	
 	/**
 	 * Creates a new playlist (constructor)
 	 * @param name the name of the playlist
@@ -106,19 +115,14 @@ public class Playlist {
 	 */	
 	public Playlist(String name,int id,AudioServiceProvider p,boolean pub) {
 		this.id=id+"";
-		this.name = name;
-		this.provider=p;
-		this.pub=pub;
-		this.playlist = new ArrayList<>();
+		init(name, p,pub);
 	}
 	
 	public Playlist(String name,String id,AudioServiceProvider p,boolean pub) {
 		this.id=id;
-		this.name = name;
-		this.provider=p;
-		this.pub=pub;
-		this.playlist = new ArrayList<>();
+		init(name, p,pub);
 	}
+	
 	
 	/**
 	 * Creates a new playlist (constructor)
@@ -130,12 +134,10 @@ public class Playlist {
 	public Playlist(String name,boolean searchPlaylist,boolean pub) {
 		this.id=Integer.MIN_VALUE+"";
 		this.searchPlaylist=searchPlaylist;
-		this.name = name;
-		this.pub=pub;
-		this.playlist = new ArrayList<>();
+		init(name, null,pub);
 	}
 	
-	//ONLY FOR TESTING
+	
 	public void addSongWithoutUpdating(Song song){
 		playlist.add(song);
 	}
@@ -160,12 +162,10 @@ public class Playlist {
 	}
 	
 	public void setId(int id){
-		//TODO add test
 		this.id=id+"";
 	}
 	
 	public void setId(String id){
-		//TODO add test
 		this.id=id;
 	}
 	

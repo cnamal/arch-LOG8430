@@ -3,6 +3,7 @@ package com.namal.arch.models;
 import java.io.InputStream;
 
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.utils.Configuration;
 
 public class Song {
 
@@ -11,6 +12,7 @@ public class Song {
 	private String artist;
 	private String album;
 	private AudioServiceProvider provider;
+	private String providerId;
 	
 	
 	private String uri;
@@ -40,10 +42,16 @@ public class Song {
 		title=builder.title;
 		artist=builder.artist;
 		uri=builder.uri;
-		provider=builder.provider;
 		duration = builder.duration;
 		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
+		if(builder.provider!=null){
+			provider=builder.provider;
+			providerId= Configuration.getAudioServiceLoader().getProviderId(provider);
+		}else{
+			providerId= builder.providerId;
+			provider = Configuration.getAudioServiceLoader().getProvider(providerId);
+		}
 	}
 
 	/**
@@ -121,5 +129,9 @@ public class Song {
 			return uri.equals(((Song)o).uri);
 		}
 		return false;
+	}
+
+	public String getProviderId() {
+		return providerId;
 	}
 }

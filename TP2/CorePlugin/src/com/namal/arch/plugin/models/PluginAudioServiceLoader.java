@@ -8,23 +8,31 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.GenericServiceLoader;
 import com.namal.arch.models.services.IAudioServiceLoader;
+import com.namal.arch.models.services.cp.CrossPlatform;
 
 
-public class PluginAudioServiceLoader implements IAudioServiceLoader{
+public class PluginAudioServiceLoader extends GenericServiceLoader{
 
 	
 	private String ID = "CorePlugin.com.namal.arch.plugin";
-	private static List<AudioService> audioServices;
 	private static PluginAudioServiceLoader instance = new PluginAudioServiceLoader();
 	
 	@Override
 	public Iterator<AudioService> getAudioServices() {
 		if(audioServices==null){
 			audioServices = new ArrayList<>();
+			audioServices.add(CrossPlatform.getInstance());
 			loadPlugins();
+			initMap();
 		}
 		return audioServices.iterator();
 	}
@@ -51,5 +59,6 @@ public class PluginAudioServiceLoader implements IAudioServiceLoader{
 		return instance;
 	}
 	
-	private PluginAudioServiceLoader(){};
+	private PluginAudioServiceLoader(){}
+	
 }

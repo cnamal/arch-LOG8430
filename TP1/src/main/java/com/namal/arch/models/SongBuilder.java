@@ -9,6 +9,7 @@ public class SongBuilder {
 	String uri;
 	String albumCoverUrl = null;
 	String id;
+	String providerId;
 	AudioServiceProvider provider;
 	Long duration;
 	
@@ -53,6 +54,11 @@ public class SongBuilder {
 		return this;
 	}
 	
+	public SongBuilder setProvider(String providerId){
+		this.providerId=providerId;
+		return this;
+	}
+	
 	public SongBuilder setDuration(long duration){
 		this.duration=duration;
 		return this;
@@ -74,7 +80,7 @@ public class SongBuilder {
 			throw new SongMalformed("Song artist is needed");
 		if(duration==null)
 			throw new SongMalformed("Song duration is needed");
-		if(provider==null)
+		if(provider==null&&providerId==null)
 			throw new SongMalformed("Song provider is needed");
 	}
 }

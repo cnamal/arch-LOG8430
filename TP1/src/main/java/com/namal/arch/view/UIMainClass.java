@@ -7,6 +7,7 @@ import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.utils.Configuration;
+import com.namal.arch.utils.MongoDB;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -57,10 +58,15 @@ public class UIMainClass extends Application{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Arch-LOG8430 - Streaming playlists gatherer");
         primaryStage.setMinWidth(800);
-        
+        MongoDB.init();
         
         loadGeneraLayout();
     }
+	
+	@Override
+	public void stop(){
+		MongoDB.cleanUp();
+	}
 	
 	public void loadGeneraLayout(){
 		FXMLLoader loader = uiController.getLoaderFromFile(GENERAL_LAYOUT_FILE);

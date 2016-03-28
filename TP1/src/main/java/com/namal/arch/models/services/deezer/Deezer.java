@@ -244,4 +244,9 @@ public class Deezer implements AudioService {
 		else
 			throw new UnsupportedOperationException(ev + " is not supported");
 	}
+
+	@Override
+	public boolean searchAvailable() {
+		return true;
+	}
 }

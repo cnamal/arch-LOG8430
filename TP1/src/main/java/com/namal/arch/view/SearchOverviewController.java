@@ -47,7 +47,9 @@ public class SearchOverviewController extends UIController{
 		//Providers
 		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
 		while(it.hasNext()){
-			providersListMenu.getItems().add(createMenuCheckProvider(it.next()));
+			AudioService service = it.next();
+			if(service.searchAvailable())
+				providersListMenu.getItems().add(createMenuCheckProvider(service));
 		}		
 	}
 	
