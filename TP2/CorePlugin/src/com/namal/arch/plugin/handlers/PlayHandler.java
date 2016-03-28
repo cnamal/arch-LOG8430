@@ -14,6 +14,7 @@ public class PlayHandler implements IPlayerObserver{
 
 	private boolean isPlaying=false;
 	private PlayerController player;
+	private MToolItem item;
 	
 	public PlayHandler(){
 		player = PlayerController.getInstance();
@@ -22,20 +23,23 @@ public class PlayHandler implements IPlayerObserver{
 	
 	@Execute
 	public void execute(MToolItem item){
+		this.item = item;
 		if(isPlaying){
 			player.pause();			
 		} else {
 			player.resume();
 		}
-		changePlayPauseImage(item);
+		changePlayPauseImage();
 	}
 	
-	private void changePlayPauseImage(MToolItem item) {
-		item.setEnabled(true);
-		if(isPlaying)
-			item.setIconURI("platform:/plugin/CorePlugin/icons/pause.png");
-		else
-			item.setIconURI("platform:/plugin/CorePlugin/icons/play.png");		
+	private void changePlayPauseImage() {
+		if(item != null){
+			item.setEnabled(true);
+			if(isPlaying)
+				item.setIconURI("platform:/plugin/CorePlugin/icons/pause.png");
+			else
+				item.setIconURI("platform:/plugin/CorePlugin/icons/play.png");		
+		}
 	}
 
 	@Override
@@ -45,7 +49,7 @@ public class PlayHandler implements IPlayerObserver{
 				isPlaying = true;
 			else if (ev.getEventInformation() == PlayerStatus.PAUSED)
 				isPlaying = false;
-			//changePlayPauseImage();
+			changePlayPauseImage();
 		}
 	}
 
