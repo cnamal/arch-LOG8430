@@ -5,6 +5,7 @@ import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
+import com.namal.arch.utils.PlayerStatus;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -82,6 +83,9 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 				resizeText(newSceneWidth, oldSceneWidth);
 		    }
 		});
+		
+		//Add events
+		
 	}
 	
 	public void onPlay(Playlist playlist, int currPos){
@@ -146,14 +150,12 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 	@FXML
 	private void playPauseAction(){
 		if(isPlaying){
-			timeline.pause();
+			
 			player.pause();			
 		} else {
-			timeline.play();
+			
 			player.resume();
 		}
-		isPlaying = !isPlaying;
-		changePlayPauseImage();
 	}
 	
 	@FXML
@@ -161,8 +163,8 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		player.previousAndPlay();
 		if(!isPlaying)
 			player.pause();
-		currPos = player.getCurrentSongIndex();
-		newMusicSet();
+		//currPos = player.getCurrentSongIndex();
+		//newMusicSet();
 	}
 	
 	@FXML
@@ -170,8 +172,8 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		player.nextAndPlay();
 		if(!isPlaying)
 			player.pause();
-		currPos = player.getCurrentSongIndex();
-		newMusicSet();
+		//currPos = player.getCurrentSongIndex();
+		//newMusicSet();
 	}
 	
 	@FXML
@@ -209,7 +211,18 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 			Platform.runLater(()->{newMusicSet();});
 			//newMusicSet();
 		}
-		
+		else if(ev.getEventType() == PlayerEventType.TYPE_STATECHANGED){
+			if (ev.getEventInformation() == PlayerStatus.PLAYING){
+				isPlaying = true;
+				if(timeline != null)
+					timeline.play();
+			} else if (ev.getEventInformation() == PlayerStatus.PAUSED){
+				if(timeline != null)
+					timeline.pause();
+				isPlaying = false;
+			}
+			changePlayPauseImage();
+		}
 	}
 
 }
