@@ -2,19 +2,13 @@ package com.namal.arch.plugin.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.GenericServiceLoader;
 import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.models.services.cp.CrossPlatform;

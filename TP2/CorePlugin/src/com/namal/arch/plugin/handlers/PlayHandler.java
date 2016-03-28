@@ -1,10 +1,13 @@
 package com.namal.arch.plugin.handlers;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 
 import com.namal.arch.controller.PlayerController;
-import com.namal.arch.controller.PlayerControllerEvent;
 import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
@@ -14,16 +17,26 @@ public class PlayHandler implements IPlayerObserver{
 
 	private boolean isPlaying=false;
 	private PlayerController player;
-	private MToolItem item;
+	private static MToolItem item;
+	
+	@Inject
+    private static EModelService modelService;
+	
+	@Inject
+    private static MApplication app;
 	
 	public PlayHandler(){
 		player = PlayerController.getInstance();
 		player.attach(this);
 	}
 	
+	
+	public static void initItem() {
+	    item = (MToolItem) modelService.find("coreplugin.handledtoolitem.0", app);
+	}
+	
 	@Execute
-	public void execute(MToolItem item){
-		this.item = item;
+	public void execute(){
 		if(isPlaying){
 			player.pause();			
 		} else {
