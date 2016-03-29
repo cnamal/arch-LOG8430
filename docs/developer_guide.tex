@@ -41,11 +41,17 @@
 \toggletrue{diag}
 %\togglefalse{paper}
 
-\ifthenelse{\boolean{lab1} \OR \boolean{all}}{
+\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
 
 \chapter{Preliminary note on the update}
 
+\ifthenelse{\boolean{lab1} \OR \boolean{all}}{
 This Developer's Guide has been updated after the first time we submitted the assignment. All the changes made are listed with a comparison in the update section of this guide (the last section), with the explanation of why we did these changes to the initial work.
+}
+
+\ifthenelse{\boolean{lab2} \OR \boolean{all}}{
+This Developer's Guide has been updated after the first time we submitted the assignment. All the changes made are listed with a comparison in the update section of this guide (the last section), with the explanation of why we did these changes to the initial work. \textbf{Important:} The \hyperref[Usage::lab2] {usage section} has been updated. Please take those modifications into account.
+}
 
 }
 
@@ -174,10 +180,11 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 \item com.namal.arch.utils
 \end{itemize}
 \item In the Package Explorer, right click on the CorePlugin project -\textgreater Build Path -\textgreater Configure Build Path... -\textgreater Order and Export -\textgreater Select Core.jar -\textgreater Ok
-
+\item The application requires a MongoDB server to function for the cross-platform part. The configuration needs to be in the \texttt{resources} folder and be named \textit{config.properties}. Please use \textit{config.properties.dist} as a template (be sure to uncomment the used lines). The address, port and db (database) parameters are mandatory. The user information are optional. A \textit{playlists} and a \textit{services} collection need to be in the database already. \textbf{mongodb://\textless dbuser\textgreater:\textless dbpwd\textgreater@\textless address\textgreater:\textless port\textgreater/\textless db\textgreater}
+\item In the Package Explorer, right click on the CorePlugin project -\textgreater Build Path -\textgreater Configure Build Path... -\textgreater Source -\textgreater Add Folder -\textgreater Select resources folder -\textgreater OK -\textgreater OK
 \item For each plugin (Soundcloud, etc.) you want to add: Repeat steps 3 to 5.
 \item To run, right click on any project (Core or plugin) -\textgreater Run As -\textgreater Eclipse Application. \textbf{Linux users need to see next section before hand.}
-\item We have \hyperref[lim::toolbar]{(for now)} only a View (by that we mean an Eclipse View) that is basically the same view (as in MVC) as in the first laboratory. To access that view, you have multiple possibilities :
+\item We have \sout{\hyperref[lim::toolbar]{(for now)}} only a View (by that we mean an Eclipse View) that is basically the same view (as in MVC) as in the first laboratory. To access that view, you have multiple possibilities :
 \begin{itemize}
 \item Window -\textgreater Show View -\textgreater Other -\textgreater Type Namal and you should find the Namal Audio Plugin View.
 \item (faster) Click on Quick Access (in the toolbar) and type Namal. You should find the Namal Audio Plugin View
@@ -413,7 +420,7 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \item Even though they weren't yet implemented, Spotify and Deezer services don't allow third-party apps to stream their music, even if the user is authenticated. Only 30 seconds of the song will be played. Playlist management and song displays should however be functional.
 \item Threads are only created for the player. Therefore, any communication with a Web service blocks the main thread.
 \item Testing is very hard for this project, hence the lack of tests. Indeed, a lot of testing requires user interaction (even without the view).
-\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
+\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves. Furthermore, we don't think the tweaks needed should be too difficult to add.
 \end{itemize}
 }
 
@@ -433,7 +440,7 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \item The authentication services were rushed towards the end, so they are not perfect. For instance, a failed authentication doesn't throw an exception but only returns false, or if the Soundcloud account is modified (especially if the user's password is modified), the program will not handle it -but shouldn't crash-. The only solution is to \ifthenelse{\boolean{fun}}{\href{http://img.pandawhale.com/post-16780-have-you-tried-forcing-an-unex-uQSY.gif}{disconnect and reconnect}}{disconnect and reconnect}. 
 \item Even though they weren't yet implemented, Spotify and Deezer services don't allow third-party apps to stream their music, even if the user is authenticated. Only 30 seconds of the song will be played. Playlist management and song displays should however be functional.
 \item Testing is very hard for this project, hence the lack of tests. Indeed, a lot of testing requires user interaction (even without the view).
-\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves.Furthermore, we don't think the tweaks needed should be too difficult to add.
+\item \hypertarget{db}{The architecture}, \textit{in it's present form}, doesn't work if we want to save the data in a database. For instance, the Song model has a reference to a \texttt{AudioServiceProvider}. This flaw was discovered talking to another group who work on the same project as us. For now, the architecture is good enough for the objectives we fixed ourselves. Furthermore, we don't think the tweaks needed should be too difficult to add.
 \end{itemize}
 \end{itemize}
 }
@@ -475,15 +482,17 @@ No new bugs were introduced.
 \item Urgent 
 \begin{itemize}
 \label{lim::toolbar}
-\item We didn't have \hyperref[implem::long]{time} to add buttons to control the player in the toolbar. A few updates should be made to the player observers (detect that the player is paused for instance). Overall, it shouldn't be too complicated.
-\item Add new services, namely Spotify and Deezer. It shouldn't take too long.
-\item Do the Javadoc.
+\item \sout{We didn't have \hyperref[implem::long]{time} to add buttons to control the player in the toolbar. A few updates should be made to the player observers (detect that the player is paused for instance). Overall, it shouldn't be too complicated.}
+\item \sout{Add new services, namely Spotify and Deezer. It shouldn't take too long.}
+\item \sout{Do the Javadoc.}
 \end{itemize}
 \item Intermediate
 \begin{itemize}
-\item Create cross-platform playlists. Beside the obvious difficulty of the task, the current architecture might need to be slightly \hyperlink{db}{modified}.
+\item \sout{Create cross-platform playlists. Beside the obvious difficulty of the task, the current architecture might need to be slightly \hyperlink{db}{modified}.}
 \end{itemize}
 \end{enumerate}
+
+These changes have been made (cf Update section).
 }
 
 \ifthenelse{\boolean{lab3} \OR \boolean{all}}{
@@ -493,7 +502,7 @@ No new bugs were introduced.
 
 }
 
-\ifthenelse{\boolean{lab1} \OR \boolean{all}}{
+\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
 \chapter{Updates}}
 
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
@@ -536,6 +545,65 @@ The other group also advised us to split the \texttt{PlayerController} class, as
 \item All the other methods have the responsibility to manage the state of the controller but also of the \texttt{PausablePlayer}, the concrete implementation of the music player. Some of them give feedbacks to the view of the current state of the music player, but they have a quite high cohesion and would be hard to split into two classes.
 \item We could have managed the current song index and similar matters directly into the \texttt{Playlist} class, but we wanted to keep the \texttt{Playlist} class as a data structure to encapsulate a list of songs, with limited responsibilities otherwise than giving easier access through appropriate getters and setters.
 \end{itemize}
+}
+
+\ifthenelse{\boolean{lab2} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$2}}
+
+For this laboratory we had an agreement with the laboratory teacher as to which features would be implemented :
+\begin{itemize}
+\item Add RCP/e4 buttons
+\item Add Spotify and Deezer
+\item Have a better Javadoc
+\end{itemize}
+
+We are proud to announce that not only have we added all those features, but we also added management of cross-platform playlists!
+
+\subsection{Architecture}
+
+The architecture hasn't been modified for the first 2 features. Indeed, for the first feature Fabien had already created the Observer in order for all observing views to be notified when the player changed state. We only had to add the buttons as observers. For the second feature, we added Spotify and Deezer without any trouble. The laboratory teacher assured us that our architecture wasn't good enough for more than one service (without any proof), but it works perfectly.
+
+The architecture has however changed for cross-platform playlists. However, as \hyperlink{db}{we said previously}, the tweaks were minor. Here are the new class diagrams :
+
+\iftoggle{diag}{
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/update-2-1.png}
+  \caption{Modified models}
+  \label{modmod}
+\end{figure}
+
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/update-2-2.png}
+  \caption{Modified service loaders}
+  \label{modSL}
+\end{figure}
+}
+
+The modifications are primarily because we had to save not the AudioServiceProvider but an ID of said Provider. The link between the services and the ID are in the database. For now, we have manually added the services and their IDs to the database. In the third laboratory, our server will create the ID if needed.
+
+\subsection{RCP/e4 buttons}
+
+The buttons were added without much trouble. All views are synchronized, ie. if the JavaFx view clicks on pause, the play button will transform to a pause button. This shows that our architecture was already robust enough for multiple views.
+
+\subsection{MongoDB}
+
+We decided to use a database anticipating the third laboratory (instead of saving the playlist in a local file for instance). We went with MongoDB because it's easy to use and modern. Furthermore, you can create an online database for testing for free (MongoLab). It allows us to test our application in \textit{real-life} conditions. 
+
+\subsection{New bugs}
+
+A known bug that has been introduced with cross-platform playlist is that if a ServiceProvider is unavailable, say Spotify, and a playlist has a Spotify song, when you try and open said playlist, and exception is thrown. This major bug will be fixed in time for the next laboratory.
+
+\subsection{Javadoc}
+
+We added the necessary Javadoc to the first and second laboratory.
+
+\subsection{Other recommendations}
+
+Due to a lack of time, we weren't able to consider the suggestions of our colleagues -except those that were the same as our objectives-, especially given the fact that they weren't major architecture flaws/bugs. Indeed, we focused on the agreement we had with the laboratory teacher. However, we have saved those suggestions and hope to have enough time to add those features soon.
+
 }
 
 %\section{Laboratory n$\degree$2}
