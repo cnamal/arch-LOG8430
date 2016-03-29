@@ -3,22 +3,29 @@ package com.namal.arch.models.services;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generic Authentication Service (Helper class)
+ * @author namalgac
+ *
+ */
 public abstract class GenericAuthenticationService implements IAuthentification{
 
 	protected String authToken;
 	protected boolean isAuthenticated=false;
 	
-	public abstract String getAuthToken();
+	/**
+	 * 
+	 * @return Authentication token
+	 */
+	protected abstract String getAuthToken();
 
 	@Override
 	public String testString() {
-		// TODO Auto-generated method stub
 		return "https://cnamal.github.io/arch-LOG8430/callback.html";
 	}
 
 	@Override
 	public boolean serverResponse(String response) {
-		// TODO Auto-generated method stub
 		String res=response;
 		if(response.indexOf("#")>=0)
 			res=response.substring(response.indexOf("#")+1);
@@ -29,9 +36,15 @@ public abstract class GenericAuthenticationService implements IAuthentification{
 		return serverResponse(paramsMap);
 	}
 
+	@Override
 	public boolean isConnected(){
 		return isAuthenticated;
 	}
 	
+	/**
+	 * 
+	 * @param s map with the get parameters
+	 * @return true if authentication succeeded, false otherwise
+	 */
 	protected abstract boolean serverResponse(Map<String, String> s);
 }

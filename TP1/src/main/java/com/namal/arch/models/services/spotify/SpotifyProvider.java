@@ -18,6 +18,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 
 class SpotifyProvider implements AudioServiceProvider {
 	
@@ -27,7 +28,6 @@ class SpotifyProvider implements AudioServiceProvider {
 	
 	
 	private SpotifyProvider(Spotify service) {
-		// TODO Auto-generated constructor stub
 		this.service=service;
 	}
 	
@@ -46,10 +46,8 @@ class SpotifyProvider implements AudioServiceProvider {
 			urlConnection.connect ();
 			return inputStream=urlConnection.getInputStream();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -57,11 +55,9 @@ class SpotifyProvider implements AudioServiceProvider {
 
 	@Override
 	public void closeInputStream() {
-		// TODO Auto-generated method stub
 		try {
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -93,12 +89,10 @@ class SpotifyProvider implements AudioServiceProvider {
 			out.write(data.toString());
 			out.close();
 			httpCon.getInputStream();
-			service.notify(SpotifyEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -109,7 +103,7 @@ class SpotifyProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
+	public void removeSongFromPlaylist(Playlist playlist, Song removedSong) {
 		updatePlaylist(playlist);
 	}
 
@@ -126,7 +120,6 @@ class SpotifyProvider implements AudioServiceProvider {
 		URL url;
 		
 		try {
-			//System.out.println("savePlaylist");
 			url = new URL(Spotify.USERURL+SpotifyAuthentication.username+"/playlists");
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 			httpCon.setDoOutput(true);
@@ -143,19 +136,15 @@ class SpotifyProvider implements AudioServiceProvider {
 			
 			out.write(data.toString());
 			out.close();
-			//httpCon.getInputStream();
-			
-			//String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
+
 			JsonReader rdr = Json.createReader(httpCon.getInputStream());
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getString("id"));	
 			playlist.setName(results.getString("name"));
-			service.notify(SpotifyEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -165,6 +154,11 @@ class SpotifyProvider implements AudioServiceProvider {
 		return SpotifyProviderInformation.getInstance();
 	}
 
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
+	}
+	
 	private static class SpotifyProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Spotify";

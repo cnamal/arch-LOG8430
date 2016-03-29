@@ -12,10 +12,17 @@ import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
 
+
+/**
+ * Handler for the next button
+ * @author namalgac
+ *
+ */
 public class NextHandler implements IPlayerObserver{
 
 	private PlayerController player;
 	private static MToolItem item;
+	private static final String ID = "coreplugin.handledtoolitem.1";
 	
 	@Inject
     private static EModelService modelService;
@@ -28,10 +35,16 @@ public class NextHandler implements IPlayerObserver{
 		player.attach(this);
 	}
 	
+	/**
+	 * Init function
+	 */
 	public static void initItem() {
-	    item = (MToolItem) modelService.find("coreplugin.handledtoolitem.1", app);
+	    item = (MToolItem) modelService.find(ID, app);
 	}
 	
+	/**
+	 * Function called when the button is clicked
+	 */
 	@Execute
 	public void execute(){
 		player.nextAndPlay();

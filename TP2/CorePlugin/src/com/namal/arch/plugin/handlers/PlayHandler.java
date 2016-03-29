@@ -13,11 +13,17 @@ import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
 import com.namal.arch.utils.PlayerStatus;
 
+/**
+ * Handler for the play/pause button
+ * @author namalgac
+ *
+ */
 public class PlayHandler implements IPlayerObserver{
 
 	private boolean isPlaying=false;
 	private PlayerController player;
 	private static MToolItem item;
+	private static final String ID = "coreplugin.handledtoolitem.0";
 	
 	@Inject
     private static EModelService modelService;
@@ -30,11 +36,16 @@ public class PlayHandler implements IPlayerObserver{
 		player.attach(this);
 	}
 	
-	
+	/**
+	 * Init function
+	 */
 	public static void initItem() {
-	    item = (MToolItem) modelService.find("coreplugin.handledtoolitem.0", app);
+	    item = (MToolItem) modelService.find(ID, app);
 	}
 	
+	/**
+	 * Function called when the button is clicked
+	 */
 	@Execute
 	public void execute(){
 		if(isPlaying){

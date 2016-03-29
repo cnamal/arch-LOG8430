@@ -20,25 +20,54 @@ import javazoom.jl.decoder.JavaLayerException;
  */
 public class PlayerController {
 	
+	/**
+	 * The song currently being played (or paused)
+	 */
 	private Song song;
+	/**
+	 * The current playlist.
+	 */
 	private Playlist playlist;
+	/**
+	 * Current position of the song played in the playlist.
+	 */
 	private int currentPos;
+	/**
+	 * The PausablePlayer instance currently used to play the song
+	 */
 	private PausablePlayer pplayer;
+	/**
+	 * The current status of the player (with values defined in the PlayerStatus enum)
+	 */
 	private PlayerStatus currentStatus;
+	/**
+	 * List of observers for this controller (generally views)
+	 * The observing views must implement IPlayerObserver.
+	 */
 	private List<IPlayerObserver> observers;
+	/**
+	 * The instance of the PlayerController (Singleton pattern).
+	 */
 	private static PlayerController instance = new PlayerController();
 	
+	/**
+	 * Constructor of this controller, private according to the Singleton pattern
+	 */
 	private PlayerController() {
 		observers = new ArrayList<IPlayerObserver>();
 	}
 	
+	/**
+	 * Static method to get the unique instance of PlayerController
+	 * @return the unique instance of the PlayerController
+	 */
 	public static PlayerController getInstance() {
 		return instance;
 	}
 	
 	/**
-	 * Plays a song
-	 * @param song Song played
+	 * Plays a song. Creates a Playlist with only this song.
+	 * @param song : Song played
 	 */
 	public void play(Song song){
 		playlist = new Playlist(song.getTitle(),true,true);
@@ -49,7 +78,7 @@ public class PlayerController {
 
 	/**
 	 * Sets the current playlist (the current song is the first one)
-	 * @param playlist
+	 * @param playlist : the playlist to be played.
 	 */
 	public void setPlaylist(Playlist playlist){
 		this.playlist = playlist;
@@ -58,8 +87,8 @@ public class PlayerController {
 	
 	/**
 	 * Sets the current playlist (the current song is the one chosen)
-	 * @param playlist
-	 * @param songIndex
+	 * @param playlist : the playlist to be played
+	 * @param songIndex : the index of the chosen song in the playlist.
 	 */
 	public void setPlaylist(Playlist playlist, int songIndex){
 		this.playlist = playlist;
@@ -131,9 +160,9 @@ public class PlayerController {
 	/**
 	 * Sets the current song but does NOT play it.
 	 * This method should typically be called when the playlist is paused or stopped.
-	 * @param i if i is within the bounds of the playlist size then it is set to that index
-	 * if i<0 then it is set to the last Song of the playlist
-	 * if (i>playlist size) it is set to the first Song of the playlist
+	 * @param i : if i is within the bounds of the playlist size then it is set to that index
+	 * if i&lt;0 then it is set to the last Song of the playlist
+	 * if (i&gt;playlist size) it is set to the first Song of the playlist
 	 */
 	public void setCurrentSongIndex(int i){
 		//TODO read carefully the Javadoc
@@ -155,7 +184,7 @@ public class PlayerController {
 	
 	/**
 	 * Sets the current song and plays it right after.
-	 * @param i the new song index
+	 * @param i : the new song index
 	 */
 	public void setCurrentSongIndexAndPlay(int i){
 		setCurrentSongIndex(i);
@@ -163,7 +192,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * Index of the current song in the playlist
+	 * Gets the index of the current song in the playlist
 	 * @return the index of the current song in the playlist
 	 */
 	public int getCurrentSongIndex(){
@@ -171,7 +200,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * Number of Songs in the playlist
+	 * Gets the number of Songs in the playlist
 	 * @return the total number of songs in the current playlist
 	 */
 	public int getTotalNumberSongs(){
@@ -217,7 +246,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * 
+	 * Determines if the song is the first of the playlist.
 	 * @return true if the current song is the first song of the playlist, false otherwise.
 	 */
 	public boolean isFirst(){		
@@ -228,7 +257,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * 
+	 * Determines if the song is the last of the playlist
 	 * @return true if the current song is the last song of the playlist, false otherwise.
 	 */
 	public boolean isLast(){
@@ -239,7 +268,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * 
+	 * Determines if a song is being played.
 	 * @return true if a music is playing, false otherwise.
 	 */
 	public boolean isPlaying(){
@@ -247,7 +276,7 @@ public class PlayerController {
 	}
 	
 	/**
-	 * 
+	 * Gets the current Playlist
 	 * @return the playlist field value, representing the playlist currently playing.
 	 */
 	public Playlist getCurrentPlaylist() {
@@ -257,7 +286,7 @@ public class PlayerController {
 	/**
 	 * This method is a callback method for the PausablePlayer being observed.
 	 * Dispatches the treatment of the event to specialized methods.
-	 * @param ev the PausablePlayerEvent from the PausablePlayer
+	 * @param ev : the PausablePlayerEvent from the PausablePlayer, to be processed.
 	 */
 	public void update(PausablePlayerEvent ev) {
 		switch(ev.getEventType()) {
@@ -273,7 +302,7 @@ public class PlayerController {
 	/**
 	 * Method treating the events related to a new song being played.
 	 * This method should not be called otherwise than through the update method.
-	 * @param ev the PausablePlayerEvent to process.
+	 * @param ev : the PausablePlayerEvent to process.
 	 */
 	private void onNewSong(PausablePlayerEvent ev) {
 		PlayerControllerEvent pcev = new PlayerControllerEvent(getInstance(), PlayerEventType.TYPE_NEWSONG, ev.getEventInformation());
@@ -283,7 +312,7 @@ public class PlayerController {
 	/**
 	 * Method treating all events related to changes in the status of the player.
 	 * This method should not be called otherwise than through the update method.
-	 * @param ev the PausablePlayerEvent to process.
+	 * @param ev : the PausablePlayerEvent to process.
 	 */
 	private void statusChanged(PlayerEvent ev) {
 		if(ev.getEventInformation() == PlayerStatus.FINISHED) {
@@ -297,15 +326,15 @@ public class PlayerController {
 	}
 	
 	/**
-     * Attach an observer to this player
-     * @param observer an observer of this controller (generally a view) that implements IPlayerObserver.
+     * Attaches an observer to this player
+     * @param observer : an observer of this controller (generally a view) that implements IPlayerObserver.
      */
     public void attach(IPlayerObserver observer) {
     	observers.add(observer);
     }
     /**
-     * Detach the observer passed as a parameter
-     * @param observer an observer that is currently attached to this controller
+     * Detaches the observer passed as a parameter
+     * @param observer : an observer that is currently attached to this controller
      */
     public void detach(IPlayerObserver observer) {
     	observers.remove(observer);
@@ -313,7 +342,7 @@ public class PlayerController {
     
     /**
      * Notifies all the observers attached to this player
-     * @param ev the PlayerControllerEvent which will be transmitted
+     * @param ev : the PlayerControllerEvent which will be transmitted
      */
     public void notifyObservers(PlayerControllerEvent ev) {
     	for(IPlayerObserver observer : observers) {
@@ -322,7 +351,7 @@ public class PlayerController {
     }
     
     /**
-     * Get the current position into the song in ms
+     * Gets the current position into the song in ms
      * @return the current position in the song, in ms.
      */
     public long getPosition(){
@@ -333,7 +362,7 @@ public class PlayerController {
     }
     
     /**
-     * Get the current player status
+     * Gets the current player status
      * @return the current status of the player, which is one of the possible values of the PlayerStatus enum.
      */
     public PlayerStatus getStatus(){

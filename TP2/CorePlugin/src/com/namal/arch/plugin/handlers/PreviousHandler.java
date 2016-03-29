@@ -12,10 +12,16 @@ import com.namal.arch.controller.PlayerEvent;
 import com.namal.arch.utils.IPlayerObserver;
 import com.namal.arch.utils.PlayerEventType;
 
+/**
+ * Handler for the previous button
+ * @author namalgac
+ *
+ */
 public class PreviousHandler implements IPlayerObserver{
 
 	private PlayerController player;
 	private static MToolItem item;
+	private static final String ID = "coreplugin.handledtoolitem.2";
 	
 	@Inject
     private static EModelService modelService;
@@ -28,16 +34,24 @@ public class PreviousHandler implements IPlayerObserver{
 		player.attach(this);
 	}
 	
+	/**
+	 * Init function
+	 */
 	public static void initItem() {
-	    item = (MToolItem) modelService.find("coreplugin.handledtoolitem.2", app);
+	    item = (MToolItem) modelService.find(ID, app);
 	}
 	
+	/**
+	 * Function called when the button is clicked
+	 */
 	@Execute
 	public void execute(){
 		player.previousAndPlay();
 		System.out.println("prev handler");
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Override
 	public void update(PlayerEvent ev) {
 		if(ev.getEventType() == PlayerEventType.TYPE_NEWSONG && item != null){

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.GenericAuthenticationService;
 
-public class DeezerAuthentication extends GenericAuthenticationService{
+class DeezerAuthentication extends GenericAuthenticationService{
 
 	private Deezer service;
 	private static DeezerAuthentication instance;
@@ -24,8 +24,6 @@ public class DeezerAuthentication extends GenericAuthenticationService{
 	
 	@Override
 	protected boolean serverResponse(Map<String, String> paramsMap) {
-		/*if(secretId==null)
-			return false;*/
 		if(paramsMap.get("access_token")!=null){
 			authToken=paramsMap.get("access_token");
 			isAuthenticated=true;
@@ -36,18 +34,16 @@ public class DeezerAuthentication extends GenericAuthenticationService{
 
 	@Override
 	public ProviderInformation getProviderInformation() {
-		// TODO Auto-generated method stub
 		return service.getProviderInformation();
 	}
 
 	@Override
 	public String getAuthentificationUrl() {
-		// TODO Auto-generated method stub
 		return "https://connect.deezer.com/oauth/auth.php?app_id="+appId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&perms=manage_library";
 	}
 
 	@Override
-	public String getAuthToken() {
+	protected String getAuthToken() {
 		return authToken;
 	}
 

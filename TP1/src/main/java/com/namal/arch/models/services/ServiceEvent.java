@@ -1,6 +1,6 @@
-package com.namal.arch.models.services.soundcloud;
+package com.namal.arch.models.services;
 
-enum SoundcloudEvent {
+public enum ServiceEvent {
 	CONNECTED,
 	DISCONNECTED,
 	ERRORCONNECTION,

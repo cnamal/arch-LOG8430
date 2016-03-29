@@ -5,6 +5,11 @@ import java.io.InputStream;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.utils.Configuration;
 
+/**
+ * Model of a song
+ * @author namalgac
+ *
+ */
 public class Song {
 
 	private String id;
@@ -35,7 +40,7 @@ public class Song {
 	}
 	
 	/**
-	 * Uses the SongBuilder to create a Song, initialising the attributes
+	 * Uses the SongBuilder to create a Song, initializing the attributes
 	 * @param builder a SongBuilder
 	 */
 	Song(SongBuilder builder){
@@ -131,6 +136,10 @@ public class Song {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @return provider's id
+	 */
 	public String getProviderId() {
 		return providerId;
 	}

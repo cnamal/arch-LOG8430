@@ -13,7 +13,12 @@ import com.namal.arch.models.services.GenericServiceLoader;
 import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.models.services.cp.CrossPlatform;
 
-
+/**
+ * Audio Service Loader for the Plugin
+ * 
+ * @author namalgac
+ *
+ */
 public class PluginAudioServiceLoader extends GenericServiceLoader{
 
 	
@@ -48,6 +53,7 @@ public class PluginAudioServiceLoader extends GenericServiceLoader{
 		      System.out.println(ex.getMessage());
 		    }
 	}
+	
 	
 	public static IAudioServiceLoader getInstance(){
 		return instance;

@@ -5,8 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.models.services.cp.CrossPlatform;
 
+/**
+ * Model of a playlist
+ * @author namalgac
+ *
+ */
 public class Playlist {
 
 	private List<Song> playlist;
@@ -21,7 +27,7 @@ public class Playlist {
 	
 	/**
 	 * 
-	 * @param Pos
+	 * @param Pos position
 	 * @return Song at the Pos index of the playlist
 	 */
 	public Song getSong(int Pos){
@@ -74,10 +80,14 @@ public class Playlist {
 			}
 			AudioServiceProvider cp = CrossPlatform.getInstance().getAudioServiceProvider();
 			if(!provider.equals(cp)&&!provider.equals(song.getProvider())){
+				AudioServiceProvider prev = provider;
 				provider=cp;
 				provider.createPlaylist(this);
-			}
-			provider.addSongToPlaylist(this,song);
+				provider.addSongToPlaylist(this,song);
+				prev.update(ServiceEvent.USERPLAYLISTSUPDATED);
+			}else
+				provider.addSongToPlaylist(this,song);
+			
 		}
 	}
 	
@@ -127,7 +137,6 @@ public class Playlist {
 	/**
 	 * Creates a new playlist (constructor)
 	 * @param name the name of the playlist
-	 * @param id the id of the playlist
 	 * @param searchPlaylist true if this playlist is a search result, false otherwise
 	 * @param pub a boolean, true if the playlist is public, false otherwise.
 	 */	
@@ -137,11 +146,18 @@ public class Playlist {
 		init(name, null,pub);
 	}
 	
-	
+	/**
+	 * Adds a song to the playlist, without updating it on the server
+	 * @param song song to be added
+	 */
 	public void addSongWithoutUpdating(Song song){
 		playlist.add(song);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String toString(){
 		return playlist.toString();
 	}
@@ -157,22 +173,42 @@ public class Playlist {
 		return json;
 	}
 	
+	/**
+	 * Id getter
+	 * @return id of the playlist
+	 */
 	public String getId(){
 		return id;
 	}
 	
+	/**
+	 * Id setter
+	 * @param id id of the playlist
+	 */
 	public void setId(int id){
 		this.id=id+"";
 	}
 	
+	/**
+	 * Id setter
+	 * @param id id of the playlist
+	 */
 	public void setId(String id){
 		this.id=id;
 	}
 	
+	/**
+	 * 
+	 * @return true if the playlist is public, false if it is private
+	 */
 	public boolean getPub(){
 		return pub;
 	}
 
+	/**
+	 * 
+	 * @param name name of the playlist
+	 */
 	public void setName(String name) {
 		this.name=name;
 	}

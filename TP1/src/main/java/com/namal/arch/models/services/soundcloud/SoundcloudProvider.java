@@ -19,6 +19,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 
 class SoundcloudProvider implements AudioServiceProvider {
 	
@@ -47,10 +48,8 @@ class SoundcloudProvider implements AudioServiceProvider {
 			urlConnection.connect ();
 			return inputStream=urlConnection.getInputStream();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -58,11 +57,9 @@ class SoundcloudProvider implements AudioServiceProvider {
 
 	@Override
 	public void closeInputStream() {
-		// TODO Auto-generated method stub
 		try {
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -85,14 +82,14 @@ class SoundcloudProvider implements AudioServiceProvider {
 			System.out.println(playlist.toJson());
 			out.write(playlist.toJson());
 			out.close();
-			//httpCon.getInputStream();
+
 			String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
 			System.out.println(theString);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -103,14 +100,10 @@ class SoundcloudProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
+	public void removeSongFromPlaylist(Playlist playlist, Song removedSong) {
 		updatePlaylist(playlist);
 	}
 
-	/**
-	 * Creates a playlist on the provider server from a Playlist of the software
-	 * @param playlist the Playlist to save
-	 */
 	@Override
 	public void createPlaylist(Playlist playlist) {
 		// TODO Auto-generated method stub
@@ -141,19 +134,15 @@ class SoundcloudProvider implements AudioServiceProvider {
 			System.out.println(data);
 			out.write(data);
 			out.close();
-			//httpCon.getInputStream();
-			
-			//String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
+
 			JsonReader rdr = Json.createReader(httpCon.getInputStream());
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getInt("id"));	
 			playlist.setName(results.getString("title"));
-			service.notify(SoundcloudEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -163,6 +152,11 @@ class SoundcloudProvider implements AudioServiceProvider {
 		return SoundcloudProviderInformation.getInstance();
 	}
 
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
+	}
+	
 	private static class SoundcloudProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Soundcloud";

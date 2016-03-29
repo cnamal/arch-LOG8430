@@ -11,7 +11,7 @@ import javax.json.JsonReader;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.GenericAuthenticationService;
 
-public class SpotifyAuthentication extends GenericAuthenticationService{
+class SpotifyAuthentication extends GenericAuthenticationService{
 
 	private Spotify service;
 	private static SpotifyAuthentication instance;
@@ -32,15 +32,12 @@ public class SpotifyAuthentication extends GenericAuthenticationService{
 	
 	@Override
 	protected boolean serverResponse(Map<String, String> paramsMap) {
-		/*if(secretId==null)
-			return false;*/
 		if(paramsMap.get("access_token")!=null){
 			try {
 				authToken=paramsMap.get("access_token");
 				URL url = new URL(MEURL);
 				HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 				httpCon.setRequestMethod("GET");
-				//System.out.println(getAuthToken());
 				httpCon.setRequestProperty(
 						"Authorization", "Bearer "+getAuthToken() );
 				JsonReader rdr = Json.createReader(httpCon.getInputStream());
@@ -56,18 +53,16 @@ public class SpotifyAuthentication extends GenericAuthenticationService{
 
 	@Override
 	public ProviderInformation getProviderInformation() {
-		// TODO Auto-generated method stub
 		return service.getProviderInformation();
 	}
 
 	@Override
 	public String getAuthentificationUrl() {
-		// TODO Auto-generated method stub
 		return "https://accounts.spotify.com/authorize?client_id="+clientId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&scope=playlist-read-private%20playlist-modify-public%20playlist-modify-private";
 	}
 
 	@Override
-	public String getAuthToken() {
+	protected String getAuthToken() {
 		return authToken;
 	}
 

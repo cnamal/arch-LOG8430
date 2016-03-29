@@ -9,6 +9,11 @@ import com.namal.arch.view.UIMainClass;
 
 import javafx.scene.Scene;
 
+/**
+ * JafaFX view
+ * @author namalgac
+ *
+ */
 public class PluginView extends FXViewPart {
 	
 	@Override

@@ -12,16 +12,23 @@ import com.namal.arch.utils.PlayerStatus;
 public class PlayerEvent {
     
     /**
-     * Proper attributes of the event object
+     * A reference to the source of the event
      */
 	private Object eventSource;
+	/**
+	 * The type of the event (see PlayerEventType enum for possible values)
+	 */
     private PlayerEventType eventType;
+    /**
+     * Complementary information about the event (in this case the new PlayerStatus, if relevant)
+     */
     private PlayerStatus eventInformation;
     
     /**
      * Constructor allowing easy creation of a PausablePlayerEvent with the needed information
-     * @param eventType
-     * @param eventInformation
+     * @param eventSource : a reference to the source of the event
+     * @param eventType : the type of the event (from the PlayerEventType enum)
+     * @param eventInformation : if relevant, complementary information about the event, null otherwise.
      */
     public PlayerEvent(Object eventSource, PlayerEventType eventType, PlayerStatus eventInformation) {
     	this.eventSource = eventSource;
@@ -30,8 +37,7 @@ public class PlayerEvent {
     }
     
     /**
-     * Returns the eventType as an int. Use the constants of this class to compare
-     * in conditionnal statements
+     * Returns the eventType as a value of the PlayerEventType enum
      * @return the event type (PlayerEventType enum)
      */
 	public PlayerEventType getEventType() {
@@ -39,10 +45,10 @@ public class PlayerEvent {
 	}
 	
 	/**
-	 * Sets the eventType. Use the constants of this class as parameters.
+	 * Sets the eventType. Use the values in the enum PlayerEventType.
 	 * Should not be used alone, as the events should logically be created
 	 * using the given constructor.
-	 * @param eventType a PlayerEventType.
+	 * @param eventType : a value defined in the PlayerEventType enum, representing the event type.
 	 */
 	public void setEventType(PlayerEventType eventType) {
 		this.eventType = eventType;
@@ -50,18 +56,18 @@ public class PlayerEvent {
 	
 	/**
 	 * Returns the eventInformation field value, which gives further information about
-	 * the event. Use the constants of this class when writing conditionnal statements.
-	 * @return eventInformation
+	 * the event. The possible values are those of the PlayerStatus enum.
+	 * @return eventInformation : if relevant, the status of the player, null otherwise.
 	 */
 	public PlayerStatus getEventInformation() {
 		return eventInformation;
 	}
 	
 	/**
-	 * Sets the eventInformation. Use the constants of this class as parameters.
+	 * Sets the eventInformation. Use the values of the PlayerStatus enum as parameter.
 	 * Should not be used alone, as the events should logically be created
 	 * using the given constructor.
-	 * @param eventInformation the PlayerStatus (can be null for new song)
+	 * @param eventInformation : the new player status, or null in case of a new song event
 	 */
 	public void setEventInformation(PlayerStatus eventInformation) {
 		this.eventInformation = eventInformation;
@@ -70,7 +76,7 @@ public class PlayerEvent {
 	/**
 	 * Returns the source object of the event
 	 * To be overriden in the subclasses to reflect the concrete class of the source.
-	 * @return eventSource a reference to the source of the event.
+	 * @return eventSource : a reference to the source of the event.
 	 */
 	public Object getEventSource() {
 		return eventSource;

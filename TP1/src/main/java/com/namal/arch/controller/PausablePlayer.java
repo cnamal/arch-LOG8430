@@ -22,22 +22,45 @@ import javazoom.jl.player.Player;
  */
 public class PausablePlayer {
 
+	/**
+	 * List of the observers attached to this PausablePlayer
+	 */
 	private List<PlayerController> observers;
 
     // the player actually doing all the work
+	/**
+	 * The JLayer Player instance used for this song
+	 */
     private final Player player;
 
     // locking object used to communicate with player thread
+    /**
+     * A lock to ensure the integrity of variables shared with the player thread.
+     */
     private final Object playerLock = new Object();
 
     // status variable what player thread is doing/supposed to do
+    /**
+     * The current status of the player, with values defined in the PlayerStatus enum.
+     */
     private PlayerStatus playerStatus = PlayerStatus.NOTSTARTED;
 
+    /**
+     * Constructor using only the InputStream of the song as parameter
+     * @param inputStream : the InputStream of the song
+     * @throws JavaLayerException
+     */
     public PausablePlayer(final InputStream inputStream) throws JavaLayerException {
         this.player = new Player(inputStream);
         this.observers = new ArrayList<PlayerController>();
     }
 
+    /**
+     * Constructor taking the InputStream of the song and an AudioDevice as parameters
+     * @param inputStream : the InputStream of the song to be played
+     * @param audioDevice : the AudioDevice on which the song will be played
+     * @throws JavaLayerException
+     */
     public PausablePlayer(final InputStream inputStream, final AudioDevice audioDevice) throws JavaLayerException {
         this.player = new Player(inputStream, audioDevice);
         this.observers = new ArrayList<PlayerController>();
@@ -45,13 +68,14 @@ public class PausablePlayer {
     
     /**
      * Attach an observer to this player
+     * @param playerController : the PlayerController which will observe the player
      */
     public void attach(PlayerController playerController) {
     	observers.add(playerController);
     }
     /**
      * Detach the observer passed as a parameter
-     * @param playerController
+     * @param playerController : the PlayerController which will stop to observe the player.
      */
     public void detach(PlayerController playerController) {
     	observers.remove(playerController);
@@ -59,9 +83,8 @@ public class PausablePlayer {
     
     /**
      * Notify each observer in the observers List. This method is called
-     * each time the status is changed. Other events might easily be implemented
-     * if needed.
-     * @param ev a PausablePlayerEvent
+     * each time the status is changed, or each time the song changes
+     * @param ev : the PausablePlayerEvent to be sent to the observers.
      */
     public void notifyObservers(PausablePlayerEvent ev) {
     	for(PlayerController observer : observers) {
@@ -71,10 +94,10 @@ public class PausablePlayer {
 
     /**
      * Change the current status in this player. This method also generates
-     * a PausablePlayerEvent which encapsulates the data about the status changes
+     * a PausablePlayerEvent which encapsulates the data about the status change
      * and calls the notifyObservers method to notify all the observers attached
      * to this object.
-     * @param newStatus
+     * @param newStatus : the new status of the player, with values defined in the PlayerStatus enum.
      */
     public void changeStatus(PlayerStatus newStatus) {
     	playerStatus = newStatus;
@@ -94,7 +117,7 @@ public class PausablePlayer {
     }
     
     /**
-     * Starts playback (resumes if PausablePlayerEvent.PAUSED)
+     * Starts playback (resumes if the status is PausablePlayerEvent.PAUSED)
      */
     public void play() throws JavaLayerException {
         synchronized (playerLock) {
@@ -122,7 +145,8 @@ public class PausablePlayer {
     }
 
     /**
-     * Pauses playback. Returns true if new state is PausablePlayerEvent.PAUSED.
+     * Pauses playback.
+     * @return true if new state is PausablePlayerEvent.PAUSED, false otherwise.
      */
     public boolean pause() {
         synchronized (playerLock) {
@@ -134,7 +158,8 @@ public class PausablePlayer {
     }
 
     /**
-     * Resumes playback. Returns true if the new state is PausablePlayerEvent.PLAYING.
+     * Resumes playback.
+     * @return true if the new state is PausablePlayerEvent.PLAYING, false otherwise.
      */
     public boolean resume() {
         synchronized (playerLock) {
@@ -147,7 +172,7 @@ public class PausablePlayer {
     }
 
     /**
-     * Stops playback. If not PausablePlayerEvent.PLAYING, does nothing
+     * Stops playback. If the currentState is not PausablePlayerEvent.PLAYING, does nothing
      */
     public void stop() {
         synchronized (playerLock) {
@@ -156,6 +181,9 @@ public class PausablePlayer {
         }
     }
 
+    /**
+     * Internal method implementing how the song will be played.
+     */
     private void playInternal() {
         while (playerStatus != PlayerStatus.FINISHED && playerStatus != PlayerStatus.STOPPED) {
             try {
