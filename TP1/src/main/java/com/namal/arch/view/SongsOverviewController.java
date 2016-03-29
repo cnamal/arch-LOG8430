@@ -30,7 +30,7 @@ public class SongsOverviewController extends UIController{
 	/**
 	 * Called on the initialization of this controller
 	 * @param playlist The playlist associated
-	 * @param playerController reference to the FXpart of the PlayerController
+	 * @param playerOverviewController reference to the FXpart of the PlayerController
 	 * @param mainApp reference to the mainApp
 	 */
 	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
