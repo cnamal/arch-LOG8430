@@ -6,6 +6,11 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 
+/**
+ * Service provider
+ * @author namalgac
+ *
+ */
 public interface AudioServiceProvider {
 
 	/**
@@ -21,14 +26,25 @@ public interface AudioServiceProvider {
 	public void closeInputStream();
 	
 	/**
-	 * Save a playlist
-	 * @param playlist
+	 * Update the playlist in the service, by adding a song
+	 * @param playlist playlist that needs to be updated
+	 * @param addedSong added song
 	 */
 	public void addSongToPlaylist(Playlist playlist, Song addedSong);
 	
-	public void removerSongFromPlaylist(Playlist playlist,Song removedSong);
+	/**
+	 * Update the playlist in the service, by removing a song
+	 * @param playlist playlist that needs to be updated
+	 * @param removedSong removed song
+	 */
+	public void removeSongFromPlaylist(Playlist playlist,Song removedSong);
 	
+	/**
+	 * Creates a playlist in ther service
+	 * @param playlist playlist that will be created
+	 */
 	public void createPlaylist(Playlist playlist);
+	
 	/**
 	 * 
 	 * @return ProviderInformation of the AudioService

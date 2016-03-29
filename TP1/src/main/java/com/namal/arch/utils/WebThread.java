@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Web thread
+ * @author namalgac
+ *
+ */
 public class WebThread implements Runnable {
 
 	private URL url;
@@ -12,15 +17,26 @@ public class WebThread implements Runnable {
 	private WebListener wl;
 	private HttpURLConnection http;
 	
+	/**
+	 * 
+	 * @param url url of the query
+	 * @param wl callback function
+	 */
 	public WebThread(URL url,WebListener wl){
 		this.url=url;
 		this.wl=wl;
 	}
 	
+	/**
+	 * 
+	 * @param httpCon http connection of the query
+	 * @param wl callback function
+	 */
 	public WebThread(HttpURLConnection httpCon,WebListener wl) {
 		http=httpCon;
 		this.wl = wl;
 	}
+	
 	@Override
 	public void run() {
 		try {
@@ -34,7 +50,5 @@ public class WebThread implements Runnable {
 			wl.done(null);
 		}
 	}
-	
-	
 
 }

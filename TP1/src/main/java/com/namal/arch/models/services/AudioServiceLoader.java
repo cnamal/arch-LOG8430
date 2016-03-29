@@ -8,16 +8,16 @@ import com.namal.arch.models.services.deezer.Deezer;
 import com.namal.arch.models.services.soundcloud.Soundcloud;
 import com.namal.arch.models.services.spotify.Spotify;
 
-
+/**
+ * Audio Service Loader for 1st lab
+ * @author namalgac
+ *
+ */
 public class AudioServiceLoader extends GenericServiceLoader{
 	
 	
 	private static AudioServiceLoader instance = new AudioServiceLoader();
 	
-	/**
-	 * 
-	 * @return an iterator on the list of the AudioServices available
-	 */
 	public Iterator<AudioService> getAudioServices(){
 		if(audioServices==null){			
 			audioServices = new ArrayList<>();

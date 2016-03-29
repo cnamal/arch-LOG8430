@@ -45,10 +45,8 @@ class CrossPlatformProvider implements AudioServiceProvider {
 			urlConnection.connect ();
 			return inputStream=urlConnection.getInputStream();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -56,11 +54,9 @@ class CrossPlatformProvider implements AudioServiceProvider {
 
 	@Override
 	public void closeInputStream() {
-		// TODO Auto-generated method stub
 		try {
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -92,17 +88,12 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
+	public void removeSongFromPlaylist(Playlist playlist, Song removedSong) {
 		updatePlaylist(playlist);
 	}
 
-	/**
-	 * Creates a playlist on the provider server from a Playlist of the software
-	 * @param playlist the Playlist to save
-	 */
 	@Override
 	public void createPlaylist(Playlist playlist) {
-		// TODO Auto-generated method stub
 		System.out.println("createPlaylist");
 		if(!service.isConnected())
 			return; // TODO add Exception system
@@ -114,31 +105,6 @@ class CrossPlatformProvider implements AudioServiceProvider {
 		db.getCollection("playlists").insertOne(play);
 		playlist.setId(play.getObjectId("_id").toString());
 		service.notify(CrossPlatformEvent.USERPLAYLISTSUPDATED);
-		//FindIterable<Document> playlistColletction=db.getCollection("playlists")
-		/*URL url;
-		
-		try {
-			//System.out.println("savePlaylist");
-			url = new URL(CrossPlatform.MYPLAYLISTS+"?access_token="+service.getAuthToken()+"&request_method=POST&title="+URLEncoder.encode(playlist.getName(), "UTF-8"));
-			
-			//httpCon.getInputStream();
-			
-			//String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
-			JsonReader rdr = Json.createReader(url.openConnection().getInputStream());
-			JsonObject results = rdr.readObject();
-			playlist.setId(results.getInt("id"));
-			if(!playlist.getPub()){
-				url = new URL(CrossPlatform.PLAYLISTURL+playlist.getId()+"?access_token="+service.getAuthToken()+"&request_method=POST&public=false");
-				url.openStream();
-			}
-			service.notify(CrossPlatformEvent.USERPLAYLISTSUPDATED);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	}
 
 	@Override

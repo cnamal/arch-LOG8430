@@ -6,7 +6,7 @@ import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.GenericAuthenticationService;
 import com.namal.arch.utils.SharedPreferences;
 
-public class SoundcloudAuthentication extends GenericAuthenticationService{
+class SoundcloudAuthentication extends GenericAuthenticationService{
 
 	private Soundcloud service;
 	private static SoundcloudAuthentication instance;
@@ -39,19 +39,16 @@ public class SoundcloudAuthentication extends GenericAuthenticationService{
 
 	@Override
 	public ProviderInformation getProviderInformation() {
-		// TODO Auto-generated method stub
 		return service.getProviderInformation();
 	}
 
 	@Override
 	public String getAuthentificationUrl() {
-		// TODO Auto-generated method stub
 		return "https://soundcloud.com/connect?client_id=467af8ca6a20d82958569c3c248446f3&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&scope=non-expiring";
 	}
 
 	@Override
-	public String getAuthToken() {
-		// TODO Auto-generated method stub
+	protected String getAuthToken() {
 		return authToken;
 	}
 

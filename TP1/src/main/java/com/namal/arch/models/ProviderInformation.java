@@ -1,5 +1,10 @@
 package com.namal.arch.models;
 
+/**
+ * Basic information provider
+ * @author namalgac
+ *
+ */
 public abstract class ProviderInformation {
 
 	private String name;

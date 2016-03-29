@@ -9,6 +9,11 @@ import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.ServiceListener;
 
+/**
+ * Proxy class for Soundcloud
+ * @author namalgac
+ *
+ */
 public class Soundcloud implements AudioService {
 
 	private static com.namal.arch.models.services.soundcloud.Soundcloud soundcloud = com.namal.arch.models.services.soundcloud.Soundcloud.getInstance();

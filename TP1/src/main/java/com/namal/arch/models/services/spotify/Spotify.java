@@ -26,6 +26,11 @@ import com.namal.arch.utils.ServiceListener;
 import com.namal.arch.utils.WebListener;
 import com.namal.arch.utils.WebThread;
 
+/**
+ * Spotify service
+ * @author namalgac
+ *
+ */
 public class Spotify implements AudioService {
 
 	private static Spotify instance = new Spotify();
@@ -83,7 +88,6 @@ public class Spotify implements AudioService {
 				url = new URL(MYPLAYLISTS);
 				HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 				httpCon.setRequestMethod("GET");
-				//System.out.println(getAuthToken());
 				httpCon.setRequestProperty(
 						"Authorization", "Bearer "+getAuthToken() );
 				WebThread webThread = new WebThread(httpCon, new WebListener() {
@@ -122,7 +126,6 @@ public class Spotify implements AudioService {
 												JsonArray results = obj.getJsonArray("items");
 												for (JsonObject result : results.getValuesAs(JsonObject.class)) {
 													try {
-														//System.out.println(result);
 														p.addSongWithoutUpdating(songBuilder(result.getJsonObject("track")));
 														synchronized (playlist) {
 															nbPlaylists++;
@@ -130,7 +133,6 @@ public class Spotify implements AudioService {
 																callback.done(playlists);
 														}
 													} catch (SongMalformed e) {
-														// TODO Auto-generated catch block
 														e.printStackTrace();
 													}
 
@@ -141,26 +143,11 @@ public class Spotify implements AudioService {
 									});
 									new Thread(webThread).start();
 								} catch (MalformedURLException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								
-								/*JsonArray songs = playlist.getJsonArray("tracks");
-								for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
-									if (song.getBoolean("streamable")) {
-										try {
-											p.addSongWithoutUpdating(songBuilder(song));
-										} catch (SongMalformed e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}
-								}
-								playlists.add(p);*/
-								//}
 							}
 						}else
 							callback.done(null);
@@ -168,10 +155,8 @@ public class Spotify implements AudioService {
 				});
 				new Thread(webThread).start();
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -187,6 +172,7 @@ public class Spotify implements AudioService {
 		return provider.getProviderInformation();
 	}
 
+	@Override
 	public String toString() {
 		return getProviderInformation().toString();
 	}
@@ -226,23 +212,19 @@ public class Spotify implements AudioService {
 			Thread thread = new Thread(webThread);
 			thread.start();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public AudioServiceProvider getAudioServiceProvider() {
-		// TODO Auto-generated method stub
 		return provider;
 	}
 
 	@Override
 	public IAuthentification getAuthentification() {
-		// TODO Auto-generated method stub
 		return authentication;
 	}
 

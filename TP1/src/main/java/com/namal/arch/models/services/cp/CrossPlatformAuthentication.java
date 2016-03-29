@@ -4,7 +4,7 @@ import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.MongoDB;
 
-public class CrossPlatformAuthentication implements IAuthentification {
+class CrossPlatformAuthentication implements IAuthentification {
 
 	private CrossPlatform service;
 	private static CrossPlatformAuthentication instance;
@@ -27,7 +27,6 @@ public class CrossPlatformAuthentication implements IAuthentification {
 
 	@Override
 	public String getAuthentificationUrl() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

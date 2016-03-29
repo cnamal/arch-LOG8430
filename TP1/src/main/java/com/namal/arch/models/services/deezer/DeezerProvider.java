@@ -43,10 +43,8 @@ class DeezerProvider implements AudioServiceProvider {
 			urlConnection.connect ();
 			return inputStream=urlConnection.getInputStream();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -54,11 +52,9 @@ class DeezerProvider implements AudioServiceProvider {
 
 	@Override
 	public void closeInputStream() {
-		// TODO Auto-generated method stub
 		try {
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,10 +75,8 @@ class DeezerProvider implements AudioServiceProvider {
 			
 			service.notify(DeezerEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -93,29 +87,20 @@ class DeezerProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void removerSongFromPlaylist(Playlist playlist, Song removedSong) {
+	public void removeSongFromPlaylist(Playlist playlist, Song removedSong) {
 		updatePlaylist(playlist);
 	}
 
-	/**
-	 * Creates a playlist on the provider server from a Playlist of the software
-	 * @param playlist the Playlist to save
-	 */
 	@Override
 	public void createPlaylist(Playlist playlist) {
-		// TODO Auto-generated method stub
 		System.out.println("createPlaylist");
 		if(!service.isConnected())
 			return; // TODO add Exception system
 		URL url;
 		
 		try {
-			//System.out.println("savePlaylist");
 			url = new URL(Deezer.MYPLAYLISTS+"?access_token="+service.getAuthToken()+"&request_method=POST&title="+URLEncoder.encode(playlist.getName(), "UTF-8"));
 			
-			//httpCon.getInputStream();
-			
-			//String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
 			JsonReader rdr = Json.createReader(url.openConnection().getInputStream());
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getInt("id"));
@@ -125,10 +110,8 @@ class DeezerProvider implements AudioServiceProvider {
 			}
 			service.notify(DeezerEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -25,6 +25,11 @@ import com.namal.arch.utils.ServiceListener;
 import com.namal.arch.utils.WebListener;
 import com.namal.arch.utils.WebThread;
 
+/**
+ * Deezer service
+ * @author namalgac
+ *
+ */
 public class Deezer implements AudioService {
 
 	private static Deezer instance = new Deezer();
@@ -48,6 +53,10 @@ public class Deezer implements AudioService {
 		return authentication.getAuthToken();
 	}
 
+	/**
+	 * 
+	 * @return instance of Deezer service
+	 */
 	public static Deezer getInstance() {
 		return instance;
 	}
@@ -70,7 +79,6 @@ public class Deezer implements AudioService {
 
 	@Override
 	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
-		// TODO Auto-generated method stub
 		if (!authentication.isConnected())
 			return; // TODO add Exception system
 		URL url;
@@ -92,7 +100,6 @@ public class Deezer implements AudioService {
 							nbPlaylists=0;
 							int max = results.size();
 							for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
-								//if (!playlist.isNull("streamable") && playlist.getBoolean("streamable")) {
 								Playlist p = new Playlist(playlist.getString("title"), playlist.getInt("id"), provider,
 										playlist.getBoolean("public"));
 								String trackUrl = playlist.getString("link");
@@ -111,7 +118,6 @@ public class Deezer implements AudioService {
 												JsonArray results = obj.getJsonObject("tracks").getJsonArray("data");
 												for (JsonObject result : results.getValuesAs(JsonObject.class)) {
 													try {
-														//System.out.println(result);
 														p.addSongWithoutUpdating(songBuilder(result));
 														synchronized (playlist) {
 															nbPlaylists++;
@@ -119,7 +125,6 @@ public class Deezer implements AudioService {
 																callback.done(playlists);
 														}
 													} catch (SongMalformed e) {
-														// TODO Auto-generated catch block
 														e.printStackTrace();
 													}
 
@@ -130,23 +135,8 @@ public class Deezer implements AudioService {
 									});
 									new Thread(webThread).start();
 								} catch (MalformedURLException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								} 
-								
-								/*JsonArray songs = playlist.getJsonArray("tracks");
-								for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
-									if (song.getBoolean("streamable")) {
-										try {
-											p.addSongWithoutUpdating(songBuilder(song));
-										} catch (SongMalformed e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}
-								}
-								playlists.add(p);*/
-								//}
 							}
 						}else
 							callback.done(null);
@@ -154,7 +144,6 @@ public class Deezer implements AudioService {
 				});
 				new Thread(webThread).start();
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 		}

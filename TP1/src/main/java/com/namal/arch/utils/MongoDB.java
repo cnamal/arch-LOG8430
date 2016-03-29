@@ -8,11 +8,19 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 
+/**
+ * MongoDB driver
+ * @author namalgac
+ *
+ */
 public class MongoDB {
 	
 	private static MongoClient mongoClient;
 	static MongoDatabase db;
 	
+	/**
+	 * Initialize the driver
+	 */
 	public static void init(){
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
@@ -40,20 +48,30 @@ public class MongoDB {
 			mongoClient = new MongoClient(uri);
 			db = mongoClient.getDatabase(uri.getDatabase());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * 
+	 * @return true if the mongodb driver is connected
+	 */
 	public static boolean isConnected(){
 		return mongoClient!=null;
 	}
 	
+	/**
+	 * Release the driver
+	 */
 	public static void cleanUp(){
 		mongoClient.close();
 		db=null;
 	}
 	
+	/**
+	 * 
+	 * @return the database
+	 */
 	public static MongoDatabase getDatabase(){
 		return db;
 	}

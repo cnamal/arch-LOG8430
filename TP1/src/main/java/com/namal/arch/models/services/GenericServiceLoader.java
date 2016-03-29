@@ -12,11 +12,20 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.namal.arch.utils.MongoDB;
 
+/**
+ * Generic Audio Service Loader (Helper class)
+ * 
+ * @author namalgac
+ *
+ */
 public abstract class GenericServiceLoader implements IAudioServiceLoader{
 	
 	private static BiMap<String, AudioServiceProvider> audioServicesMap;
 	protected static List<AudioService> audioServices;
 	
+	/**
+	 * Initializes a bidirectional map
+	 */
 	protected void initMap(){
 		audioServicesMap = HashBiMap.create();
 		MongoDatabase db = MongoDB.getDatabase();
@@ -43,6 +52,7 @@ public abstract class GenericServiceLoader implements IAudioServiceLoader{
 	public String getProviderId(AudioServiceProvider service){
 		return audioServicesMap.inverse().get(service);
 	}
+	
 	
 	public AudioServiceProvider getProvider(String serviceId){
 		return audioServicesMap.get(serviceId);

@@ -9,9 +9,15 @@ import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.ServiceListener;
 
+/**
+ * Proxy class for Deezer
+ * @author namalgac
+ *
+ */
 public class Deezer implements AudioService {
 
 	private static com.namal.arch.models.services.deezer.Deezer deezer = com.namal.arch.models.services.deezer.Deezer.getInstance();
+	
 	@Override
 	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
 		deezer.getPlaylists(callback);

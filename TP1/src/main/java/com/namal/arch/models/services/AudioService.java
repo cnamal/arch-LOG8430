@@ -6,11 +6,16 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.utils.ServiceListener;
 
+/**
+ * Main interface for the audio services
+ * @author namalgac
+ *
+ */
 public interface AudioService {
 	
 	/**
-	 * 
-	 * @return List of all the playlist for this AudioService
+	 * Get the playlists of the user 
+	 * @param callback callback function called once the playlists have been retrieved
 	 */
 	public void getPlaylists(ServiceListener<List<Playlist>> callback);
 	
@@ -33,7 +38,8 @@ public interface AudioService {
 	
 	/**
 	 * 
-	 * @return list of tracks found 
+	 * @param track Name of the track that is researched
+	 * @param callback callback function called once the search is completed
 	 */
 	public void searchTrack(String track, ServiceListener<Playlist> callback);
 	
@@ -57,7 +63,15 @@ public interface AudioService {
 	 */
 	public AudioServiceProvider getAudioServiceProvider();
 	
+	/**
+	 * 
+	 * @return the authentication module associated with the AudioService
+	 */
 	public IAuthentification getAuthentification();
 
+	/**
+	 * 
+	 * @return true if you can search tracks
+	 */
 	public boolean searchAvailable();
 }

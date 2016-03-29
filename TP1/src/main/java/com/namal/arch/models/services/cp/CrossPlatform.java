@@ -19,6 +19,11 @@ import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.MongoDB;
 import com.namal.arch.utils.ServiceListener;
 
+/**
+ * Cross platform service
+ * @author namalgac
+ *
+ */
 public class CrossPlatform implements AudioService {
 
 	private static CrossPlatform instance = new CrossPlatform();
@@ -37,8 +42,11 @@ public class CrossPlatform implements AudioService {
 		provider = CrossPlatformProvider.getInstance(this);
 	}
 
-	
 
+	/**
+	 * 
+	 * @return instance of Cross platform service
+	 */
 	public static CrossPlatform getInstance() {
 		return instance;
 	}

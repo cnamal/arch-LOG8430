@@ -7,6 +7,11 @@ import com.namal.arch.plugin.models.PluginAudioServiceLoader;
 import com.namal.arch.utils.Configuration;
 import com.namal.arch.utils.MongoDB;
 
+/**
+ * Activator class that controls the life cycle of the plugin.
+ * @author namalgac
+ *
+ */
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
@@ -21,6 +26,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		
+		// setup for our plugin
 		Configuration.setAudioServiceLoader(PluginAudioServiceLoader.getInstance());
 		Configuration.setShow(false);
 		MongoDB.init();
@@ -32,6 +39,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+		
+		//release the mongodb driver
 		MongoDB.cleanUp();
 	}
 
