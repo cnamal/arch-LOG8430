@@ -27,7 +27,12 @@ public class SongsOverviewController extends UIController{
 		
 	}
 	
-	
+	/**
+	 * Called on the initialization of this controller
+	 * @param playlist The playlist associated
+	 * @param playerController reference to the FXpart of the PlayerController
+	 * @param mainApp reference to the mainApp
+	 */
 	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
 		this.mainApp = mainApp;
 		this.playerOverviewController = playerOverviewController;
@@ -36,6 +41,10 @@ public class SongsOverviewController extends UIController{
 		createHBoxes();
 	}
 	
+	/**
+	 * Create the boxes associated.
+	 * Synchronized in order to not block the application while loading
+	 */
 	private void createHBoxes(){
 		synchronized(playlist){
 			Iterator<Song> it = playlist.getSongs();
