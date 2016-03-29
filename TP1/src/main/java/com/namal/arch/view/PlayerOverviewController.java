@@ -64,6 +64,11 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 	public PlayerOverviewController() {
 	}
 	
+	/**
+     * Function to call in order to load this service
+     * @param refPane The pane where the module will be attached
+     * @param mainApp Reference to the main app
+     */
 	public void onLoad(Pane refPane, UIMainClass mainApp){
 		this.mainApp = mainApp;
 		this.refPane = refPane;
@@ -88,6 +93,11 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		
 	}
 	
+	/**
+     * Play the playlist at the positon
+     * @param playlist The playlist played
+     * @param currPos At which position
+     */
 	public void onPlay(Playlist playlist, int currPos){
 		//Setting the variables
 		this.currPlaylist = playlist;
@@ -99,6 +109,10 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
     	player.play();
 	}
 	
+	/**
+	 * Reset all the buttons (and put them grey if needed)
+	 * They're grey when the action is not possible
+	 */
 	private void resetButton(){
 		setBrightImage(prevView, (currPlaylist == null || currPos == 0) ? GREY : BLACK);
 		prevView.setDisable(currPlaylist == null || currPos == 0);
@@ -108,16 +122,27 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		nextView.setDisable(currPlaylist == null || currPos == currPlaylist.getTotalNumberSongs() - 1);
 	}
 	
+	/**
+	 * Change the brightness of an image
+	 * @param i the image
+	 * @param brightness Between 0 and 1
+	 */
 	private void setBrightImage(ImageView i, float brightness){
 		ColorAdjust colorAdjust = new ColorAdjust();
 		colorAdjust.setBrightness(brightness);
 		i.setEffect(colorAdjust);
 	}
 	
+	/**
+	 * Change the play image according to the player is playing or not
+	 */
 	private void changePlayPauseImage(){
 		playPauseView.setImage((isPlaying)? pause : play);
 	}
 	
+	/**
+	 * Load all the images
+	 */
 	private void loadAndSetImages(){
 		play = new Image(getClass().getClassLoader().getResource("play.png").toString());
 		pause = new Image(getClass().getClassLoader().getResource("pause.png").toString());
@@ -128,6 +153,9 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		changePlayPauseImage();
 	}
 	
+	/**
+	 * Called when a new music is played
+	 */
 	private void newMusicSet(){
 		currPos = player.getCurrentSongIndex();
 		currPlaylist = player.getCurrentPlaylist();
@@ -143,19 +171,21 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		setSlider();
 	}
 	
+	/**
+	 * Resize the text into the player according to its new size
+	 * @param newSceneWidth The new size
+	 * @param oldSceneWidth The older size
+	 */
 	private void resizeText(Number newSceneWidth, Number oldSceneWidth){
 		title.setMaxWidth(title.getMaxWidth() + (newSceneWidth.intValue() - oldSceneWidth.intValue()));
 	}
 	
 	@FXML
 	private void playPauseAction(){
-		if(isPlaying){
-			
+		if(isPlaying)
 			player.pause();			
-		} else {
-			
+		else
 			player.resume();
-		}
 	}
 	
 	@FXML
@@ -163,8 +193,6 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		player.previousAndPlay();
 		if(!isPlaying)
 			player.pause();
-		//currPos = player.getCurrentSongIndex();
-		//newMusicSet();
 	}
 	
 	@FXML
@@ -172,8 +200,6 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		player.nextAndPlay();
 		if(!isPlaying)
 			player.pause();
-		//currPos = player.getCurrentSongIndex();
-		//newMusicSet();
 	}
 	
 	@FXML
@@ -181,10 +207,17 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 		//TODO
 	}
 	
+	/**
+	 * @param i number of millisecond
+	 * @return String associated with min:sec
+	 */
 	public static String msToMin(long i){
 		return String.valueOf(i/(1000*60)) + ":" + ((i%(1000*60)/1000 < 10) ? "0" : "") + String.valueOf(i%(1000*60)/1000);
 	}
 	
+	/**
+	 * Update the slider
+	 */
 	private void setSlider(){
 		slider.setMin(0);
 		slider.setMax(timeTotalInMs);
@@ -205,6 +238,10 @@ public class PlayerOverviewController extends UIController implements IPlayerObs
 	}
 	
 
+	/**
+	 * Reaction to events
+	 * @param ev the event
+	 */
 	@Override
 	public void update(PlayerEvent ev) {
 		if(ev.getEventType() == PlayerEventType.TYPE_NEWSONG){

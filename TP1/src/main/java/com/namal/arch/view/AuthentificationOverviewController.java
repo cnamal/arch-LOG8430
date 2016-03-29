@@ -28,6 +28,13 @@ public class AuthentificationOverviewController {
 	public AuthentificationOverviewController() {
 	}
 	
+	/**
+     * Function to call in order to load this service
+     * @param stage The stage into which we load the service
+     * @param auth The authentication information
+     * @param button a button
+     * @param serv The audio Service we try to authenticate
+     */
 	private void onLoadService(Stage stage, IAuthentification auth, Button button, AudioService serv){
 		
 		stage.setTitle("Authentification " + auth.getProviderInformation().getName());
@@ -75,6 +82,12 @@ public class AuthentificationOverviewController {
         stage.showAndWait();
 	}
 	
+	/**
+     * Function to call in order to load the list of all services
+     * @param module the pane where the the module will be attached
+     * @param stage The stage into which we load the service
+     * @param serviceLoader The IAudioServiceLoader linked
+     */
 	public void onLoadListServices(AnchorPane module, Stage stage, IAudioServiceLoader serviceLoader){
 		Iterator<AudioService> list = serviceLoader.getAudioServices();
 		Label text = new Label("Select a service to authenticate");
@@ -156,7 +169,7 @@ public class AuthentificationOverviewController {
         stage.setScene(scene);
         stage.showAndWait();
 	}*/
-	
+
 	private void updateButton(Button button, AudioService serv){
 		button.setText((serv.isConnected()?"Disconnect":"Connect"));
     	button.setStyle((serv.isConnected()?"-fx-base: #b6e7c9;":"-fx-base: "));

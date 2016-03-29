@@ -18,6 +18,10 @@ public class UIController {
 	protected Pane refPane;
 	protected UIMainClass mainApp;
 	
+	/**
+	 * @param FXMLFile Location of the FXMLFile
+	 * @return The loader of the loaded file
+	 */
 	public FXMLLoader getLoaderFromFile(String FXMLFile)
     {
 	   //Loading the FXMLFile into an URL
@@ -28,6 +32,11 @@ public class UIController {
        return loader;
     }
 
+	/**
+	 * @param FXMLFile Location of the FXMLFile
+	 * @param module The Pane where the module will be attached
+	 * @return The loader of the loaded file
+	 */
 	public FXMLLoader loadingModule(String FXMLFile, Pane module){
 		try {
 			FXMLLoader loader = getLoaderFromFile(FXMLFile);

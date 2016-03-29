@@ -147,6 +147,10 @@ public class PlaylistOverview extends UIController{
     	}
     }
 
+    /**
+     * Load the results
+     * @param playlists The list of all the results
+     */
     private void showResults(List<Playlist> playlists){
     	//Begin of the real function
 		for(Playlist p : playlists){

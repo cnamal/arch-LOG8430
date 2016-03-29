@@ -38,6 +38,9 @@ public class GeneralLayoutController extends UIController{
     	loadPlayer();
     }
     
+	/**
+     * Function to load the player
+     */
 	private void loadPlayer() {		
 		FXMLLoader loader = loadingModule("PlayerOverview.fxml", playerPane);
         

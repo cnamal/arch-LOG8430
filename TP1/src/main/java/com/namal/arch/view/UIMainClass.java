@@ -49,6 +49,10 @@ public class UIMainClass extends Application{
 		}
 	}
 	
+	/**
+	 * Initialization
+	 * @param args JavaFX arguments
+	 */
 	public void firstLoad(String[] args){
 		launch(args);
 	}

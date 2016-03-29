@@ -40,6 +40,11 @@ public class SearchOverviewController extends UIController{
 		providerListChecked = new ArrayList<AudioService>();
 	}
 	
+	/**
+	 * Called on the initialization of this controller
+	 * @param mainApp reference to the mainApp
+	 * @param playerController reference to the FXpart of the PlayerController
+	 */
 	public void onLoad(UIMainClass mainApp, PlayerOverviewController playerController){
 		this.playerController = playerController;
 		this.mainApp = mainApp;
@@ -53,6 +58,11 @@ public class SearchOverviewController extends UIController{
 		}		
 	}
 	
+	/**
+	 * Create the selection for all the services providers implemented
+	 * @param serv the service
+	 * @return CheckMenuItem The item created and filled
+	 */
 	private CheckMenuItem createMenuCheckProvider(AudioService serv){
 		CheckMenuItem item = new CheckMenuItem(serv.getProviderInformation().getName());
 		
@@ -99,6 +109,9 @@ public class SearchOverviewController extends UIController{
 		}
 	}
 
+	/**
+	 * Show the results
+	 */
 	private void showResults() {
 		FXMLLoader loader = loadingModule("SongsOverview.fxml", songsPane);
 		

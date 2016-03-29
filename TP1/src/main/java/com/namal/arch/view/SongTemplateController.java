@@ -59,6 +59,14 @@ public class SongTemplateController extends UIController{
 	public SongTemplateController() {		
 	}
 
+	/**
+	 * Called on the initialization of this controller
+	 * @param song The song associated
+	 * @param songBox Where the box will be attached
+	 * @param playlist The playlist where the song belongs to
+	 * @param playerController reference to the FXpart of the PlayerController
+	 * @param mainApp reference to the mainApp
+	 */
 	public void onLoad(Song song, AnchorPane songBox, Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
 		this.mainApp = mainApp;
 		this.playerOverviewController = playerOverviewController;

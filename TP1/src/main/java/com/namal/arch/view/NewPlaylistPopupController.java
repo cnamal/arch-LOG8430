@@ -18,6 +18,9 @@ public class NewPlaylistPopupController extends UIController {
 	private Song song;
 	private Stage stage;
 	
+	/**
+	 * Function called when the controller is initialized
+     */
 	public void onLoad(Song song, Stage stage){
 		this.song = song;
 		this.stage = stage;
