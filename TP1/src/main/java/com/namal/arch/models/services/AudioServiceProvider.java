@@ -51,4 +51,9 @@ public interface AudioServiceProvider {
 	 */
 	public ProviderInformation getProviderInformation();
 	
+	/**
+	 * Notify the service provider of an event
+	 * @param ev Service event
+	 */
+	public void update(ServiceEvent ev);
 }

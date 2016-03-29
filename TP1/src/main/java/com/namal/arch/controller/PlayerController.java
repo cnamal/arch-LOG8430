@@ -161,8 +161,8 @@ public class PlayerController {
 	 * Sets the current song but does NOT play it.
 	 * This method should typically be called when the playlist is paused or stopped.
 	 * @param i : if i is within the bounds of the playlist size then it is set to that index
-	 * if i<0 then it is set to the last Song of the playlist
-	 * if (i>playlist size) it is set to the first Song of the playlist
+	 * if i&lt;0 then it is set to the last Song of the playlist
+	 * if (i&gt;playlist size) it is set to the first Song of the playlist
 	 */
 	public void setCurrentSongIndex(int i){
 		//TODO read carefully the Javadoc

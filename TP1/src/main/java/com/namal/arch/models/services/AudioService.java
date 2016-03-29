@@ -74,4 +74,5 @@ public interface AudioService {
 	 * @return true if you can search tracks
 	 */
 	public boolean searchAvailable();
+	
 }

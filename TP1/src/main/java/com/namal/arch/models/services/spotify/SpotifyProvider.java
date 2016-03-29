@@ -18,6 +18,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 
 class SpotifyProvider implements AudioServiceProvider {
 	
@@ -88,7 +89,7 @@ class SpotifyProvider implements AudioServiceProvider {
 			out.write(data.toString());
 			out.close();
 			httpCon.getInputStream();
-			service.notify(SpotifyEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -140,7 +141,7 @@ class SpotifyProvider implements AudioServiceProvider {
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getString("id"));	
 			playlist.setName(results.getString("name"));
-			service.notify(SpotifyEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -153,6 +154,11 @@ class SpotifyProvider implements AudioServiceProvider {
 		return SpotifyProviderInformation.getInstance();
 	}
 
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
+	}
+	
 	private static class SpotifyProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Spotify";

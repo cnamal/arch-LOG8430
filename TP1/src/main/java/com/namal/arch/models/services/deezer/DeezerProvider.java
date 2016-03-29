@@ -16,6 +16,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 
 class DeezerProvider implements AudioServiceProvider {
 	
@@ -73,7 +74,7 @@ class DeezerProvider implements AudioServiceProvider {
 			url = new URL(urlString);
 			url.openConnection().getInputStream();
 			
-			service.notify(DeezerEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -108,7 +109,7 @@ class DeezerProvider implements AudioServiceProvider {
 				url = new URL(Deezer.PLAYLISTURL+playlist.getId()+"?access_token="+service.getAuthToken()+"&request_method=POST&public=false");
 				url.openStream();
 			}
-			service.notify(DeezerEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -119,6 +120,11 @@ class DeezerProvider implements AudioServiceProvider {
 	@Override
 	public ProviderInformation getProviderInformation() {
 		return SpotifyProviderInformation.getInstance();
+	}
+	
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
 	}
 
 	private static class SpotifyProviderInformation extends ProviderInformation{

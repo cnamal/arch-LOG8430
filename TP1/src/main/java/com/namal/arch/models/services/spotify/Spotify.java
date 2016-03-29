@@ -22,6 +22,7 @@ import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
+import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.ServiceListener;
 import com.namal.arch.utils.WebListener;
 import com.namal.arch.utils.WebThread;
@@ -238,15 +239,15 @@ public class Spotify implements AudioService {
 		authentication.disconnect();
 	}
 
-	void notify(SpotifyEvent ev) {
-		if (ev == SpotifyEvent.USERPLAYLISTSUPDATED)
-			playlists = null;
-		else
-			throw new UnsupportedOperationException(ev + " is not supported");
-	}
-
 	@Override
 	public boolean searchAvailable() {
 		return true;
+	}
+	
+	void update(ServiceEvent ev) {
+		if (ev == ServiceEvent.USERPLAYLISTSUPDATED)
+			playlists = null;
+		else
+			throw new UnsupportedOperationException(ev + " is not supported");
 	}
 }

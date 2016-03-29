@@ -17,6 +17,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.MongoDB;
 
 class CrossPlatformProvider implements AudioServiceProvider {
@@ -79,7 +80,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 					.append("uri", song.getUri()));
 		}
 		db.getCollection("playlists").updateOne(new Document("_id", new ObjectId(playlist.getId())),new Document("$set",new Document("songs",list)));
-		service.notify(CrossPlatformEvent.USERPLAYLISTSUPDATED);
+		service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 	}
 	
 	@Override
@@ -104,7 +105,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 				.append("songs",new ArrayList<>());
 		db.getCollection("playlists").insertOne(play);
 		playlist.setId(play.getObjectId("_id").toString());
-		service.notify(CrossPlatformEvent.USERPLAYLISTSUPDATED);
+		service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 	}
 
 	@Override
@@ -112,6 +113,11 @@ class CrossPlatformProvider implements AudioServiceProvider {
 		return SpotifyProviderInformation.getInstance();
 	}
 
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
+	}
+	
 	private static class SpotifyProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Crossplatform";

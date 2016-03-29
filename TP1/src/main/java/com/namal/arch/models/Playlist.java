@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.models.services.cp.CrossPlatform;
 
 /**
@@ -79,10 +80,14 @@ public class Playlist {
 			}
 			AudioServiceProvider cp = CrossPlatform.getInstance().getAudioServiceProvider();
 			if(!provider.equals(cp)&&!provider.equals(song.getProvider())){
+				AudioServiceProvider prev = provider;
 				provider=cp;
 				provider.createPlaylist(this);
-			}
-			provider.addSongToPlaylist(this,song);
+				provider.addSongToPlaylist(this,song);
+				prev.update(ServiceEvent.USERPLAYLISTSUPDATED);
+			}else
+				provider.addSongToPlaylist(this,song);
+			
 		}
 	}
 	

@@ -17,7 +17,7 @@ import com.namal.arch.utils.ServiceListener;
 public class Spotify implements AudioService {
 
 	private static com.namal.arch.models.services.spotify.Spotify spotify = com.namal.arch.models.services.spotify.Spotify.getInstance();
-	//private static  Spotify spotify = new 
+	
 	@Override
 	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
 		spotify.getPlaylists(callback);

@@ -19,6 +19,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.models.services.ServiceEvent;
 
 class SoundcloudProvider implements AudioServiceProvider {
 	
@@ -84,6 +85,7 @@ class SoundcloudProvider implements AudioServiceProvider {
 
 			String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
 			System.out.println(theString);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -137,7 +139,7 @@ class SoundcloudProvider implements AudioServiceProvider {
 			JsonObject results = rdr.readObject();
 			playlist.setId(results.getInt("id"));	
 			playlist.setName(results.getString("title"));
-			service.notify(SoundcloudEvent.USERPLAYLISTSUPDATED);
+			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -150,6 +152,11 @@ class SoundcloudProvider implements AudioServiceProvider {
 		return SoundcloudProviderInformation.getInstance();
 	}
 
+	@Override
+	public void update(ServiceEvent ev) {
+		service.update(ev);
+	}
+	
 	private static class SoundcloudProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Soundcloud";

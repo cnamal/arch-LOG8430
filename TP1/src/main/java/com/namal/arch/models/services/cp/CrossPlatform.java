@@ -16,6 +16,7 @@ import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
+import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.MongoDB;
 import com.namal.arch.utils.ServiceListener;
 
@@ -144,8 +145,8 @@ public class CrossPlatform implements AudioService {
 		authentication.disconnect();
 	}
 
-	void notify(CrossPlatformEvent ev) {
-		if (ev == CrossPlatformEvent.USERPLAYLISTSUPDATED)
+	void update(ServiceEvent ev) {
+		if (ev == ServiceEvent.USERPLAYLISTSUPDATED)
 			playlists = null;
 		else
 			throw new UnsupportedOperationException(ev + " is not supported");
