@@ -59,7 +59,11 @@ public class AuthentificationOverviewController {
                 	  String url= webEngine.getLocation();
                 	  System.out.println(url);
                 	  if(url.indexOf(auth.testString())>=0){
-                		  boolean test=auth.serverResponse(url);
+                		  String urlServer = Connexion.getURI();
+                		  strUrlServer = urlServer+"/connect?providerId=1&url="+url;
+                		  URL urlServer = new URL(strUrlServer);
+                		  InputStream test = urlServer.openStream();
+                		  //boolean test=auth.serverResponse(url);
                 		  if(test){
                 			  //TODO print success notification
                 			  //use auth.getProviderInformation to print stuff if needed
