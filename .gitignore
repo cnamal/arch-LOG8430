@@ -28,5 +28,6 @@ hs_err_pid*
 *.pdf
 *.synctex.gz
 *.toc
+*.dvi
 
 config.properties
