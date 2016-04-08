@@ -18,6 +18,7 @@ class Session {
 	static void addService(String token,String serviceId,String authToken){
 		Map<String,String> tmp = map.get(token);
 		if(tmp==null){
+			tmp = new HashMap<>();
 			map.put(token, tmp);
 		}
 		tmp.put(serviceId, authToken);
