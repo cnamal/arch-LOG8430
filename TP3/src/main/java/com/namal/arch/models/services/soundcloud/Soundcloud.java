@@ -71,7 +71,7 @@ public class Soundcloud implements AudioService {
 	}
 
 	private JsonObjectBuilder songBuilder(JsonObject result) throws SongMalformed {
-		SongBuilder builder = SongBuilder.songBuilder().setId(result.getInt("id")).setTitle(result.getString("title"))
+		SongBuilder builder = SongBuilder.songBuilder().setId(result.getInt("id")+"").setTitle(result.getString("title"))
 				.setArtist(result.getJsonObject("user").getString("username")).setUri(result.getString("stream_url")+"?client_id="+clientId)
 				.setService(this).setDuration(result.getInt("duration"));
 		if (!result.isNull("artwork_url"))

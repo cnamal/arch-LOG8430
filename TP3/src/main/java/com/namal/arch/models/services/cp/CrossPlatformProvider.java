@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.namal.arch.utils.Configuration;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -19,6 +20,11 @@ import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.MongoDB;
+
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
+import static com.namal.arch.utils.Constants.*;
 
 class CrossPlatformProvider implements AudioServiceProvider {
 	
@@ -119,15 +125,21 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public String createPlaylist(String name, Boolean pub, String authToken) {
+	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		MongoDatabase db = MongoDB.getDatabase();
 		Document play = new Document()
 				.append("title",name)
 				.append("public", pub)
 				.append("songs",new ArrayList<>());
 		db.getCollection("playlists").insertOne(play);
+		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+        objectBuilder.add(ID,play.getObjectId("_id").toString());
+		objectBuilder.add(TITLE,name);
+		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+		objectBuilder.add(PUB,pub);
+		objectBuilder.add(SONGS,Json.createArrayBuilder());
 		service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-		return play.getObjectId("_id").toString();
+		return objectBuilder;
 	}
 
 	@Override

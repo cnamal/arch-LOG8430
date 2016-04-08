@@ -65,7 +65,7 @@ public class Deezer implements AudioService {
 
 	private Song songBuilder(JsonObject result) throws SongMalformed {
 		SongBuilder builder = SongBuilder.songBuilder()
-				.setId(result.getInt("id"))
+				.setId(result.getInt("id")+"")
 				.setTitle(result.getString("title"))
 				.setArtist(result.getJsonObject("artist").getString("name"))
 				.setService(this)
