@@ -62,7 +62,7 @@ public class UIMainClass extends Application{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Arch-LOG8430 - Streaming playlists gatherer");
         primaryStage.setMinWidth(800);
-        MongoDB.init();
+        //MongoDB.init();
         
         loadGeneraLayout();
     }

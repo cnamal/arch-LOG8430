@@ -15,11 +15,8 @@ import com.mongodb.client.MongoDatabase;
  */
 public class Connexion {
 	
-	/**
-	 * Get the URI
-	 * @return The URI
-	 */
-	public static String getURI(){
+	private static String uriString;
+	public static void init(){
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
 
@@ -33,15 +30,24 @@ public class Connexion {
 			
 			prop.load(inputStream);
 			inputStream.close();
-			String uriString = "http://";
-			if(prop.getProperty("host")!=null){
-				uriString+=prop.getProperty("host")+":"+prop.getProperty("port");
+			uriString = "http://";
+			if(prop.getProperty("host")==null ||prop.getProperty("port") ==null){
+				System.err.println("You need to connect to a server. Please follow the tutorial in the report.");
+				System.exit(1);
 			}
-			return uriString;
+			uriString+=prop.getProperty("host")+":"+prop.getProperty("port");
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "";
+			uriString =" ";
 		}
+	}
+	
+	/**
+	 * Get the URI
+	 * @return The URI
+	 */
+	public static String getURI(){
+		return uriString;
 	}
 
 }

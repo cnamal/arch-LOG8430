@@ -2,6 +2,7 @@ package com.namal.arch;
 
 import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.Configuration;
+import com.namal.arch.utils.Connexion;
 import com.namal.arch.view.UIMainClass;
 
 /**
@@ -16,6 +17,7 @@ public class Main{
 		//Uncomment/Comment for enable/disable UI
 		Configuration.setAudioServiceLoader(AudioServiceLoader.getInstance());
 		Configuration.setShow(true);
+		Connexion.init();
 		UIMainClass uiMainClass = new UIMainClass();
 		uiMainClass.firstLoad(args);
 	}

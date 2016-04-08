@@ -1,11 +1,20 @@
 package com.namal.arch.view;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Iterator;
 
+import org.apache.commons.io.IOUtils;
+
+import com.google.common.net.UrlEscapers;
 import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.models.services.IAuthentification;
+import com.namal.arch.utils.Connexion;
+import com.sun.org.apache.xerces.internal.util.URI;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -59,17 +68,35 @@ public class AuthentificationOverviewController {
                 	  String url= webEngine.getLocation();
                 	  System.out.println(url);
                 	  if(url.indexOf(auth.testString())>=0){
-                		  String urlServer = Connexion.getURI();
-                		  strUrlServer = urlServer+"/connect?providerId=1&url="+url;
-                		  URL urlServer = new URL(strUrlServer);
-                		  InputStream test = urlServer.openStream();
+                		 
+						try {
+							 String strUrlServer = Connexion.getURI();
+	                		  strUrlServer = strUrlServer+"/connect?providerId=1&url="+URLEncoder.encode(url,"UTF-8");
+	                		  URL urlServer;
+							urlServer = new URL(strUrlServer);
+							InputStream test = urlServer.openStream();
+							String token = IOUtils.toString(test, "UTF-8");
+							
+							test.close();
+							strUrlServer = Connexion.getURI()+"/providers?token="+token;
+							urlServer = new URL(strUrlServer);
+							test = urlServer.openStream();
+							test.close();
+						} catch (MalformedURLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                		  
                 		  //boolean test=auth.serverResponse(url);
-                		  if(test){
+                		  /*if(test){
                 			  //TODO print success notification
                 			  //use auth.getProviderInformation to print stuff if needed
                 		  }else{
                 			  //TODO error notification
-                		  }
+                		  }*/
                 		  //TODO Return response to server
                 		  updateButton(button, serv);
                 		  stage.close();

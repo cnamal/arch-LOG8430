@@ -21,11 +21,11 @@ public class AudioServiceLoader extends GenericServiceLoader{
 	public Iterator<AudioService> getAudioServices(){
 		if(audioServices==null){			
 			audioServices = new ArrayList<>();
-			audioServices.add(CrossPlatform.getInstance());
+			//audioServices.add(CrossPlatform.getInstance());
 			audioServices.add(Soundcloud.getInstance());
 			audioServices.add(Spotify.getInstance());
 			audioServices.add(Deezer.getInstance());
-			initMap();
+			//initMap();
 		}
 		return audioServices.iterator();
 	}
