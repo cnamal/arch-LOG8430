@@ -1,0 +1,236 @@
+package com.namal.arch.controller;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.namal.arch.models.Song;
+import com.namal.arch.models.SongBuilder;
+import com.namal.arch.utils.APIHelper;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.utils.Configuration;
+import com.namal.arch.utils.Constants;
+import com.namal.arch.utils.ErrorBuilder;
+
+@RestController
+@RequestMapping("/playlists")
+public class PlaylistController {
+
+	private String badRequest(String message, HttpServletResponse response){
+		return ErrorBuilder.error(400, message, response);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+    public String getPlaylists(@RequestParam(value=Constants.TOKEN) String token,HttpServletResponse response) {
+		JsonArrayBuilder builder = Json.createArrayBuilder();
+		Iterator<Entry<String, String>> iterator;
+		try {
+			iterator = Session.getServices(token);
+		} catch (UnauthorizedException e) {
+			return ErrorBuilder.unauthorizedError(response);
+		}
+		
+		while(iterator.hasNext()){
+			JsonObjectBuilder object = Json.createObjectBuilder();
+			Entry<String,String> entry = iterator.next();
+			object.add(Constants.SERVICEID, entry.getKey());
+			AudioService service = Configuration.getAudioServiceLoader().getService(entry.getKey());
+			object.add(Constants.PLAYLISTS, service.getPlaylists(entry.getValue()));
+			builder.add(object);
+		}
+		
+        return APIHelper.dataResponse(builder);
+    }
+	
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public String postPlaylists(@RequestBody Map<String, Object> map,HttpServletResponse response){
+		try{
+			String serviceId = (String)map.get(Constants.SERVICEID);
+			if(serviceId == null)
+				return badRequest(Constants.requiredParamError(Constants.SERVICEID), response);
+			String name = (String) map.get(Constants.NAME);
+			if(name == null)
+				return badRequest(Constants.requiredParamError(Constants.NAME), response);
+			String token = (String) map.get(Constants.TOKEN);
+			if(!serviceId.equals("0") && token == null )
+				return badRequest(Constants.requiredParamError(Constants.TOKEN), response);
+			Boolean pub = (Boolean) map.get(Constants.PUB);
+			if(pub == null)
+				return badRequest(Constants.requiredParamError(Constants.PUB), response);
+			String authToken =null;
+            if(!serviceId.equals("0"))
+                authToken= Session.getAuthToken(token,serviceId);
+            AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
+            if(service==null)
+                return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
+            service.getAudioServiceProvider().createPlaylist(name,pub,authToken);
+		}catch (UnauthorizedException e){
+            return ErrorBuilder.unauthorizedError(response);
+        }catch(Exception e){
+			return badRequest(Constants.incorrectTypeError(), response);
+		}
+		return "";
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	public String putPlaylists(@RequestBody Data data,HttpServletResponse response){
+		try{
+			String serviceId = data.getServiceId();
+            if(serviceId == null)
+                return badRequest(Constants.requiredParamError(Constants.SERVICEID), response);
+            String id = data.getId();
+            if(id == null)
+                return badRequest(Constants.requiredParamError(Constants.ID), response);
+            String token = data.getToken();
+            if(!serviceId.equals("0") && token == null )
+                return badRequest(Constants.requiredParamError(Constants.TOKEN), response);
+            List<SongBuilder> songBuilders = data.getSongs();
+            if(songBuilders == null)
+                return badRequest(Constants.requiredParamError(Constants.SONGS), response);
+            List<Song> songs = new ArrayList<>();
+            for(SongBuilder s : songBuilders)
+                songs.add(s.build());
+            String authToken =null;
+            if(!serviceId.equals("0"))
+                authToken= Session.getAuthToken(token,serviceId);
+            AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
+            if(service==null)
+                return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
+            service.getAudioServiceProvider().updatePlaylist(id,songs.iterator(),authToken);
+		}catch (UnauthorizedException e){
+            return ErrorBuilder.unauthorizedError(response);
+        }catch(Exception e){
+            e.printStackTrace();
+			return badRequest(Constants.incorrectTypeError(), response);
+		}
+		return "";
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE)
+	public String deletePlaylists(@RequestBody Map<String, Object> map,HttpServletResponse response){
+		try{
+			String serviceId = (String)map.get(Constants.SERVICEID);
+			if(serviceId == null)
+				return badRequest(Constants.requiredParamError(Constants.SERVICEID), response);
+			String id = (String) map.get(Constants.ID);
+			if(id == null)
+				return badRequest(Constants.requiredParamError(Constants.ID), response);
+			String token = (String) map.get(Constants.TOKEN);
+			if(!serviceId.equals("0") && token == null )
+				return badRequest(Constants.requiredParamError(Constants.TOKEN), response);
+            String authToken =null;
+            if(!serviceId.equals("0"))
+                authToken= Session.getAuthToken(token,serviceId);
+            AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
+            if(service==null)
+                return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
+            service.getAudioServiceProvider().deletePlaylist(id,authToken);
+		}catch (UnauthorizedException e){
+            return ErrorBuilder.unauthorizedError(response);
+        }catch(Exception e){
+			System.err.println(e.getMessage());
+			return badRequest(Constants.incorrectTypeError(), response);
+		}
+		return "";
+	}
+
+    private static class Data  {
+
+        private String serviceId = null;
+        private String id = null;
+        private List<SongBuilder> songs = null;
+        private String token = null;
+
+
+        /**
+         **/
+        @JsonProperty("serviceId")
+        public String getServiceId() {
+            return serviceId;
+        }
+        public void setServiceId(String serviceId) {
+            this.serviceId = serviceId;
+        }
+
+
+        /**
+         **/
+        @JsonProperty("id")
+        public String getId() {
+            return id;
+        }
+        public void setId(String id) {
+            this.id = id;
+        }
+
+
+        /**
+         **/
+        @JsonProperty("songs")
+        public List<SongBuilder> getSongs() {
+            return songs;
+        }
+        public void setSongs(List<SongBuilder> songs) {
+            this.songs = songs;
+        }
+
+
+        /**
+         **/
+        @JsonProperty("token")
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Data data = (Data) o;
+            return Objects.equals(serviceId, data.serviceId) &&
+                    Objects.equals(id, data.id) &&
+                    Objects.equals(songs, data.songs) &&
+                    Objects.equals(token, data.token);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(serviceId, id, songs, token);
+        }
+
+        @Override
+        public String toString()  {
+            StringBuilder sb = new StringBuilder();
+            sb.append("class Data {\n");
+
+            sb.append("  serviceId: ").append(serviceId).append("\n");
+            sb.append("  id: ").append(id).append("\n");
+            sb.append("  songs: ").append(songs).append("\n");
+            sb.append("  token: ").append(token).append("\n");
+            sb.append("}\n");
+            return sb.toString();
+        }
+    }
+}
