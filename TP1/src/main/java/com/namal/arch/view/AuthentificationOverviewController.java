@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
+import com.namal.arch.utils.ConnexionToken;
 import org.apache.commons.io.IOUtils;
 
 import com.google.common.net.UrlEscapers;
@@ -31,6 +32,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 public class AuthentificationOverviewController {
 	
@@ -71,17 +76,13 @@ public class AuthentificationOverviewController {
                 		 
 						try {
 							 String strUrlServer = Connexion.getURI();
-	                		  strUrlServer = strUrlServer+"/connect?providerId=1&url="+URLEncoder.encode(url,"UTF-8");
+	                		  strUrlServer = strUrlServer+"/services/connect?serviceId=1&url="+URLEncoder.encode(url,"UTF-8");
 	                		  URL urlServer;
 							urlServer = new URL(strUrlServer);
-							InputStream test = urlServer.openStream();
-							String token = IOUtils.toString(test, "UTF-8");
-							
-							test.close();
-							strUrlServer = Connexion.getURI()+"/providers?token="+token;
-							urlServer = new URL(strUrlServer);
-							test = urlServer.openStream();
-							test.close();
+							InputStream serverResponse = urlServer.openStream();
+							JsonReader rdr = Json.createReader(serverResponse);
+							ConnexionToken.getInstance().setToken(rdr.readObject().getJsonObject("data").getString("token"));
+							serverResponse.close();
 						} catch (MalformedURLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

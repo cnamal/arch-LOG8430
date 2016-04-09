@@ -14,8 +14,7 @@ public class SongBuilder {
 	String uri;
 	String albumCoverUrl = null;
 	String id;
-	String providerId;
-	AudioServiceProvider provider;
+	String serviceId;
 	Long duration;
 	
 	private SongBuilder() {}
@@ -51,7 +50,7 @@ public class SongBuilder {
 	/**
 	 * 
 	 * @param title song's title
-	 * @return the same objet with it's id set
+	 * @return the same objet with it's title set
 	 */
 	public SongBuilder setTitle(String title){
 		this.title=title;
@@ -61,7 +60,7 @@ public class SongBuilder {
 	/**
 	 * 
 	 * @param artist song's artist
-	 * @return the same objet with it's id set
+	 * @return the same objet with it's Artist set
 	 */
 	public SongBuilder setArtist(String artist){
 		this.artist=artist;
@@ -71,7 +70,7 @@ public class SongBuilder {
 	/**
 	 * 
 	 * @param uri link to the audio of the song.
-	 * @return the same objet with it's id set
+	 * @return the same objet with it's URI set
 	 */
 	public SongBuilder setUri(String uri){
 		this.uri=uri;
@@ -81,40 +80,30 @@ public class SongBuilder {
 	/**
 	 * 
 	 * @param albumCoverUrl link to the song's cover
-	 * @return the same objet with it's id set
+	 * @return the same objet with it's Album Cover Url set
 	 */
 	public SongBuilder setAlbumCoverUrl(String albumCoverUrl){
 		this.albumCoverUrl=albumCoverUrl;
 		return this;
 	}
-	
-	/**
-	 * 
-	 * @param provider song provider
-	 * @return the same objet with it's id set
-	 */
-	public SongBuilder setProvider(AudioServiceProvider provider){
-		this.provider=provider;
-		return this;
-	}
-	
-	/**
-	 * 
-	 * @param providerId song provider's id
-	 * @return the same objet with it's id set
-	 */
-	public SongBuilder setProvider(String providerId){
-		this.providerId=providerId;
-		return this;
-	}
+
 	
 	/**
 	 * 
 	 * @param duration duration of the song
-	 * @return the same objet with it's id set
+	 * @return the same objet with it's duration set
 	 */
 	public SongBuilder setDuration(long duration){
 		this.duration=duration;
+		return this;
+	}
+
+	/**
+	 * @param serviceId serviceId of the song
+	 * @return the same objet with it's serviceId set
+	 */
+	public SongBuilder setServiceId(String serviceId){
+		this.serviceId=serviceId;
 		return this;
 	}
 	
@@ -139,7 +128,7 @@ public class SongBuilder {
 			throw new SongMalformed("Song artist is needed");
 		if(duration==null)
 			throw new SongMalformed("Song duration is needed");
-		if(provider==null&&providerId==null)
-			throw new SongMalformed("Song provider is needed");
+		if(serviceId==null)
+			throw new SongMalformed("Service Id is needed");
 	}
 }
