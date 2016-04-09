@@ -19,7 +19,7 @@ public interface AudioService {
 	/**
 	 * Get the playlists of the user 
 	 */
-	public JsonArrayBuilder getPlaylists(String authToken);
+	JsonArrayBuilder getPlaylists(String authToken);
 
 	/**
 	 * 

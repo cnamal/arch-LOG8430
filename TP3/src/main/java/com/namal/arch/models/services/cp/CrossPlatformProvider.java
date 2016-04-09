@@ -1,28 +1,19 @@
 package com.namal.arch.models.services.cp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import com.namal.arch.utils.Configuration;
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
 import com.mongodb.client.MongoDatabase;
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
+import com.namal.arch.utils.Configuration;
 import com.namal.arch.utils.MongoDB;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static com.namal.arch.utils.Constants.*;
 
@@ -30,8 +21,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	
 	private CrossPlatform service;
 	private static CrossPlatformProvider instance;
-	private InputStream inputStream;
-	
+
 	
 	private CrossPlatformProvider(CrossPlatform service) {
 		this.service=service;
@@ -49,11 +39,6 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void update(ServiceEvent ev) {
-		service.update(ev);
-	}
-
-	@Override
 	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		MongoDatabase db = MongoDB.getDatabase();
 		Document play = new Document()
@@ -67,7 +52,6 @@ class CrossPlatformProvider implements AudioServiceProvider {
 		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
 		objectBuilder.add(PUB,pub);
 		objectBuilder.add(SONGS,Json.createArrayBuilder());
-		service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 		return objectBuilder;
 	}
 
@@ -86,14 +70,12 @@ class CrossPlatformProvider implements AudioServiceProvider {
                     .append("uri", song.getUri()));
         }
         db.getCollection("playlists").updateOne(new Document("_id", new ObjectId(id)),new Document("$set",new Document("songs",list)));
-        service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 	}
 
 	@Override
 	public void deletePlaylist(String id, String authToken) {
 		MongoDatabase db = MongoDB.getDatabase();
 		db.getCollection("playlists").deleteOne(new Document("_id", new ObjectId(id)));
-		service.update(ServiceEvent.USERPLAYLISTSUPDATED);
 	}
 
 	private static class SpotifyProviderInformation extends ProviderInformation{

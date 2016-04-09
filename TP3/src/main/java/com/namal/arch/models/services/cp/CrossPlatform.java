@@ -1,31 +1,24 @@
 package com.namal.arch.models.services.cp;
 
-import java.util.ArrayList;
-
-import static com.namal.arch.utils.Constants.*;
-import java.util.List;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-
-import org.bson.Document;
-
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.Constants;
 import com.namal.arch.utils.MongoDB;
-import com.namal.arch.utils.ServiceListener;
+import org.bson.Document;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import java.util.List;
+
+import static com.namal.arch.utils.Constants.*;
 
 /**
  * Cross platform service
@@ -36,13 +29,12 @@ public class CrossPlatform implements AudioService {
 
 	private static CrossPlatform instance = new CrossPlatform();
 
-	private List<Playlist> playlists = null;
 
 	private CrossPlatformAuthentication authentication;
 	private CrossPlatformProvider provider;
 
 	private CrossPlatform() {
-		authentication = CrossPlatformAuthentication.getInstance(this);
+		authentication = CrossPlatformAuthentication.getInstance();
 		provider = CrossPlatformProvider.getInstance(this);
 	}
 
@@ -95,14 +87,6 @@ public class CrossPlatform implements AudioService {
 		return authentication;
 	}
 
-	void update(ServiceEvent ev) {
-		if (ev == ServiceEvent.USERPLAYLISTSUPDATED)
-			playlists = null;
-		else
-			throw new UnsupportedOperationException(ev + " is not supported");
-	}
-
-
 	@Override
 	public JsonArrayBuilder searchTrack(String track) {
 		System.err.println("Called search track when searchAvailable is false. Bad programmer !");
@@ -135,7 +119,6 @@ public class CrossPlatform implements AudioService {
 		        	try {
 						songsJson.add(songBuilder(song));
 					} catch (SongMalformed e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 		        }

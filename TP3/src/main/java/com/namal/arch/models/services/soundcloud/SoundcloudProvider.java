@@ -1,25 +1,18 @@
 package com.namal.arch.models.services.soundcloud;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Iterator;
-
-import javax.json.*;
-
-import com.namal.arch.utils.Configuration;
-import org.apache.commons.io.IOUtils;
-
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
+import com.namal.arch.utils.Configuration;
+import org.apache.commons.io.IOUtils;
+
+import javax.json.*;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
 
 import static com.namal.arch.utils.Constants.*;
 
@@ -27,8 +20,7 @@ class SoundcloudProvider implements AudioServiceProvider {
 	
 	private Soundcloud service;
 	private static SoundcloudProvider instance;
-	private InputStream inputStream;
-	
+
 	
 	private SoundcloudProvider(Soundcloud service) {
 		// TODO Auto-generated constructor stub
@@ -47,14 +39,8 @@ class SoundcloudProvider implements AudioServiceProvider {
 	}
 
 	@Override
-	public void update(ServiceEvent ev) {
-		service.update(ev);
-	}
-
-	@Override
 	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		URL url;
-        String res = null;
         JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         try {
             System.out.println("savePlaylist");
@@ -86,10 +72,7 @@ class SoundcloudProvider implements AudioServiceProvider {
             objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
-			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
             return objectBuilder;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -127,11 +110,7 @@ class SoundcloudProvider implements AudioServiceProvider {
 
             String theString = IOUtils.toString(httpCon.getInputStream(), "UTF-8");
             System.out.println(theString);
-            service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-
             e.printStackTrace();
         }
 	}

@@ -19,12 +19,6 @@ public interface AudioServiceProvider {
 	 */
 	public ProviderInformation getProviderInformation();
 	
-	/**
-	 * Notify the service provider of an event
-	 * @param ev Service event
-	 */
-	public void update(ServiceEvent ev);
-
 	JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken);
 
 	void updatePlaylist(String id, Iterator<Song> songs, String authToken);
