@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.utils.Configuration;
 
+import static com.namal.arch.utils.Constants.*;
+
 /**
  * Model of a song
  * @author namalgac
@@ -140,12 +142,12 @@ public class Song {
 	public JsonObjectBuilder toJsonObjectBuilder() {
 		JsonObjectBuilder res = Json.createObjectBuilder();
 		
-		res.add("id",id)
-		.add("title", title)
-		.add("artist", artist)
-		.add("provider", providerId)
-		.add("duration", duration)
-		.add("uri", uri);
+		res.add(ID,id)
+		.add(TITLE, title)
+		.add(ARTIST, artist)
+		.add(SERVICEID, providerId)
+		.add(DURATION, duration)
+		.add(URI, uri);
 		return res;
 	}
 }
