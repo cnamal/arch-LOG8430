@@ -80,59 +80,6 @@ public class Soundcloud implements AudioService {
 	}
 
 	@Override
-	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
-		if (!authentication.isConnected())
-			return; // TODO add Exception system
-		URL url;
-		if (playlists != null)
-			callback.done(playlists);
-		else {
-			try {
-				url = new URL(MYPLAYLISTS + "?oauth_token=" + authentication.getAuthToken());
-				WebThread webThread = new WebThread(url, new WebListener() {
-					
-					@Override
-					public void done(InputStream is) {
-						if(is!=null){
-							JsonReader rdr = Json.createReader(is);
-							List<Playlist> playlists = new ArrayList<>();
-							JsonArray results = rdr.readArray();
-							for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
-								if (!playlist.isNull("streamable") && playlist.getBoolean("streamable")) {
-									Playlist p = new Playlist(playlist.getString("title"), playlist.getInt("id"), provider,
-											playlist.getString("sharing").equals("public"));
-									JsonArray songs = playlist.getJsonArray("tracks");
-									for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
-										if (song.getBoolean("streamable")) {
-											/*try {
-												p.addSongWithoutUpdating(songBuilder(song));
-											} catch (SongMalformed e) {
-												e.printStackTrace();
-											}*/
-										}
-									}
-									playlists.add(p);
-								}
-							}
-							Soundcloud.this.playlists = playlists;
-							callback.done(playlists);
-						}else
-							callback.done(null);
-					}
-				});
-				new Thread(webThread).start();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
-	public boolean authenticationNeeded() {
-		return false;
-	}
-
-	@Override
 	public ProviderInformation getProviderInformation() {
 		return provider.getProviderInformation();
 	}
@@ -140,45 +87,6 @@ public class Soundcloud implements AudioService {
 	@Override
 	public String toString() {
 		return getProviderInformation().toString();
-	}
-
-	@Override
-	public void searchTrack(String track, ServiceListener<Playlist> callback) {
-		URL url;
-		try {
-			url = new URL(SONGSURL + "?client_id=" + clientId + "&q=\"" + URLEncoder.encode(track, "UTF-8") + "\"");
-			WebThread webThread = new WebThread(url, new WebListener() {
-
-				@Override
-				public void done(InputStream is) {
-					if (is != null) {
-						JsonReader rdr = Json.createReader(is);
-
-						JsonArray results = rdr.readArray();
-						Playlist playlist = new Playlist("Search results", true, true);
-						for (JsonObject result : results.getValuesAs(JsonObject.class)) {
-							if (result.getBoolean("streamable")) {
-								/*try {
-									//playlist.addSongWithoutUpdating(songBuilder(result));
-								} catch (SongMalformed e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}*/
-							}
-						}
-						callback.done(playlist);
-					} else
-						callback.done(null);
-				}
-			});
-
-			Thread thread = new Thread(webThread);
-			thread.start();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -191,16 +99,6 @@ public class Soundcloud implements AudioService {
 	public IAuthentification getAuthentification() {
 		// TODO Auto-generated method stub
 		return authentication;
-	}
-
-	@Override
-	public boolean isConnected() {
-		return authentication.isConnected();
-	}
-
-	@Override
-	public void disconnect() {
-		authentication.disconnect();
 	}
 
 	@Override
@@ -252,6 +150,7 @@ public class Soundcloud implements AudioService {
 			JsonArray results = rdr.readArray();
 			for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
 				if (!playlist.isNull("streamable") && playlist.getBoolean("streamable")) {
+					JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 					JsonObjectBuilder object = Json.createObjectBuilder();
 					object.add(TITLE, playlist.getString("title"));
 					object.add(ID, playlist.getInt("id"));

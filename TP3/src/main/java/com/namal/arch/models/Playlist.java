@@ -66,30 +66,7 @@ public class Playlist {
 		provider=prev;
 	}
 	
-	/**
-	 * Adds the song to the playlist and saves the playlist.
-	 * @param index index at which the song should be added (not used currently)
-	 * @param song the song to be added
-	 */
-	public void addSongAndUpdate(int index, Song song){
-		playlist.add(index,song);
-		if(!searchPlaylist){
-			if(id.equals(Integer.MIN_VALUE+"")){
-				findProvider();
-				provider.createPlaylist(this);
-			}
-			AudioServiceProvider cp = CrossPlatform.getInstance().getAudioServiceProvider();
-			if(!provider.equals(cp)&&!provider.equals(song.getProvider())){
-				AudioServiceProvider prev = provider;
-				provider=cp;
-				provider.createPlaylist(this);
-				provider.addSongToPlaylist(this,song);
-				prev.update(ServiceEvent.USERPLAYLISTSUPDATED);
-			}else
-				provider.addSongToPlaylist(this,song);
-			
-		}
-	}
+
 	
 	/**
 	 * Gets the name of the Playlist

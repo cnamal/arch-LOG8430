@@ -29,21 +29,6 @@ public class Song {
 	private String albumCoverUrl;
 	
 	/**
-	 * 
-	 * @return the inputStream of the song, to be used in the player
-	 */
-	public InputStream getInputStream(){
-		return provider.getInputStream(uri);
-	}
-	
-	/**
-	 * Closes the inputStream
-	 */
-	public void cleanup(){
-		provider.closeInputStream();
-	}
-	
-	/**
 	 * Uses the SongBuilder to create a Song, initializing the attributes
 	 * @param builder a SongBuilder
 	 */

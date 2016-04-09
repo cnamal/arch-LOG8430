@@ -35,10 +35,6 @@ import com.namal.arch.utils.ServiceListener;
 public class CrossPlatform implements AudioService {
 
 	private static CrossPlatform instance = new CrossPlatform();
-	static final String BASEURL = "https://api.deezer.com/";
-	static final String SEARCHURL = BASEURL+"search";
-	static final String MYPLAYLISTS = BASEURL + "user/me/playlists";
-	static final String PLAYLISTURL = BASEURL + "playlist/";
 
 	private List<Playlist> playlists = null;
 
@@ -76,44 +72,6 @@ public class CrossPlatform implements AudioService {
 	}
 
 	@Override
-	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
-		// TODO Auto-generated method stub
-		if (!authentication.isConnected())
-			return; // TODO add Exception system
-		if (playlists != null)
-			callback.done(playlists);
-		else {
-			/*MongoDatabase db = MongoDB.getDatabase();
-			FindIterable<Document> playlistColletction=db.getCollection("playlists").find();
-			List<Playlist> playlists = new ArrayList<>();
-			CrossPlatform.this.playlists = playlists;
-			playlistColletction.forEach(new Block<Document>() {
-			    @Override
-			    public void apply(final Document document) {
-			    	Playlist p = new Playlist(document.getString("title"), document.getObjectId("_id").toString(), provider,
-							document.getBoolean("public"));
-			        List<Document> songs = (List<Document>)document.get("songs");
-			        for(Document song:songs){
-			        	try {
-							p.addSongWithoutUpdating(songBuilder(song));
-						} catch (SongMalformed e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-			        }
-			        playlists.add(p);
-			    }
-			});*/
-			callback.done(playlists);
-		}
-	}
-
-	@Override
-	public boolean authenticationNeeded() {
-		return false;
-	}
-
-	@Override
 	public boolean searchAvailable(){
 		return false;
 	}
@@ -128,11 +86,6 @@ public class CrossPlatform implements AudioService {
 	}
 
 	@Override
-	public void searchTrack(String track, ServiceListener<Playlist> callback) {
-		System.err.println("Called search track when searchAvailable is false. Bad programmer !");
-	}
-
-	@Override
 	public AudioServiceProvider getAudioServiceProvider() {
 		return provider;
 	}
@@ -140,16 +93,6 @@ public class CrossPlatform implements AudioService {
 	@Override
 	public IAuthentification getAuthentification() {
 		return authentication;
-	}
-
-	@Override
-	public boolean isConnected() {
-		return authentication.isConnected();
-	}
-
-	@Override
-	public void disconnect() {
-		authentication.disconnect();
 	}
 
 	void update(ServiceEvent ev) {
