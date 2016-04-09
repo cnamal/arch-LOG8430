@@ -49,8 +49,6 @@ public class Spotify implements AudioService {
 				.setArtist(result.getJsonArray("artists").getValuesAs(JsonObject.class).get(0).getString("name"))
 				.setService(this)
 				.setDuration(result.getInt("duration_ms"));
-		/*if (!result.isNull("artwork_url"))
-			builder.setAlbumCoverUrl(result.getString("artwork_url"));*/
 		if(!result.isNull("preview_url"))
 			builder.setUri(result.getString("preview_url"));
 		return builder.build().toJsonObjectBuilder();
@@ -104,7 +102,6 @@ public class Spotify implements AudioService {
                 url = new URL(trackUrl);
                 httpCon = (HttpURLConnection) url.openConnection();
                 httpCon.setRequestMethod("GET");
-                //System.out.println(getAuthToken());
                 httpCon.setRequestProperty(
                         "Authorization", "Bearer "+authToken );
                 rdr = Json.createReader(url.openStream());
@@ -140,11 +137,9 @@ public class Spotify implements AudioService {
             tracks = tracks.getJsonObject("tracks");
             JsonArray results = tracks.getJsonArray("items");
             for (JsonObject result : results.getValuesAs(JsonObject.class)) {
-
                 try {
                     res.add(songBuilder(result));
                 } catch (SongMalformed e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 

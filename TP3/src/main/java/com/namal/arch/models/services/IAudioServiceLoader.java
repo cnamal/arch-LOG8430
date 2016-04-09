@@ -15,28 +15,28 @@ public interface IAudioServiceLoader {
 	 * 
 	 * @return list of all audio services
 	 */
-	public Iterator<AudioService> getAudioServices();
+	Iterator<AudioService> getAudioServices();
 	
 	/**
 	 * Get the provider's id given a provider
 	 * @param service provider
 	 * @return provider's id
 	 */
-	public String getProviderId(AudioService service);
+	String getProviderId(AudioService service);
 	
 	/**
 	 * Get the provider given it's id
 	 * @param serviceId provider's id
 	 * @return provider
 	 */
-	public AudioServiceProvider getProvider(String serviceId);
+	AudioServiceProvider getProvider(String serviceId);
 
 	/**
 	 * Get the service given it's id
 	 * @param serviceId provider's id
 	 * @return service
 	 */
-	public AudioService getService(String serviceId);
+	AudioService getService(String serviceId);
 	
-	public JsonArrayBuilder getAudioServicesJson();
+	JsonArrayBuilder getAudioServicesJson();
 }

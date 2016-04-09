@@ -1,27 +1,23 @@
 package com.namal.arch.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.servlet.http.HttpServletResponse;
-
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.APIHelper;
+import com.namal.arch.utils.Configuration;
+import com.namal.arch.utils.Constants;
+import com.namal.arch.utils.ErrorBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.namal.arch.models.services.AudioService;
-import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.Constants;
-import com.namal.arch.utils.ErrorBuilder;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/services")

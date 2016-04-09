@@ -52,7 +52,7 @@ public class CrossPlatform implements AudioService {
 				.setId(result.getString("id"))
 				.setTitle(result.getString("title"))
 				.setArtist(result.getString("artist"))
-				.setProvider(result.getString("provider"))
+				.setServiceId(result.getString("serviceId"))
 				.setDuration(result.getLong("duration"))
 				.setUri(result.getString("uri"));
 		/*if (!result.isNull("artwork_url"))
@@ -99,34 +99,24 @@ public class CrossPlatform implements AudioService {
 		JsonArrayBuilder res = Json.createArrayBuilder();
 		MongoDatabase db = MongoDB.getDatabase();
 		FindIterable<Document> playlistColletction=db.getCollection("playlists").find();
-		//List<Playlist> playlists = new ArrayList<>();
-		//CrossPlatform.this.playlists = playlists;
-		playlistColletction.forEach(new Block<Document>() {
-		    @Override
-		    public void apply(final Document document) {
-		    	/*
-		    	 * document.getString("title"), document.getObjectId("_id").toString(), provider,
-							document.getBoolean("public")
-		    	 */
-		    	JsonObjectBuilder object = Json.createObjectBuilder();
-		    	object.add(TITLE, document.getString("title"));
-		    	object.add(ID, document.getObjectId("_id").toString());
-		    	object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(instance));
-		    	object.add(PUB	, document.getBoolean("public"));
-		    	JsonArrayBuilder songsJson = Json.createArrayBuilder();
-		        List<Document> songs = (List<Document>)document.get("songs");
-		        for(Document song:songs){
-		        	try {
-						songsJson.add(songBuilder(song));
-					} catch (SongMalformed e) {
-						e.printStackTrace();
-					}
-		        }
-		        object.add(SONGS, songsJson);
-		        res.add(object);
-		        //playlists.add(p);
-		    }
-		});
+		playlistColletction.forEach((Block<Document>) document -> {
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            object.add(TITLE, document.getString("title"));
+            object.add(ID, document.getObjectId("_id").toString());
+            object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(instance));
+            object.add(PUB	, document.getBoolean("public"));
+            JsonArrayBuilder songsJson = Json.createArrayBuilder();
+            List<Document> songs = (List<Document>)document.get("songs");
+            for(Document song:songs){
+                try {
+                    songsJson.add(songBuilder(song));
+                } catch (SongMalformed e) {
+                    e.printStackTrace();
+                }
+            }
+            object.add(SONGS, songsJson);
+            res.add(object);
+        });
 		return res;
 	}
 }

@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
- * Created by namalgac on 4/8/16.
+ * WebMVCConfig class
+ *
+ * @author Namal
+ *         Created on 4/9/16.
  */
 @Configuration
 @EnableWebMvc

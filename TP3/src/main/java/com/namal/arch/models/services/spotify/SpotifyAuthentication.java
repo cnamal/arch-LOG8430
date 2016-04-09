@@ -13,7 +13,7 @@ import java.util.Map;
 class SpotifyAuthentication extends GenericAuthenticationService{
 
 	private static SpotifyAuthentication instance;
-	static String clientId = "87824d0c4d1a4d2c8c72662b3b1a9f6e";
+	private static final String clientId = "87824d0c4d1a4d2c8c72662b3b1a9f6e";
 	static Map<String,String> usernameMap=new HashMap<>();
 	private static final String MEURL = Spotify.BASEURL+ "me";
 	

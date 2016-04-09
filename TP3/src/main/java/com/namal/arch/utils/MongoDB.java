@@ -55,22 +55,6 @@ public class MongoDB {
 
 	/**
 	 * 
-	 * @return true if the mongodb driver is connected
-	 */
-	public static boolean isConnected(){
-		return mongoClient!=null;
-	}
-	
-	/**
-	 * Release the driver
-	 */
-	public static void cleanUp(){
-		mongoClient.close();
-		db=null;
-	}
-	
-	/**
-	 * 
 	 * @return the database
 	 */
 	public static MongoDatabase getDatabase(){

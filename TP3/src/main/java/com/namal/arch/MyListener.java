@@ -9,7 +9,10 @@ import org.springframework.stereotype.Component;
 import javax.management.*;
 
 /**
- * Created by namalgac on 4/7/16.
+ * MyListener class
+ *
+ * @author Namal
+ *         Created on 4/9/16.
  */
 @Component
 public class MyListener implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
@@ -22,7 +25,6 @@ public class MyListener implements ApplicationListener<EmbeddedServletContainerI
             ObjectName name = new ObjectName("Tomcat", "type", "Server");
             Server server = (Server) mBeanServer.getAttribute(name, "managedResource");
             Configuration.setUrlBase(server.getAddress(),event.getEmbeddedServletContainer().getPort());
-            System.out.println("DONE !!!!!!!" + Configuration.getUrlBase());
         } catch (ReflectionException | InstanceNotFoundException | MBeanException | AttributeNotFoundException | MalformedObjectNameException e) {
             e.printStackTrace();
         }

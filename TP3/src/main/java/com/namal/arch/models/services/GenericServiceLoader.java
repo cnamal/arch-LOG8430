@@ -1,22 +1,5 @@
 package com.namal.arch.models.services;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
-import javax.management.*;
-
-import org.apache.catalina.Server;
-import org.bson.Document;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mongodb.Block;
@@ -24,6 +7,15 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.namal.arch.utils.Constants;
 import com.namal.arch.utils.MongoDB;
+import org.bson.Document;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * Generic Audio Service Loader (Helper class)
@@ -31,10 +23,10 @@ import com.namal.arch.utils.MongoDB;
  * @author namalgac
  *
  */
-public abstract class GenericServiceLoader implements IAudioServiceLoader{
+abstract class GenericServiceLoader implements IAudioServiceLoader{
 	
 	private static BiMap<String, AudioService> audioServicesMap;
-	protected static List<AudioService> audioServices;
+	static List<AudioService> audioServices;
 	private static final String CONNECTURL = "connectUrl";
 	private static final String IMAGEURL = "imageUrl";
     private static final String SEARCH = "searchAvailable";
@@ -47,14 +39,11 @@ public abstract class GenericServiceLoader implements IAudioServiceLoader{
 		MongoDatabase db = MongoDB.getDatabase();
 		FindIterable<Document> servicesIt=db.getCollection("services").find();
 		HashMap<String, String> tmpMap = new HashMap<>();
-		servicesIt.forEach(new Block<Document>(){
-			@Override
-		    public void apply(final Document document) {
-				List<Document> providers = (List<Document>) document.get("providers");
-				for(Document doc : providers)
-					tmpMap.put(doc.getString("name"),doc.getString("id"));
-			}
-		});
+		servicesIt.forEach((Block<Document>) document -> {
+            List<Document> providers = (List<Document>) document.get("providers");
+            for(Document doc : providers)
+                tmpMap.put(doc.getString("name"),doc.getString("id"));
+        });
 		for(AudioService service :audioServices){
 			String id = tmpMap.get(service.getProviderInformation().getName());
 			if(id==null){

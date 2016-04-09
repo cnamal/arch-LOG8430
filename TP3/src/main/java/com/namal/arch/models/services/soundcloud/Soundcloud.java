@@ -50,8 +50,6 @@ public class Soundcloud implements AudioService {
 		SongBuilder builder = SongBuilder.songBuilder().setId(result.getInt("id")+"").setTitle(result.getString("title"))
 				.setArtist(result.getJsonObject("user").getString("username")).setUri(result.getString("stream_url")+"?client_id="+clientId)
 				.setService(this).setDuration(result.getInt("duration"));
-		if (!result.isNull("artwork_url"))
-			builder.setAlbumCoverUrl(result.getString("artwork_url"));
 		return builder.build().toJsonObjectBuilder();
 	}
 
@@ -89,15 +87,13 @@ public class Soundcloud implements AudioService {
 			JsonReader rdr = Json.createReader(url.openStream());
 
 			JsonArray results = rdr.readArray();
-			for (JsonObject result : results.getValuesAs(JsonObject.class)) {
-				if (result.getBoolean("streamable")) {
-					try {
-						res.add(songBuilder(result));
-					} catch (SongMalformed e) {
-						e.printStackTrace();
-					}
+			results.getValuesAs(JsonObject.class).stream().filter(result -> result.getBoolean("streamable")).forEach(result -> {
+				try {
+					res.add(songBuilder(result));
+				} catch (SongMalformed e) {
+					e.printStackTrace();
 				}
-			}
+			});
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -112,28 +108,24 @@ public class Soundcloud implements AudioService {
 			URL url = new URL(MYPLAYLISTS + "?oauth_token=" + authToken);
 			JsonReader rdr = Json.createReader(url.openStream());
 			JsonArray results = rdr.readArray();
-			for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
-				if (!playlist.isNull("streamable") && playlist.getBoolean("streamable")) {
-					JsonObjectBuilder object = Json.createObjectBuilder();
-					object.add(TITLE, playlist.getString("title"));
-					object.add(ID, playlist.getInt("id"));
-					object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
-					object.add(PUB, playlist.getString("sharing").equals("public"));
-					JsonArrayBuilder songsJson = Json.createArrayBuilder();
-					JsonArray songs = playlist.getJsonArray("tracks");
-					for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
-						if (song.getBoolean("streamable")) {
-							try {
-								songsJson.add(songBuilder(song));
-							} catch (SongMalformed e) {
-								e.printStackTrace();
-							}
-						}
+			results.getValuesAs(JsonObject.class).stream().filter(playlist -> !playlist.isNull("streamable") && playlist.getBoolean("streamable")).forEach(playlist -> {
+				JsonObjectBuilder object = Json.createObjectBuilder();
+				object.add(TITLE, playlist.getString("title"));
+				object.add(ID, playlist.getInt("id"));
+				object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
+				object.add(PUB, playlist.getString("sharing").equals("public"));
+				JsonArrayBuilder songsJson = Json.createArrayBuilder();
+				JsonArray songs = playlist.getJsonArray("tracks");
+				songs.getValuesAs(JsonObject.class).stream().filter(song -> song.getBoolean("streamable")).forEach(song -> {
+					try {
+						songsJson.add(songBuilder(song));
+					} catch (SongMalformed e) {
+						e.printStackTrace();
 					}
-					object.add(SONGS,songsJson);
-					res.add(object);
-				}
-			}
+				});
+				object.add(SONGS, songsJson);
+				res.add(object);
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

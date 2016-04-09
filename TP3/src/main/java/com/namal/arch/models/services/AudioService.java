@@ -1,13 +1,8 @@
 package com.namal.arch.models.services;
 
-import java.util.List;
-
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.utils.ServiceListener;
+
+import javax.json.JsonArrayBuilder;
 
 /**
  * Main interface for the audio services
@@ -25,19 +20,19 @@ public interface AudioService {
 	 * 
 	 * @param track Name of the track that is researched
 	 */
-	public JsonArrayBuilder searchTrack(String track);
+	JsonArrayBuilder searchTrack(String track);
 	
 	/**
 	 * 
 	 * @return ProviderInformation of the AudioService
 	 */
-	public ProviderInformation getProviderInformation();
+	ProviderInformation getProviderInformation();
 	
 	/**
 	 * 
 	 * @return the unique instance of this AudioService
 	 */
-	public static AudioService getInstance() {
+	static AudioService getInstance() {
 		return null;
 	}
 	
@@ -45,18 +40,18 @@ public interface AudioService {
 	 * 
 	 * @return the AudioServiceProvider associated with the AudioService
 	 */
-	public AudioServiceProvider getAudioServiceProvider();
+	AudioServiceProvider getAudioServiceProvider();
 	
 	/**
 	 * 
 	 * @return the authentication module associated with the AudioService
 	 */
-	public IAuthentification getAuthentification();
+	IAuthentification getAuthentification();
 
 	/**
 	 * 
 	 * @return true if you can search tracks
 	 */
-	public boolean searchAvailable();
+	boolean searchAvailable();
 	
 }

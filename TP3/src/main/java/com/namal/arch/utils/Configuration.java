@@ -9,10 +9,9 @@ import com.namal.arch.models.services.IAudioServiceLoader;
  */
 public class Configuration {
 
-	private Configuration(){};
+	private Configuration(){}
 	
 	private static IAudioServiceLoader serviceLoader;
-	private static boolean show;
 	private static String urlBase;
 	
 	/**
@@ -29,22 +28,6 @@ public class Configuration {
 	 */
 	public static IAudioServiceLoader getAudioServiceLoader(){
 		return serviceLoader;
-	}
-
-	/**
-	 * 
-	 * @return true if the main FX app has to be shown, false otherwise
-	 */
-	public static boolean getShow() {
-		return show;
-	}
-
-	/**
-	 * 
-	 * @param show true if the main FX app has to be shown, false otherwise
-	 */
-	public static void setShow(boolean show) {
-		Configuration.show = show;
 	}
 
 	public static void setUrlBase(String base,int port){

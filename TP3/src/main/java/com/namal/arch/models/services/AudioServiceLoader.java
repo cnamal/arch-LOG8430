@@ -39,6 +39,6 @@ public class AudioServiceLoader extends GenericServiceLoader{
 		return instance;
 	}
 	
-	private AudioServiceLoader(){};
+	private AudioServiceLoader(){}
 	
 }

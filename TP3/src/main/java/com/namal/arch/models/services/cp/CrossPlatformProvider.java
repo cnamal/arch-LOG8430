@@ -65,7 +65,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
                     .append("id", song.getId())
                     .append("title", song.getTitle())
                     .append("artist", song.getArtist())
-                    .append("provider", song.getProviderId())
+                    .append("provider", song.getServiceId())
                     .append("duration", song.getDuration())
                     .append("uri", song.getUri()));
         }

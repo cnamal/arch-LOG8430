@@ -23,7 +23,6 @@ class SoundcloudProvider implements AudioServiceProvider {
 
 	
 	private SoundcloudProvider(Soundcloud service) {
-		// TODO Auto-generated constructor stub
 		this.service=service;
 	}
 	

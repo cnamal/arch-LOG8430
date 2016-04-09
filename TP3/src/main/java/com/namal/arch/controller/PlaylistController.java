@@ -1,27 +1,24 @@
 package com.namal.arch.controller;
 
-import java.util.*;
-import java.util.Map.Entry;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.namal.arch.models.Song;
+import com.namal.arch.models.SongBuilder;
+import com.namal.arch.models.services.AudioService;
+import com.namal.arch.utils.APIHelper;
+import com.namal.arch.utils.Configuration;
+import com.namal.arch.utils.Constants;
+import com.namal.arch.utils.ErrorBuilder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.namal.arch.models.Song;
-import com.namal.arch.models.SongBuilder;
-import com.namal.arch.utils.APIHelper;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.namal.arch.models.services.AudioService;
-import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.Constants;
-import com.namal.arch.utils.ErrorBuilder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @RestController
 @RequestMapping("/playlists")
@@ -197,39 +194,5 @@ public class PlaylistController {
             this.token = token;
         }
 
-
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Data data = (Data) o;
-            return Objects.equals(serviceId, data.serviceId) &&
-                    Objects.equals(id, data.id) &&
-                    Objects.equals(songs, data.songs) &&
-                    Objects.equals(token, data.token);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(serviceId, id, songs, token);
-        }
-
-        @Override
-        public String toString()  {
-            StringBuilder sb = new StringBuilder();
-            sb.append("class Data {\n");
-
-            sb.append("  serviceId: ").append(serviceId).append("\n");
-            sb.append("  id: ").append(id).append("\n");
-            sb.append("  songs: ").append(songs).append("\n");
-            sb.append("  token: ").append(token).append("\n");
-            sb.append("}\n");
-            return sb.toString();
-        }
     }
 }

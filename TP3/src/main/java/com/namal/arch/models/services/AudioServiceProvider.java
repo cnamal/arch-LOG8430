@@ -17,7 +17,7 @@ public interface AudioServiceProvider {
 	 * 
 	 * @return ProviderInformation of the AudioService
 	 */
-	public ProviderInformation getProviderInformation();
+	ProviderInformation getProviderInformation();
 	
 	JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken);
 
