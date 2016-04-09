@@ -7,6 +7,8 @@ import java.util.List;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
+import com.namal.arch.utils.APIHelper;
 import com.namal.arch.utils.ServiceListener;
 
 import javafx.application.Platform;
@@ -50,10 +52,10 @@ public class SearchOverviewController extends UIController{
 		this.mainApp = mainApp;
 		
 		//Providers
-		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
+		Iterator<AudioService> it = AudioServiceLoader.getInstance().getAudioServices();
 		while(it.hasNext()){
 			AudioService service = it.next();
-			if(service.searchAvailable())
+			if(service.isSearchAvailable())
 				providersListMenu.getItems().add(createMenuCheckProvider(service));
 		}		
 	}
@@ -64,7 +66,7 @@ public class SearchOverviewController extends UIController{
 	 * @return CheckMenuItem The item created and filled
 	 */
 	private CheckMenuItem createMenuCheckProvider(AudioService serv){
-		CheckMenuItem item = new CheckMenuItem(serv.getProviderInformation().getName());
+		CheckMenuItem item = new CheckMenuItem(serv.getName());
 		
 		//Comment these if you want no selected items at the beginning
 		item.setSelected(true);
@@ -86,27 +88,8 @@ public class SearchOverviewController extends UIController{
 	
 	@FXML
 	private void search(){
-		results = new Playlist("Search Results",true,true);
-		for(AudioService serv : providerListChecked){
-			serv.searchTrack(searchText.getText(), new ServiceListener<Playlist>() {
-				
-				@Override
-				public void done(Playlist result) {
-					Iterator<Song> it = result.getSongs();
-					while(it.hasNext()){
-						synchronized(results){
-							results.addSongWithoutUpdating(it.next());
-							Platform.runLater(new Runnable(){
-								@Override
-								public void run() {
-									showResults();
-								}
-							});
-						}
-					}
-				}
-			});
-		}
+		results = APIHelper.searchTrack(searchText.getText(), providerListChecked);
+		showResults();
 	}
 
 	/**
