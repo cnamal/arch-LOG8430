@@ -120,9 +120,11 @@ class SoundcloudProvider implements AudioServiceProvider {
 
         try {
             System.out.println("deletePlaylist");
-            url = new URL(Soundcloud.PLAYLISTURL+id+"?oauth_token="+authToken);
+            url = new URL(Soundcloud.PLAYLISTURL+id+"?client_id="+Soundcloud.clientId);
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setRequestMethod("DELETE");
+            httpCon.setRequestProperty(
+                    "Authorization", "OAuth "+authToken );
             httpCon.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
