@@ -16,28 +16,12 @@ public class Song {
 	private String title;
 	private String artist;
 	private String album;
-	private AudioServiceProvider provider;
 	private String providerId;
 	
 	
 	private String uri;
 	private long duration;
 	private String albumCoverUrl;
-	
-	/**
-	 * 
-	 * @return the inputStream of the song, to be used in the player
-	 */
-	public InputStream getInputStream(){
-		return provider.getInputStream(uri);
-	}
-	
-	/**
-	 * Closes the inputStream
-	 */
-	public void cleanup(){
-		provider.closeInputStream();
-	}
 	
 	/**
 	 * Uses the SongBuilder to create a Song, initializing the attributes
@@ -50,13 +34,6 @@ public class Song {
 		duration = builder.duration;
 		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
-		if(builder.provider!=null){
-			provider=builder.provider;
-			providerId= Configuration.getAudioServiceLoader().getProviderId(provider);
-		}else{
-			providerId= builder.providerId;
-			provider = Configuration.getAudioServiceLoader().getProvider(providerId);
-		}
 	}
 
 	/**
@@ -81,14 +58,6 @@ public class Song {
 	 */
 	public String getAlbum() {
 		return album;
-	}
-
-	/**
-	 * 
-	 * @return the AudioServiceProvider of the song
-	 */
-	public AudioServiceProvider getProvider() {
-		return provider;
 	}
 
 
