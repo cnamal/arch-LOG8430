@@ -1,9 +1,10 @@
 package com.namal.arch.models;
 
+import java.io.IOException;
 import java.io.InputStream;
-
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.utils.Configuration;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Model of a song
@@ -16,7 +17,7 @@ public class Song {
 	private String title;
 	private String artist;
 	private String album;
-	private String providerId;
+	private String serviceId;
 	
 	
 	private String uri;
@@ -34,8 +35,24 @@ public class Song {
 		duration = builder.duration;
 		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
+		serviceId=builder.serviceId;
 	}
 
+	public InputStream getInputStream() {
+		URLConnection urlConnection;
+		try {
+			//Might be able to refact this code
+			urlConnection = new URL (uri).openConnection();
+			urlConnection.connect ();
+			return urlConnection.getInputStream();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * 
 	 * @return the title of the song
@@ -109,7 +126,7 @@ public class Song {
 	 * 
 	 * @return provider's id
 	 */
-	public String getProviderId() {
-		return providerId;
+	public String getServiceId() {
+		return serviceId;
 	}
 }
