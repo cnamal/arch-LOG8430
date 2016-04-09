@@ -16,7 +16,7 @@ public class Song {
 	private String title;
 	private String artist;
 	private String album;
-	private String providerId;
+	private String serviceId;
 	
 	
 	private String uri;
@@ -34,6 +34,7 @@ public class Song {
 		duration = builder.duration;
 		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
+		serviceId=builder.serviceId;
 	}
 
 	/**
@@ -109,7 +110,7 @@ public class Song {
 	 * 
 	 * @return provider's id
 	 */
-	public String getProviderId() {
-		return providerId;
+	public String getServiceId() {
+		return serviceId;
 	}
 }
