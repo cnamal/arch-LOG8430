@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.common.net.UrlEscapers;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.models.services.IAuthentification;
 import com.namal.arch.utils.Connexion;
@@ -49,9 +50,9 @@ public class AuthentificationOverviewController {
      * @param button a button
      * @param serv The audio Service we try to authenticate
      */
-	private void onLoadService(Stage stage, IAuthentification auth, Button button, AudioService serv){
+	private void onLoadService(Stage stage,  Button button, AudioService serv){
 		
-		stage.setTitle("Authentification " + auth.getProviderInformation().getName());
+		stage.setTitle("Authentification " + serv.getName());
         stage.setWidth(800);
         stage.setHeight(500);
         stage.setResizable(true);
@@ -72,16 +73,17 @@ public class AuthentificationOverviewController {
                   if (newState == Worker.State.SUCCEEDED) {
                 	  String url= webEngine.getLocation();
                 	  System.out.println(url);
-                	  if(url.indexOf(auth.testString())>=0){
+                	  if(url.indexOf("https://cnamal.github.io/arch-LOG8430/callback.html")>=0){
                 		 
 						try {
 							 String strUrlServer = Connexion.getURI();
-	                		  strUrlServer = strUrlServer+"/services/connect?serviceId=1&url="+URLEncoder.encode(url,"UTF-8");
+	                		  strUrlServer = strUrlServer+"/services/connect?serviceId="+serv.getServiceId()+"&url="+URLEncoder.encode(url,"UTF-8");
 	                		  URL urlServer;
 							urlServer = new URL(strUrlServer);
 							InputStream serverResponse = urlServer.openStream();
 							JsonReader rdr = Json.createReader(serverResponse);
 							ConnexionToken.getInstance().setToken(rdr.readObject().getJsonObject("data").getString("token"));
+							serv.setConnected(true);
 							serverResponse.close();
 						} catch (MalformedURLException e) {
 							// TODO Auto-generated catch block
@@ -106,7 +108,7 @@ public class AuthentificationOverviewController {
                   
                 }
             });
-        webEngine.load(auth.getAuthentificationUrl());     
+        webEngine.load(serv.getConnectUrl());     
 
         root.getChildren().addAll(scrollPane);
         scene.setRoot(root);
@@ -121,8 +123,8 @@ public class AuthentificationOverviewController {
      * @param stage The stage into which we load the service
      * @param serviceLoader The IAudioServiceLoader linked
      */
-	public void onLoadListServices(AnchorPane module, Stage stage, IAudioServiceLoader serviceLoader){
-		Iterator<AudioService> list = serviceLoader.getAudioServices();
+	public void onLoadListServices(AnchorPane module, Stage stage){
+		Iterator<AudioService> list = AudioServiceLoader.getInstance().getAudioServices();
 		Label text = new Label("Select a service to authenticate");
 		text.setLayoutX(module.getWidth()/2 - 50);
 		module.getChildren().add(text);
@@ -134,7 +136,7 @@ public class AuthentificationOverviewController {
 			AnchorPane.setRightAnchor(child, 0.0);
 			
         	AudioService serv = list.next();
-        	Label label = new Label(serv.getProviderInformation().getName());
+        	Label label = new Label(serv.getName());
         	AnchorPane.setLeftAnchor(label, 0.0);
 			AnchorPane.setTopAnchor(label, 5.0);
 			AnchorPane.setBottomAnchor(label, 5.0);
@@ -148,10 +150,10 @@ public class AuthentificationOverviewController {
         	button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent mouseEvent) {
-			    	if(!serv.isConnected())
-			    		onLoadService(stage, serv.getAuthentification(), button, serv);
+			    	if(!serv.isConnected()&&(serv.getConnectUrl()!=null))
+			    		onLoadService(stage, button, serv);
 			    	else{
-			    		serv.disconnect();
+			    		//serv.disconnect();
 			    		updateButton(button, serv);
 			    	}
 			    }
@@ -164,44 +166,6 @@ public class AuthentificationOverviewController {
         }
 		
 	}
-	/*
-	public void onLoadListServices(Stage stage){
-		stage.setTitle("Authentification");
-		stage.setWidth(500);
-        Scene scene = new Scene(new Group());
-
-        AnchorPane root = new AnchorPane(); 
-        stage.setResizable(false);
-        
-        Iterator<AudioService> list = AudioServiceLoader.getAudioServices();
-        
-        Label text = new Label("Select a service to authenticate");
-        text.setLayoutX(165);
-        
-        root.getChildren().add(text);
-        
-        int layoutY = 40;
-        
-        while(list.hasNext()){
-        	AudioService serv = list.next();
-        	Button button = new Button(serv.getProviderInformation().getName());
-        	button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			    @Override
-			    public void handle(MouseEvent mouseEvent) {
-			    	onLoadService(stage, serv.getAuthentification());
-			    }
-		    });
-        	button.setLayoutX((stage.getWidth()-100)/2);
-        	button.setLayoutY(layoutY);
-        	layoutY += button.getHeight() + 10;
-        	root.getChildren().add(button);
-        }
-        
-        scene.setRoot(root);
-
-        stage.setScene(scene);
-        stage.showAndWait();
-	}*/
 
 	private void updateButton(Button button, AudioService serv){
 		button.setText((serv.isConnected()?"Disconnect":"Connect"));
