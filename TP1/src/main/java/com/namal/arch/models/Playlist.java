@@ -1,5 +1,7 @@
 package com.namal.arch.models;
 
+import com.namal.arch.utils.PlaylistManager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -101,6 +103,24 @@ public class Playlist {
 		this.id=Integer.MIN_VALUE+"";
 		this.searchPlaylist=searchPlaylist;
 		init(name, null,pub);
+	}
+
+	/**
+	 * Adds a song to the playlist, updating it on the server
+	 * @param song song to be added
+	 */
+	public void addSongAndUpdate(int index, Song song){
+		playlist.add(index, song);
+		if(!(song.getServiceId().equals(serviceId))){
+			serviceId = "0";
+			id = Integer.MIN_VALUE+"";
+			name = "[CP]" + name;
+		}
+		if(id.equals(Integer.MIN_VALUE+"")){
+			PlaylistManager.getInstance().createPlaylist(this);
+		} else {
+			PlaylistManager.getInstance().updatePlaylist(this);
+		}
 	}
 	
 	/**

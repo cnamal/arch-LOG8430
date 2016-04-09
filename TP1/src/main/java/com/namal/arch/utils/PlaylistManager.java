@@ -12,7 +12,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,15 +40,16 @@ public class PlaylistManager {
             if(token == null){
                 //TODO : Manage if the token is null
             }
-            URL url = new URL("/playlists?token=" + token);
+            URL url = new URL(Connexion.getURI()+"/playlists?token=" + token);
             WebThread webThread = new WebThread(url, new WebListener() {
 
                 @Override
-                public void done(InputStream is) {
+                public void done(InputStream is){
                     if(is!=null) {
                         JsonReader rdr = Json.createReader(is);
+
                         List<Playlist> res_playlists = new ArrayList<Playlist>();
-                        JsonArray data = rdr.readArray();
+                        JsonArray data = rdr.readObject().getJsonArray("data");
                         for (JsonObject services : data.getValuesAs(JsonObject.class)) {
                             JsonArray playlists = services.getJsonArray("playlists");
                             for (JsonObject playlist : playlists.getValuesAs(JsonObject.class)) {
@@ -59,14 +59,15 @@ public class PlaylistManager {
                                         playlist.getBoolean("pub"));
                                 JsonArray songs = playlist.getJsonArray("songs");
                                 for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
-                                    SongBuilder.songBuilder().setId(song.getString("id"))
+                                    try {
+                                    Song song_aux = SongBuilder.songBuilder().setId(song.getString("id"))
                                             .setTitle(song.getString("title"))
                                             .setArtist(song.getString("artist"))
                                             .setServiceId(song.getString("serviceId"))
                                             .setDuration(song.getInt("duration"))
-                                            .setUri(song.getString("uri"));
-                                    try {
-                                        Song song_aux = SongBuilder.songBuilder().build();
+                                            .setUri(song.getString("uri"))
+                                            .build();
+
                                         aux_playlist.addSongWithoutUpdating(song_aux);
                                     } catch (SongMalformed e) {
                                         e.printStackTrace();
@@ -92,7 +93,7 @@ public class PlaylistManager {
             if(token == null){
                 //TODO : Manage if the token is null
             }
-            URL url = new URL("/playlists");
+            URL url = new URL(Connexion.getURI()+"/playlists");
 
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setDoOutput(true);
@@ -106,9 +107,10 @@ public class PlaylistManager {
             object.add("name", playlist.getName());
             object.add("pub", playlist.getPub());
             object.add("token", token);
-            out.write(object.toString());
+            out.write(object.build().toString());
             out.close();
 
+            //System.out.println(org.apache.commons.io.IOUtils.toString(httpCon.getInputStream()));
 
             JsonReader rdr = Json.createReader(httpCon.getInputStream());
             JsonObject results = rdr.readObject().getJsonObject("data");
@@ -129,7 +131,7 @@ public class PlaylistManager {
             if(token == null){
                 //TODO : Manage if the token is null
             }
-            URL url = new URL("/playlists");
+            URL url = new URL(Connexion.getURI()+"/playlists");
 
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setDoOutput(true);
@@ -158,8 +160,9 @@ public class PlaylistManager {
                     .add("id", playlist.getId())
                     .add("songs", songs)
                     .add("token", token);
-            out.write(object.toString());
+            out.write(object.build().toString());
             out.close();
+            httpCon.getInputStream();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -188,8 +191,9 @@ public class PlaylistManager {
             object.add("serviceId", playlist.getServiceId())
                     .add("id", playlist.getId())
                     .add("token", token);
-            out.write(object.toString());
+            out.write(object.build().toString());
             out.close();
+            httpCon.getInputStream();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

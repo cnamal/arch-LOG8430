@@ -1,11 +1,13 @@
 package com.namal.arch.view;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.utils.PlaylistManager;
 import com.namal.arch.utils.ServiceListener;
 
 import javafx.beans.value.ChangeListener;
@@ -75,7 +77,8 @@ public class SongTemplateController extends UIController{
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
-		this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
+		// TODO
+		//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
 		this.songBox = songBox;
 		this.playlist = playlist;
 		menuButton.getItems().get(0).setDisable(song.getUri()==null);
@@ -110,24 +113,18 @@ public class SongTemplateController extends UIController{
 	}
 	
 	private void createAddPlaylistMenu(){
-		Iterator<AudioService> it = mainApp.getServiceLoader().getAudioServices();
-		while(it.hasNext()){
-			AudioService serv = it.next();
-			serv.getPlaylists(new ServiceListener<List<Playlist>>() {
-				
-				@Override
-				public void done(List<Playlist> result) {
-					if(result != null){
-						for(Playlist p : result){
-							if(p.getId() != playlist.getId()){
-								addMenuItem(p);
-							}
+		PlaylistManager.getInstance().getPlaylists(new ServiceListener<List<Playlist>>() {
+			@Override
+			public void done(List<Playlist> result) {
+				if(result != null){
+					for(Playlist p : result){
+						if(p.getId() != playlist.getId()){
+							addMenuItem(p);
 						}
 					}
 				}
-			});
-			
-		}
+			}
+		});
 		//New playlist
 		MenuItem menuItem = new MenuItem("New playlist...");
 		menuItem.setOnAction(new EventHandler<ActionEvent>() {

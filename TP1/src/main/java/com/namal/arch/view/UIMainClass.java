@@ -5,9 +5,7 @@ import java.util.HashMap;
 
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.IAudioServiceLoader;
 import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.MongoDB;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +23,6 @@ public class UIMainClass extends Application{
 	private Stage authenticateStage;
 	private Stage newPlaylistStage;
 	private Scene primaryScene;
-	
-	private IAudioServiceLoader serviceLoader;
 	private boolean showApp;
 	
 	private AnchorPane generalLayout;
@@ -43,10 +39,6 @@ public class UIMainClass extends Application{
 		uiController = new UIController();
 		logos = new HashMap<AudioServiceProvider, Image>();
 		showApp = Configuration.getShow();
-		serviceLoader = Configuration.getAudioServiceLoader();
-		if(serviceLoader == null){
-			throw new RuntimeException("Please set the Audio Service Loader in the Configuration");
-		}
 	}
 	
 	/**
@@ -66,11 +58,7 @@ public class UIMainClass extends Application{
         
         loadGeneraLayout();
     }
-	
-	@Override
-	public void stop(){
-		MongoDB.cleanUp();
-	}
+
 	
 	public void loadGeneraLayout(){
 		FXMLLoader loader = uiController.getLoaderFromFile(GENERAL_LAYOUT_FILE);
@@ -100,7 +88,7 @@ public class UIMainClass extends Application{
 		authenticateStage.initModality(Modality.WINDOW_MODAL);
 		authenticateStage.initOwner(primaryStage);
 		AuthentificationOverviewController authenticateController = new AuthentificationOverviewController();
-		authenticateController.onLoadListServices(module, authenticateStage,serviceLoader);
+		authenticateController.onLoadListServices(module, authenticateStage);
 	}
 	
 	public Stage getPrimaryStage(){
@@ -110,10 +98,7 @@ public class UIMainClass extends Application{
 	public Scene getPrimaryScene(){
 		return primaryScene;
 	}
-	
-	public IAudioServiceLoader getServiceLoader(){
-		return serviceLoader;
-	}
+
 	
 	public void createNewPlaylist(Song song){
 		Stage newPlaylistStage = new Stage();

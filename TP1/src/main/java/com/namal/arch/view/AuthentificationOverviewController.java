@@ -46,7 +46,6 @@ public class AuthentificationOverviewController {
 	/**
      * Function to call in order to load this service
      * @param stage The stage into which we load the service
-     * @param auth The authentication information
      * @param button a button
      * @param serv The audio Service we try to authenticate
      */
@@ -121,7 +120,6 @@ public class AuthentificationOverviewController {
      * Function to call in order to load the list of all services
      * @param module the pane where the the module will be attached
      * @param stage The stage into which we load the service
-     * @param serviceLoader The IAudioServiceLoader linked
      */
 	public void onLoadListServices(AnchorPane module, Stage stage){
 		Iterator<AudioService> list = AudioServiceLoader.getInstance().getAudioServices();

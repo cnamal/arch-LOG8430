@@ -43,7 +43,7 @@ public class SongBuilder {
 	 * @return the same objet with it's id set
 	 */
 	public SongBuilder setId(String id){
-		this.id=id+"";
+		this.id=id;
 		return this;
 	}
 	
