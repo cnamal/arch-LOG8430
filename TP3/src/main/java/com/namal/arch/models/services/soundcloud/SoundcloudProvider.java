@@ -116,7 +116,17 @@ class SoundcloudProvider implements AudioServiceProvider {
 
 	@Override
 	public void deletePlaylist(String id, String authToken) {
+        URL url;
 
+        try {
+            System.out.println("deletePlaylist");
+            url = new URL(Soundcloud.PLAYLISTURL+id+"?oauth_token="+authToken);
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setRequestMethod("DELETE");
+            httpCon.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	private static class SoundcloudProviderInformation extends ProviderInformation{

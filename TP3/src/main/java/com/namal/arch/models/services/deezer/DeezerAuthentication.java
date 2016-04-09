@@ -25,7 +25,7 @@ class DeezerAuthentication extends GenericAuthenticationService{
 
 	@Override
 	public String getAuthentificationUrl() {
-		return "https://connect.deezer.com/oauth/auth.php?app_id="+appId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&perms=manage_library";
+		return "https://connect.deezer.com/oauth/auth.php?app_id="+appId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&perms=manage_library,delete_library";
 	}
 
 }

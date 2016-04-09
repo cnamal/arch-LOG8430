@@ -103,7 +103,19 @@ class SpotifyProvider implements AudioServiceProvider {
 
 	@Override
 	public void deletePlaylist(String id, String authToken) {
+        URL url;
 
+        try {
+            System.out.println("deletePlaylist");
+            url = new URL(Spotify.USERURL+SpotifyAuthentication.usernameMap.get(authToken)+"/playlists/"+id+"/followers");
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setRequestMethod("DELETE");
+            httpCon.setRequestProperty(
+                    "Authorization", "Bearer "+authToken );
+            httpCon.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	private static class SpotifyProviderInformation extends ProviderInformation{

@@ -81,7 +81,17 @@ class DeezerProvider implements AudioServiceProvider {
 
 	@Override
 	public void deletePlaylist(String id, String authToken) {
+		URL url;
 
+		try {
+			String urlString = Deezer.PLAYLISTURL+id+"?access_token="+authToken+"&request_method=DELETE";
+
+			url = new URL(urlString);
+			url.openConnection().getInputStream();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static class SpotifyProviderInformation extends ProviderInformation{
