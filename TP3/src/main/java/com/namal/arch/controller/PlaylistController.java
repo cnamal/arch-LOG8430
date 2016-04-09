@@ -75,13 +75,12 @@ public class PlaylistController {
             AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
             if(service==null)
                 return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
-            APIHelper.dataResponse(service.getAudioServiceProvider().createPlaylist(name,pub,authToken));
+            return APIHelper.dataResponse(service.getAudioServiceProvider().createPlaylist(name,pub,authToken));
 		}catch (UnauthorizedException e){
             return ErrorBuilder.unauthorizedError(response);
         }catch(Exception e){
 			return badRequest(Constants.incorrectTypeError(), response);
 		}
-		return "";
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
