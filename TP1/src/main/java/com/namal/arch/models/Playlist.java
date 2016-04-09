@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
-import com.namal.arch.models.services.cp.CrossPlatform;
-
 /**
  * Model of a playlist
  * @author namalgac

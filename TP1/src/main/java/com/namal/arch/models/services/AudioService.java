@@ -1,78 +1,67 @@
 package com.namal.arch.models.services;
 
-import java.util.List;
-
-import com.namal.arch.models.Playlist;
-import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.utils.ServiceListener;
-
 /**
- * Main interface for the audio services
- * @author namalgac
+ * Model for an audioservice (3rd lab)
+ * @author Fabien Berquez
  *
  */
-public interface AudioService {
+public class AudioService {
 	
-	/**
-	 * Get the playlists of the user 
-	 * @param callback callback function called once the playlists have been retrieved
-	 */
-	public void getPlaylists(ServiceListener<List<Playlist>> callback);
-	
-	/**
-	 * @return True if the service is connected
-	 */
-	public boolean isConnected();
+	private String serviceId;
+	private String name;
+	private String connectUrl;
+	private String imageUrl;
+	private boolean searchAvailable;
+	private boolean isConnected;
 	
 	
-	/**
-	 * Disconnect the service
-	 */
-	public void disconnect();
-	
-	/**
-	 * 
-	 * @return true if an authentication is needed
-	 */
-	public boolean authenticationNeeded();
-	
-	/**
-	 * 
-	 * @param track Name of the track that is researched
-	 * @param callback callback function called once the search is completed
-	 */
-	public void searchTrack(String track, ServiceListener<Playlist> callback);
-	
-	/**
-	 * 
-	 * @return ProviderInformation of the AudioService
-	 */
-	public ProviderInformation getProviderInformation();
-	
-	/**
-	 * 
-	 * @return the unique instance of this AudioService
-	 */
-	public static AudioService getInstance() {
-		return null;
+	public AudioService(String serviceId, String name, String connectUrl, String imageUrl, boolean searchAvailable) {
+		this.serviceId = serviceId;
+		this.name = name;
+		this.connectUrl = connectUrl;
+		this.imageUrl = imageUrl;
+		this.searchAvailable = searchAvailable;
+		this.isConnected = false;
 	}
 	
-	/**
-	 * 
-	 * @return the AudioServiceProvider associated with the AudioService
-	 */
-	public AudioServiceProvider getAudioServiceProvider();
-	
-	/**
-	 * 
-	 * @return the authentication module associated with the AudioService
-	 */
-	public IAuthentification getAuthentification();
+	public String getServiceId() {
+		return serviceId;
+	}
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getConnectUrl() {
+		return connectUrl;
+	}
+	public void setConnectUrl(String connectUrl) {
+		this.connectUrl = connectUrl;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public boolean isSearchAvailable() {
+		return searchAvailable;
+	}
+	public void setSearchAvailable(boolean searchAvailable) {
+		this.searchAvailable = searchAvailable;
+	}
 
-	/**
-	 * 
-	 * @return true if you can search tracks
-	 */
-	public boolean searchAvailable();
+	public boolean isConnected() {
+		return isConnected;
+	}
+
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
+	}
+	
 	
 }

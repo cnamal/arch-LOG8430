@@ -11,24 +11,8 @@ public class Configuration {
 
 	private Configuration(){};
 	
-	private static IAudioServiceLoader serviceLoader;
 	private static boolean show;
 	
-	/**
-	 * 
-	 * @param audioSL Audio service loader that is going to be used
-	 */
-	public static void setAudioServiceLoader(IAudioServiceLoader audioSL){
-		serviceLoader = audioSL;
-	}
-	
-	/**
-	 * 
-	 * @return Audio service loader that is used
-	 */
-	public static IAudioServiceLoader getAudioServiceLoader(){
-		return serviceLoader;
-	}
 
 	/**
 	 * 
