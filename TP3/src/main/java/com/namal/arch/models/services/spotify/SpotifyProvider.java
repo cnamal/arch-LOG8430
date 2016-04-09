@@ -1,32 +1,25 @@
 package com.namal.arch.models.services.spotify;
 
+import com.namal.arch.models.ProviderInformation;
+import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.utils.Configuration;
+
+import javax.json.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Iterator;
 
-import javax.json.*;
-
-import com.namal.arch.models.Playlist;
-import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.models.Song;
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
-import com.namal.arch.utils.Configuration;
-
 import static com.namal.arch.utils.Constants.*;
-import static com.namal.arch.utils.Constants.SONGS;
 
 class SpotifyProvider implements AudioServiceProvider {
 	
 	private Spotify service;
 	private static SpotifyProvider instance;
-	private InputStream inputStream;
-	
+
 	
 	private SpotifyProvider(Spotify service) {
 		this.service=service;
@@ -41,11 +34,6 @@ class SpotifyProvider implements AudioServiceProvider {
 	@Override
 	public ProviderInformation getProviderInformation() {
 		return SpotifyProviderInformation.getInstance();
-	}
-
-	@Override
-	public void update(ServiceEvent ev) {
-		service.update(ev);
 	}
 
 	@Override
@@ -78,9 +66,6 @@ class SpotifyProvider implements AudioServiceProvider {
             objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
-            service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,9 +97,6 @@ class SpotifyProvider implements AudioServiceProvider {
             out.write(data.toString());
             out.close();
             httpCon.getInputStream();
-            service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

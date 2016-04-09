@@ -9,21 +9,7 @@ import java.util.Map;
  *
  */
 public abstract class GenericAuthenticationService implements IAuthentification{
-
-	protected String authToken;
-	protected boolean isAuthenticated=false;
 	
-	/**
-	 * 
-	 * @return Authentication token
-	 */
-	protected abstract String getAuthToken();
-
-	@Override
-	public String testString() {
-		return "https://cnamal.github.io/arch-LOG8430/callback.html";
-	}
-
 	@Override
 	public String serverResponse(String response) {
 		String res=response;
@@ -36,11 +22,6 @@ public abstract class GenericAuthenticationService implements IAuthentification{
 		return serverResponse(paramsMap);
 	}
 
-	@Override
-	public boolean isConnected(){
-		return isAuthenticated;
-	}
-	
 	/**
 	 * 
 	 * @param s map with the get parameters

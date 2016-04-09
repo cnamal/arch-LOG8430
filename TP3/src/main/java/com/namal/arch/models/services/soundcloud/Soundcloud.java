@@ -1,38 +1,19 @@
 package com.namal.arch.models.services.soundcloud;
 
-import static com.namal.arch.utils.Constants.ID;
-import static com.namal.arch.utils.Constants.PUB;
-import static com.namal.arch.utils.Constants.SERVICEID;
-import static com.namal.arch.utils.Constants.SONGS;
-import static com.namal.arch.utils.Constants.TITLE;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
-
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.ServiceListener;
-import com.namal.arch.utils.WebListener;
-import com.namal.arch.utils.WebThread;
+
+import javax.json.*;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import static com.namal.arch.utils.Constants.*;
 
 /**
  * Soundcloud service
@@ -43,23 +24,18 @@ public class Soundcloud implements AudioService {
 
 	private static Soundcloud instance = new Soundcloud();
 	static final String clientId = "467af8ca6a20d82958569c3c248446f3";
-	static final String BASEURL = "http://api.soundcloud.com/";
-	static final String SONGSURL = BASEURL + "tracks/";
-	static final String MYPLAYLISTS = BASEURL + "me/playlists/";
+	private static final String BASEURL = "http://api.soundcloud.com/";
+	private static final String SONGSURL = BASEURL + "tracks/";
+	private static final String MYPLAYLISTS = BASEURL + "me/playlists/";
 	static final String PLAYLISTURL = BASEURL + "playlists/";
 
-	private List<Playlist> playlists = null;
 
 	private SoundcloudAuthentication authentication;
 	private SoundcloudProvider provider;
 
 	private Soundcloud() {
-		authentication = SoundcloudAuthentication.getInstance(this);
+		authentication = SoundcloudAuthentication.getInstance();
 		provider = SoundcloudProvider.getInstance(this);
-	}
-
-	String getAuthToken() {
-		return authentication.getAuthToken();
 	}
 
 	/**
@@ -91,26 +67,17 @@ public class Soundcloud implements AudioService {
 
 	@Override
 	public AudioServiceProvider getAudioServiceProvider() {
-		// TODO Auto-generated method stub
 		return provider;
 	}
 
 	@Override
 	public IAuthentification getAuthentification() {
-		// TODO Auto-generated method stub
 		return authentication;
 	}
 
 	@Override
 	public boolean searchAvailable() {
 		return true;
-	}
-	
-	void update(ServiceEvent ev) {
-		if (ev == ServiceEvent.USERPLAYLISTSUPDATED)
-			playlists = null;
-		else
-			throw new UnsupportedOperationException(ev + " is not supported");
 	}
 
 	@Override
@@ -127,14 +94,11 @@ public class Soundcloud implements AudioService {
 					try {
 						res.add(songBuilder(result));
 					} catch (SongMalformed e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -150,7 +114,6 @@ public class Soundcloud implements AudioService {
 			JsonArray results = rdr.readArray();
 			for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
 				if (!playlist.isNull("streamable") && playlist.getBoolean("streamable")) {
-					JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 					JsonObjectBuilder object = Json.createObjectBuilder();
 					object.add(TITLE, playlist.getString("title"));
 					object.add(ID, playlist.getInt("id"));
@@ -171,12 +134,8 @@ public class Soundcloud implements AudioService {
 					res.add(object);
 				}
 			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 		return res;
 	}

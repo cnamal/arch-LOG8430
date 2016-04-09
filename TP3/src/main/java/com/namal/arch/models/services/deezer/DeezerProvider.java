@@ -1,34 +1,26 @@
 package com.namal.arch.models.services.deezer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Iterator;
+import com.namal.arch.models.ProviderInformation;
+import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.utils.Configuration;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-
-import com.namal.arch.models.Playlist;
-import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.models.Song;
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
-import com.namal.arch.utils.Configuration;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
 
 import static com.namal.arch.utils.Constants.*;
-import static com.namal.arch.utils.Constants.SONGS;
 
 class DeezerProvider implements AudioServiceProvider {
 	
 	private Deezer service;
 	private static DeezerProvider instance;
-	private InputStream inputStream;
-	
+
 	
 	private DeezerProvider(Deezer service) {
 		this.service=service;
@@ -45,11 +37,6 @@ class DeezerProvider implements AudioServiceProvider {
 		return SpotifyProviderInformation.getInstance();
 	}
 	
-	@Override
-	public void update(ServiceEvent ev) {
-		service.update(ev);
-	}
-
 	@Override
 	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		URL url;
@@ -69,9 +56,6 @@ class DeezerProvider implements AudioServiceProvider {
             objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
-			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -90,9 +74,6 @@ class DeezerProvider implements AudioServiceProvider {
             url = new URL(urlString);
             url.openConnection().getInputStream();
 
-            service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
