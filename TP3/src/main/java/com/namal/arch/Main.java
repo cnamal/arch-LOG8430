@@ -27,27 +27,13 @@ import javax.servlet.ServletRequest;
 @SpringBootApplication
 public class Main{
 
-    @Autowired
-    static Environment environment;
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//Uncomment/Comment for enable/disable UI
 
-
-		ApplicationContext ctx = SpringApplication.run(Main.class, args);
+		SpringApplication.run(Main.class, args);
         MongoDB.init();
         Configuration.setAudioServiceLoader(AudioServiceLoader.getInstance());
 
-        AudioServiceLoader.getInstance().getAudioServices();
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }
-
+		System.out.println("You can now start any client side application.");
 	}
 
 }

@@ -81,7 +81,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	private static class SpotifyProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Crossplatform";
-		private static final String logoURL = null;
+		private static final String logoURL = Configuration.getUrlBase()+"/img/CP.png";
 		private static final SpotifyProviderInformation instance = new SpotifyProviderInformation();
 		
 		private SpotifyProviderInformation(){
