@@ -5,7 +5,10 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 
 /**
- * Created by namalgac on 4/7/16.
+ * APIHelper class
+ *
+ * @author Namal
+ *         Created on 4/9/16.
  */
 public class APIHelper {
 

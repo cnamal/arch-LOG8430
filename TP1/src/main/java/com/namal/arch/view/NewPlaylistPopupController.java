@@ -28,7 +28,7 @@ public class NewPlaylistPopupController extends UIController {
 	
 	@FXML
 	private void onOK(){
-		Playlist playlist = new Playlist(name.getText(), false, isPublic.isSelected());
+		Playlist playlist = new Playlist(name.getText(), Integer.MIN_VALUE,  song.getServiceId(), isPublic.isSelected());
 		playlist.addSongAndUpdate(0, song);
 		stage.close();
 	}

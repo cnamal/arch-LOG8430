@@ -1,31 +1,24 @@
 package com.namal.arch.models.services.cp;
 
-import java.util.ArrayList;
-
-import static com.namal.arch.utils.Constants.*;
-import java.util.List;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-
-import org.bson.Document;
-
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
-import com.namal.arch.models.Playlist;
 import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.models.services.IAuthentification;
-import com.namal.arch.models.services.ServiceEvent;
 import com.namal.arch.utils.Configuration;
-import com.namal.arch.utils.Constants;
 import com.namal.arch.utils.MongoDB;
-import com.namal.arch.utils.ServiceListener;
+import org.bson.Document;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import java.util.List;
+
+import static com.namal.arch.utils.Constants.*;
 
 /**
  * Cross platform service
@@ -35,18 +28,13 @@ import com.namal.arch.utils.ServiceListener;
 public class CrossPlatform implements AudioService {
 
 	private static CrossPlatform instance = new CrossPlatform();
-	static final String BASEURL = "https://api.deezer.com/";
-	static final String SEARCHURL = BASEURL+"search";
-	static final String MYPLAYLISTS = BASEURL + "user/me/playlists";
-	static final String PLAYLISTURL = BASEURL + "playlist/";
 
-	private List<Playlist> playlists = null;
 
 	private CrossPlatformAuthentication authentication;
 	private CrossPlatformProvider provider;
 
 	private CrossPlatform() {
-		authentication = CrossPlatformAuthentication.getInstance(this);
+		authentication = CrossPlatformAuthentication.getInstance();
 		provider = CrossPlatformProvider.getInstance(this);
 	}
 
@@ -64,7 +52,7 @@ public class CrossPlatform implements AudioService {
 				.setId(result.getString("id"))
 				.setTitle(result.getString("title"))
 				.setArtist(result.getString("artist"))
-				.setProvider(result.getString("provider"))
+				.setServiceId(result.getString("serviceId"))
 				.setDuration(result.getLong("duration"))
 				.setUri(result.getString("uri"));
 		/*if (!result.isNull("artwork_url"))
@@ -73,44 +61,6 @@ public class CrossPlatform implements AudioService {
 			builder.setUri(result.getString("preview_url"));*/
 		
 		return builder.build().toJsonObjectBuilder();
-	}
-
-	@Override
-	public void getPlaylists(ServiceListener<List<Playlist>> callback) {
-		// TODO Auto-generated method stub
-		if (!authentication.isConnected())
-			return; // TODO add Exception system
-		if (playlists != null)
-			callback.done(playlists);
-		else {
-			/*MongoDatabase db = MongoDB.getDatabase();
-			FindIterable<Document> playlistColletction=db.getCollection("playlists").find();
-			List<Playlist> playlists = new ArrayList<>();
-			CrossPlatform.this.playlists = playlists;
-			playlistColletction.forEach(new Block<Document>() {
-			    @Override
-			    public void apply(final Document document) {
-			    	Playlist p = new Playlist(document.getString("title"), document.getObjectId("_id").toString(), provider,
-							document.getBoolean("public"));
-			        List<Document> songs = (List<Document>)document.get("songs");
-			        for(Document song:songs){
-			        	try {
-							p.addSongWithoutUpdating(songBuilder(song));
-						} catch (SongMalformed e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-			        }
-			        playlists.add(p);
-			    }
-			});*/
-			callback.done(playlists);
-		}
-	}
-
-	@Override
-	public boolean authenticationNeeded() {
-		return false;
 	}
 
 	@Override
@@ -128,11 +78,6 @@ public class CrossPlatform implements AudioService {
 	}
 
 	@Override
-	public void searchTrack(String track, ServiceListener<Playlist> callback) {
-		System.err.println("Called search track when searchAvailable is false. Bad programmer !");
-	}
-
-	@Override
 	public AudioServiceProvider getAudioServiceProvider() {
 		return provider;
 	}
@@ -141,24 +86,6 @@ public class CrossPlatform implements AudioService {
 	public IAuthentification getAuthentification() {
 		return authentication;
 	}
-
-	@Override
-	public boolean isConnected() {
-		return authentication.isConnected();
-	}
-
-	@Override
-	public void disconnect() {
-		authentication.disconnect();
-	}
-
-	void update(ServiceEvent ev) {
-		if (ev == ServiceEvent.USERPLAYLISTSUPDATED)
-			playlists = null;
-		else
-			throw new UnsupportedOperationException(ev + " is not supported");
-	}
-
 
 	@Override
 	public JsonArrayBuilder searchTrack(String track) {
@@ -172,35 +99,24 @@ public class CrossPlatform implements AudioService {
 		JsonArrayBuilder res = Json.createArrayBuilder();
 		MongoDatabase db = MongoDB.getDatabase();
 		FindIterable<Document> playlistColletction=db.getCollection("playlists").find();
-		//List<Playlist> playlists = new ArrayList<>();
-		//CrossPlatform.this.playlists = playlists;
-		playlistColletction.forEach(new Block<Document>() {
-		    @Override
-		    public void apply(final Document document) {
-		    	/*
-		    	 * document.getString("title"), document.getObjectId("_id").toString(), provider,
-							document.getBoolean("public")
-		    	 */
-		    	JsonObjectBuilder object = Json.createObjectBuilder();
-		    	object.add(TITLE, document.getString("title"));
-		    	object.add(ID, document.getObjectId("_id").toString());
-		    	object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(instance));
-		    	object.add(PUB	, document.getBoolean("public"));
-		    	JsonArrayBuilder songsJson = Json.createArrayBuilder();
-		        List<Document> songs = (List<Document>)document.get("songs");
-		        for(Document song:songs){
-		        	try {
-						songsJson.add(songBuilder(song));
-					} catch (SongMalformed e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		        }
-		        object.add(SONGS, songsJson);
-		        res.add(object);
-		        //playlists.add(p);
-		    }
-		});
+		playlistColletction.forEach((Block<Document>) document -> {
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            object.add(TITLE, document.getString("title"));
+            object.add(ID, document.getObjectId("_id").toString());
+            object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(instance));
+            object.add(PUB	, document.getBoolean("public"));
+            JsonArrayBuilder songsJson = Json.createArrayBuilder();
+            List<Document> songs = (List<Document>)document.get("songs");
+            for(Document song:songs){
+                try {
+                    songsJson.add(songBuilder(song));
+                } catch (SongMalformed e) {
+                    e.printStackTrace();
+                }
+            }
+            object.add(SONGS, songsJson);
+            res.add(object);
+        });
 		return res;
 	}
 }

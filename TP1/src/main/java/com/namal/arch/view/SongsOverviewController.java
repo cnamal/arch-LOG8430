@@ -35,6 +35,7 @@ public class SongsOverviewController extends UIController{
 	 */
 	public void onLoad(Playlist playlist, PlayerOverviewController playerOverviewController, UIMainClass mainApp){
 		this.mainApp = mainApp;
+		mainApp.setSongsOverviewController(this);
 		this.playerOverviewController = playerOverviewController;
 		this.playlist = playlist;
 		this.songList = new ArrayList<AnchorPane>();
@@ -82,6 +83,10 @@ public class SongsOverviewController extends UIController{
 	           e.printStackTrace();
 	           return null;
 	       }		
+	}
+
+	public void refresh(){
+		onLoad(playlist, playerOverviewController, mainApp);
 	}
 
 }

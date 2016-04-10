@@ -10,21 +10,21 @@ public class Constants {
 	public static final String SONGS = "songs";
 	public static final String PLAYLISTS = "playlists";
 	public static final String URL = "url";
-	public static final String DATA = "data";
+	static final String DATA = "data";
 	public static final String TITLE = "title";
 	public static final String ARTIST = "artist";
 	public static final String DURATION = "duration";
 	public static final String URI = "uri";
 	
-	public static final String unfoundServiceError(String serviceId){
+	public static String unfoundServiceError(String serviceId){
 		return "Service "+serviceId+" doesn't exist";
 	}
-	
-	public static final String requiredParamError(String param){
+
+	public static String requiredParamError(String param){
 		return param + " parameter is required";
 	}
 	
-	public static final String incorrectTypeError(){
+	public static String incorrectTypeError(){
 		return "A parameter doesn't have the correct type.";
 	}
 }

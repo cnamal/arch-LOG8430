@@ -1,9 +1,10 @@
 package com.namal.arch.models;
 
+import java.io.IOException;
 import java.io.InputStream;
-
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.utils.Configuration;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Model of a song
@@ -16,28 +17,12 @@ public class Song {
 	private String title;
 	private String artist;
 	private String album;
-	private AudioServiceProvider provider;
-	private String providerId;
+	private String serviceId;
 	
 	
 	private String uri;
 	private long duration;
 	private String albumCoverUrl;
-	
-	/**
-	 * 
-	 * @return the inputStream of the song, to be used in the player
-	 */
-	public InputStream getInputStream(){
-		return provider.getInputStream(uri);
-	}
-	
-	/**
-	 * Closes the inputStream
-	 */
-	public void cleanup(){
-		provider.closeInputStream();
-	}
 	
 	/**
 	 * Uses the SongBuilder to create a Song, initializing the attributes
@@ -50,15 +35,24 @@ public class Song {
 		duration = builder.duration;
 		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
-		if(builder.provider!=null){
-			provider=builder.provider;
-			providerId= Configuration.getAudioServiceLoader().getProviderId(provider);
-		}else{
-			providerId= builder.providerId;
-			provider = Configuration.getAudioServiceLoader().getProvider(providerId);
-		}
+		serviceId=builder.serviceId;
 	}
 
+	public InputStream getInputStream() {
+		URLConnection urlConnection;
+		try {
+			//Might be able to refact this code
+			urlConnection = new URL (uri).openConnection();
+			urlConnection.connect ();
+			return urlConnection.getInputStream();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * 
 	 * @return the title of the song
@@ -81,14 +75,6 @@ public class Song {
 	 */
 	public String getAlbum() {
 		return album;
-	}
-
-	/**
-	 * 
-	 * @return the AudioServiceProvider of the song
-	 */
-	public AudioServiceProvider getProvider() {
-		return provider;
 	}
 
 
@@ -130,6 +116,8 @@ public class Song {
 	
 	@Override
 	public boolean equals(Object o){
+		if(uri==null)
+			return false;
 		if(o instanceof Song){
 			return uri.equals(((Song)o).uri);
 		}
@@ -140,7 +128,7 @@ public class Song {
 	 * 
 	 * @return provider's id
 	 */
-	public String getProviderId() {
-		return providerId;
+	public String getServiceId() {
+		return serviceId;
 	}
 }

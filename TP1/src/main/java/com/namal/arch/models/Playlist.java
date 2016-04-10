@@ -1,12 +1,10 @@
 package com.namal.arch.models;
 
+import com.namal.arch.utils.PlaylistManager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
-import com.namal.arch.models.services.cp.CrossPlatform;
 
 /**
  * Model of a playlist
@@ -16,7 +14,7 @@ import com.namal.arch.models.services.cp.CrossPlatform;
 public class Playlist {
 
 	private List<Song> playlist;
-	private AudioServiceProvider provider;
+	private String serviceId;
 	private String name;
 	private boolean searchPlaylist=false;
 	/**
@@ -51,45 +49,7 @@ public class Playlist {
 	public int getTotalNumberSongs(){
 		return playlist.size();
 	}
-	
-	/**
-	 * Finds the provider (or providers) of the songs in the playlist, to determine who are
-	 * the providers of the playlist
-	 */
-	private void findProvider(){
-		AudioServiceProvider prev=playlist.get(0).getProvider();
-		for(int i=1;i<playlist.size();i++)
-			if(prev!=playlist.get(i).getProvider()){
-				provider=CrossPlatform.getInstance().getAudioServiceProvider();
-				return;
-			}
-		provider=prev;
-	}
-	
-	/**
-	 * Adds the song to the playlist and saves the playlist.
-	 * @param index index at which the song should be added (not used currently)
-	 * @param song the song to be added
-	 */
-	public void addSongAndUpdate(int index, Song song){
-		playlist.add(index,song);
-		if(!searchPlaylist){
-			if(id.equals(Integer.MIN_VALUE+"")){
-				findProvider();
-				provider.createPlaylist(this);
-			}
-			AudioServiceProvider cp = CrossPlatform.getInstance().getAudioServiceProvider();
-			if(!provider.equals(cp)&&!provider.equals(song.getProvider())){
-				AudioServiceProvider prev = provider;
-				provider=cp;
-				provider.createPlaylist(this);
-				provider.addSongToPlaylist(this,song);
-				prev.update(ServiceEvent.USERPLAYLISTSUPDATED);
-			}else
-				provider.addSongToPlaylist(this,song);
-			
-		}
-	}
+
 	
 	/**
 	 * Gets the name of the Playlist
@@ -108,29 +68,28 @@ public class Playlist {
 		return playlist.indexOf(song);
 	}
 
-	private void init(String name,AudioServiceProvider p,boolean pub){
+	private void init(String name, String serviceId, boolean pub){
 		this.name = name;
 		this.pub=pub;
+		this.serviceId = serviceId;
 		this.playlist = new ArrayList<>();
-		if(p!=null)
-			this.provider=p;
 	}
 	
 	/**
 	 * Creates a new playlist (constructor)
 	 * @param name the name of the playlist
 	 * @param id the id of the playlist
-	 * @param p the AudioServiceProvider of the playlist
+	 * @param serviceId the id of the Audio Service of the playlist
 	 * @param pub a boolean, true if the playlist is public, false otherwise.
 	 */	
-	public Playlist(String name,int id,AudioServiceProvider p,boolean pub) {
+	public Playlist(String name,int id,String serviceId,boolean pub) {
 		this.id=id+"";
-		init(name, p,pub);
+		init(name, serviceId,pub);
 	}
 	
-	public Playlist(String name,String id,AudioServiceProvider p,boolean pub) {
+	public Playlist(String name,String id,String serviceId,boolean pub) {
 		this.id=id;
-		init(name, p,pub);
+		init(name, serviceId,pub);
 	}
 	
 	
@@ -145,6 +104,24 @@ public class Playlist {
 		this.searchPlaylist=searchPlaylist;
 		init(name, null,pub);
 	}
+
+	/**
+	 * Adds a song to the playlist, updating it on the server
+	 * @param song song to be added
+	 */
+	public void addSongAndUpdate(int index, Song song){
+		playlist.add(index, song);
+		if(!(song.getServiceId().equals(serviceId))){
+			serviceId = "0";
+			id = Integer.MIN_VALUE+"";
+			name = "[CP]" + name;
+		}
+		if(id.equals(Integer.MIN_VALUE+"")){
+			PlaylistManager.getInstance().createPlaylist(this);
+		} else {
+			PlaylistManager.getInstance().updatePlaylist(this);
+		}
+	}
 	
 	/**
 	 * Adds a song to the playlist, without updating it on the server
@@ -152,6 +129,19 @@ public class Playlist {
 	 */
 	public void addSongWithoutUpdating(Song song){
 		playlist.add(song);
+	}
+
+	/**
+	 * Remove a song from a playlist and update it on the server
+	 * Do nothing if the song is not in the playlist (shouldn't happen)
+	 * @param song The song to delete
+	 */
+	public void deleteSong(Song song){
+		playlist.remove(song);
+		if(playlist.isEmpty())
+			PlaylistManager.getInstance().deletePlaylist(this);
+		else
+			PlaylistManager.getInstance().updatePlaylist(this);
 	}
 	
 	/**
@@ -212,5 +202,10 @@ public class Playlist {
 	public void setName(String name) {
 		this.name=name;
 	}
+
+	/**
+	 * @return id of the service
+	 */
+	public String getServiceId() {return this.serviceId;}
 	
 }

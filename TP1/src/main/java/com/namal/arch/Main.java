@@ -15,7 +15,6 @@ public class Main{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//Uncomment/Comment for enable/disable UI
-		Configuration.setAudioServiceLoader(AudioServiceLoader.getInstance());
 		Configuration.setShow(true);
 		Connexion.init();
 		UIMainClass uiMainClass = new UIMainClass();

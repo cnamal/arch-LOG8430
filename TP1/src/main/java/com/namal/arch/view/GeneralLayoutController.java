@@ -58,6 +58,7 @@ public class GeneralLayoutController extends UIController{
     	playlistBox.getStyleClass().add("vbox");
     	searchBox.getStyleClass().add("vbox");
     	settingsBox.getStyleClass().add("vbox");
+		mainApp.setRefeshToNull();
     }
     
     /**

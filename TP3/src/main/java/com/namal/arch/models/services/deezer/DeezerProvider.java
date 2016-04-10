@@ -1,34 +1,26 @@
 package com.namal.arch.models.services.deezer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Iterator;
+import com.namal.arch.models.ProviderInformation;
+import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioServiceProvider;
+import com.namal.arch.utils.Configuration;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-
-import com.namal.arch.models.Playlist;
-import com.namal.arch.models.ProviderInformation;
-import com.namal.arch.models.Song;
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.models.services.ServiceEvent;
-import com.namal.arch.utils.Configuration;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
 
 import static com.namal.arch.utils.Constants.*;
-import static com.namal.arch.utils.Constants.SONGS;
 
 class DeezerProvider implements AudioServiceProvider {
 	
 	private Deezer service;
 	private static DeezerProvider instance;
-	private InputStream inputStream;
-	
+
 	
 	private DeezerProvider(Deezer service) {
 		this.service=service;
@@ -41,97 +33,10 @@ class DeezerProvider implements AudioServiceProvider {
 	}
 	
 	@Override
-	public InputStream getInputStream(String uri) {
-		URLConnection urlConnection;
-		try {
-			//Might be able to refact this code
-			urlConnection = new URL ( uri).openConnection();
-			urlConnection.connect ();
-			return inputStream=urlConnection.getInputStream();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public void closeInputStream() {
-		try {
-			inputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void updatePlaylist(Playlist playlist){
-		if(!service.isConnected())
-			return; // TODO add Exception system
-		URL url;
-		
-		try {
-			String urlString = Deezer.PLAYLISTURL+playlist.getId()+"/tracks"+"?access_token="+service.getAuthToken()+"&request_method=POST&songs=";
-			Iterator<Song> it = playlist.getSongs();
-			while (it.hasNext()) {
-				urlString+=it.next().getId()+",";
-			}
-			url = new URL(urlString);
-			url.openConnection().getInputStream();
-			
-			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void addSongToPlaylist(Playlist playlist, Song addedSong) {
-		updatePlaylist(playlist);
-	}
-
-	@Override
-	public void removeSongFromPlaylist(Playlist playlist, Song removedSong) {
-		updatePlaylist(playlist);
-	}
-
-	@Override
-	public void createPlaylist(Playlist playlist) {
-		System.out.println("createPlaylist");
-		if(!service.isConnected())
-			return; // TODO add Exception system
-		URL url;
-		
-		try {
-			url = new URL(Deezer.MYPLAYLISTS+"?access_token="+service.getAuthToken()+"&request_method=POST&title="+URLEncoder.encode(playlist.getName(), "UTF-8"));
-			
-			JsonReader rdr = Json.createReader(url.openConnection().getInputStream());
-			JsonObject results = rdr.readObject();
-			playlist.setId(results.getInt("id"));
-			if(!playlist.getPub()){
-				url = new URL(Deezer.PLAYLISTURL+playlist.getId()+"?access_token="+service.getAuthToken()+"&request_method=POST&public=false");
-				url.openStream();
-			}
-			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public ProviderInformation getProviderInformation() {
 		return SpotifyProviderInformation.getInstance();
 	}
 	
-	@Override
-	public void update(ServiceEvent ev) {
-		service.update(ev);
-	}
-
 	@Override
 	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		URL url;
@@ -151,9 +56,6 @@ class DeezerProvider implements AudioServiceProvider {
             objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
-			service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -172,9 +74,6 @@ class DeezerProvider implements AudioServiceProvider {
             url = new URL(urlString);
             url.openConnection().getInputStream();
 
-            service.update(ServiceEvent.USERPLAYLISTSUPDATED);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,7 +81,17 @@ class DeezerProvider implements AudioServiceProvider {
 
 	@Override
 	public void deletePlaylist(String id, String authToken) {
+		URL url;
 
+		try {
+			String urlString = Deezer.PLAYLISTURL+id+"?access_token="+authToken+"&request_method=DELETE";
+
+			url = new URL(urlString);
+			url.openConnection().getInputStream();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static class SpotifyProviderInformation extends ProviderInformation{

@@ -17,14 +17,14 @@ public class ErrorBuilder {
 	public static String error(int code, String msg,HttpServletResponse response){
 		setCode(code,response);
 		return Json.createObjectBuilder()
-				.add("c", code)
+				.add("code", code)
 				.add("message", msg).build().toString();
 	}
 	
 	public static String unauthorizedError(HttpServletResponse response){
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		return Json.createObjectBuilder()
-				.add("c", 404)
+				.add("code", 404)
 				.add("message", "Unauthorized").build().toString();
 	}
 }

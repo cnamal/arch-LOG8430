@@ -1,24 +1,20 @@
 package com.namal.arch.models.services.deezer;
 
-import java.util.Map;
-
-import com.namal.arch.models.ProviderInformation;
 import com.namal.arch.models.services.GenericAuthenticationService;
+
+import java.util.Map;
 
 class DeezerAuthentication extends GenericAuthenticationService{
 
-	private Deezer service;
 	private static DeezerAuthentication instance;
-	static String appId = "175611";
+	private static final String appId = "175611";
+
+
+	private DeezerAuthentication (){}
 	
-	
-	private DeezerAuthentication (Deezer service){
-		this.service=service;
-	}
-	
-	static DeezerAuthentication getInstance(Deezer service){
+	static DeezerAuthentication getInstance(){
 		if(instance==null)
-			instance = new DeezerAuthentication(service);
+			instance = new DeezerAuthentication();
 		return instance;
 	}
 	
@@ -28,23 +24,8 @@ class DeezerAuthentication extends GenericAuthenticationService{
 	}
 
 	@Override
-	public ProviderInformation getProviderInformation() {
-		return service.getProviderInformation();
-	}
-
-	@Override
 	public String getAuthentificationUrl() {
-		return "https://connect.deezer.com/oauth/auth.php?app_id="+appId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&perms=manage_library";
-	}
-
-	@Override
-	protected String getAuthToken() {
-		return authToken;
-	}
-
-	@Override
-	public void disconnect() {
-		isAuthenticated = false;
+		return "https://connect.deezer.com/oauth/auth.php?app_id="+appId+"&redirect_uri=https%3A%2F%2Fcnamal.github.io%2Farch-LOG8430%2Fcallback.html&response_type=token&perms=manage_library,delete_library";
 	}
 
 }

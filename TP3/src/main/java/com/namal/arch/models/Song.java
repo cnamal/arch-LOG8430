@@ -1,13 +1,12 @@
 package com.namal.arch.models;
 
-import java.io.InputStream;
+import com.namal.arch.utils.Configuration;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.namal.arch.models.services.AudioServiceProvider;
-import com.namal.arch.utils.Configuration;
+import static com.namal.arch.utils.Constants.*;
 
 /**
  * Model of a song
@@ -16,33 +15,14 @@ import com.namal.arch.utils.Configuration;
  */
 public class Song {
 
+	private final String serviceId;
 	private String id;
 	private String title;
 	private String artist;
-	private String album;
-	private AudioServiceProvider provider;
-	private String providerId;
-	
-	
+
 	private String uri;
 	private long duration;
-	private String albumCoverUrl;
-	
-	/**
-	 * 
-	 * @return the inputStream of the song, to be used in the player
-	 */
-	public InputStream getInputStream(){
-		return provider.getInputStream(uri);
-	}
-	
-	/**
-	 * Closes the inputStream
-	 */
-	public void cleanup(){
-		provider.closeInputStream();
-	}
-	
+
 	/**
 	 * Uses the SongBuilder to create a Song, initializing the attributes
 	 * @param builder a SongBuilder
@@ -52,20 +32,9 @@ public class Song {
 		artist=builder.artist;
 		uri=builder.uri;
 		duration = builder.duration;
-		albumCoverUrl=builder.albumCoverUrl;
 		id=builder.id;
-		if(builder.service!=null){
-			provider=builder.service.getAudioServiceProvider();
-			providerId= Configuration.getAudioServiceLoader().getProviderId(builder.service);
-		}else{
-			providerId= builder.serviceId;
-			provider = Configuration.getAudioServiceLoader().getProvider(providerId);
-		}
+		serviceId= builder.serviceId;
 	}
-
-    public Song(){
-
-    }
 
 	/**
 	 * 
@@ -85,23 +54,6 @@ public class Song {
 	
 	/**
 	 * 
-	 * @return the album name of the song
-	 */
-	public String getAlbum() {
-		return album;
-	}
-
-	/**
-	 * 
-	 * @return the AudioServiceProvider of the song
-	 */
-	public AudioServiceProvider getProvider() {
-		return provider;
-	}
-
-
-	/**
-	 * 
 	 * @return the stream uri of the song
 	 */
 	public String getUri() {
@@ -118,14 +70,6 @@ public class Song {
 	
 	/**
 	 * 
-	 * @return Album cover if defined, null otherwise
-	 */
-	public String getAlbumCoverUrl(){
-		return albumCoverUrl;
-	}
-	
-	/**
-	 * 
 	 * @return the id of the song (related to the provider)
 	 */
 	public String getId(){
@@ -137,30 +81,30 @@ public class Song {
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		if(o instanceof Song){
-			return uri.equals(((Song)o).uri);
-		}
-		return false;
+	public boolean equals(Object o) {
+		return o instanceof Song && uri.equals(((Song) o).uri);
 	}
 
 	/**
 	 * 
 	 * @return provider's id
 	 */
-	public String getProviderId() {
-		return providerId;
+	public String getServiceId() {
+		return serviceId;
 	}
 
 	public JsonObjectBuilder toJsonObjectBuilder() {
 		JsonObjectBuilder res = Json.createObjectBuilder();
 		
-		res.add("id",id)
-		.add("title", title)
-		.add("artist", artist)
-		.add("provider", providerId)
-		.add("duration", duration)
-		.add("uri", uri);
+		res.add(ID,id)
+		.add(TITLE, title)
+		.add(ARTIST, artist)
+		.add(SERVICEID, serviceId)
+		.add(DURATION, duration);
+		if(uri!=null)
+		    res.add(URI, uri);
+        else
+            res.add(URI, JsonValue.NULL);
 		return res;
 	}
 }
