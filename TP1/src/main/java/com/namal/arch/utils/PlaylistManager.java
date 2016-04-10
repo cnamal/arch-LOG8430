@@ -4,6 +4,7 @@ import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
+import org.apache.commons.io.IOUtils;
 
 import javax.json.*;
 import java.io.IOException;
@@ -111,12 +112,20 @@ public class PlaylistManager {
             out.close();
 
             //System.out.println(org.apache.commons.io.IOUtils.toString(httpCon.getInputStream()));
+            InputStream errorStream = httpCon.getErrorStream();
+            if(errorStream==null) {
+                try {
+                    JsonReader rdr = Json.createReader(httpCon.getInputStream());
+                    JsonObject results = rdr.readObject().getJsonObject("data");
+                    playlist.setId(results.getString("id"));
 
-            JsonReader rdr = Json.createReader(httpCon.getInputStream());
-            JsonObject results = rdr.readObject().getJsonObject("data");
-            playlist.setId(results.getString("id"));
+                    updatePlaylist(playlist);
+                }catch (IOException e){
+                    System.out.println(IOUtils.toString(httpCon.getErrorStream()));
+                }
 
-            updatePlaylist(playlist);
+            }else
+                IOUtils.toString(errorStream);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -162,7 +171,11 @@ public class PlaylistManager {
                     .add("token", token);
             out.write(object.build().toString());
             out.close();
-            httpCon.getInputStream();
+            InputStream errorStream = httpCon.getErrorStream();
+            if(errorStream==null)
+                httpCon.getInputStream();
+            else
+                IOUtils.toString(errorStream);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ import com.mongodb.client.MongoDatabase;
 import com.namal.arch.models.services.AudioServiceLoader;
 
 /**
- * MongoDB driver
+ * Connexion driver
  * @author namalgac
  *
  */

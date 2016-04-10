@@ -60,7 +60,7 @@ class SpotifyProvider implements AudioServiceProvider {
 
             JsonReader rdr = Json.createReader(httpCon.getInputStream());
             JsonObject results = rdr.readObject();
-            objectBuilder.add(ID,results.getInt("id"));
+            objectBuilder.add(ID,results.getString("id"));
             objectBuilder.add(TITLE,results.getString("name"));
             objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
             objectBuilder.add(PUB,pub);

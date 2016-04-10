@@ -76,6 +76,7 @@ public class PlaylistController {
 		}catch (UnauthorizedException e){
             return ErrorBuilder.unauthorizedError(response);
         }catch(Exception e){
+            e.printStackTrace();
 			return badRequest(Constants.incorrectTypeError(), response);
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
+import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.utils.Configuration;
 
@@ -59,7 +60,7 @@ public class UIMainClass extends Application{
         this.primaryStage.setTitle("Arch-LOG8430 - Streaming playlists gatherer");
         primaryStage.setMinWidth(800);
         //MongoDB.init();
-        
+		AudioServiceLoader.getInstance().getAudioServices();
         loadGeneraLayout();
     }
 
