@@ -118,9 +118,7 @@ public class SongTemplateController extends UIController{
 			public void done(List<Playlist> result) {
 				if(result != null){
 					for(Playlist p : result){
-						if(p.getId() != playlist.getId()){
 							addMenuItem(p);
-						}
 					}
 				}
 			}
@@ -134,6 +132,7 @@ public class SongTemplateController extends UIController{
 		    }
 		});
 		addPlaylistMenu.getItems().add(menuItem);
+
 	}
 	
 	private void addMenuItem(Playlist p){
@@ -151,6 +150,10 @@ public class SongTemplateController extends UIController{
 	private void play(){
 		playerOverviewController.onPlay(playlist, playlist.getPos(song));
 	}
+
+	@FXML
+	private void delete(){ playlist.deleteSong(song); mainApp.refresh(playlist);}
+
 	
 	private void resizeComponents(Number newSceneWidth, Number oldSceneWidth){
 		double diff = newSceneWidth.doubleValue() - oldSceneWidth.doubleValue();

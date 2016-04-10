@@ -3,6 +3,7 @@ package com.namal.arch.view;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioServiceProvider;
 import com.namal.arch.utils.Configuration;
@@ -27,6 +28,9 @@ public class UIMainClass extends Application{
 	
 	private AnchorPane generalLayout;
 	private UIController uiController;
+
+	private PlaylistOverview playlistOverview;
+	private SongsOverviewController songsOverviewController;
 	
 	//Attribute used to load each image only once
 	//Access with getLogoProvider
@@ -118,5 +122,25 @@ public class UIMainClass extends Application{
 		if(!logos.containsKey(prov))
 			logos.put(prov, new Image(prov.getProviderInformation().getLogoUrl()));
 		return logos.get(prov);
+	}
+
+	public void refresh(Playlist playlist){
+		if(songsOverviewController != null)
+			songsOverviewController.refresh();
+		if(playlistOverview != null)
+			playlistOverview.refresh(playlist);
+	}
+
+	public void setPlaylistOverview(PlaylistOverview playlistOverview){
+		this.playlistOverview = playlistOverview;
+	}
+
+	public void setSongsOverviewController(SongsOverviewController songsOverviewController){
+		this.songsOverviewController = songsOverviewController;
+	}
+
+	public void setRefeshToNull(){
+		this.playlistOverview = null;
+		this.songsOverviewController = null;
 	}
 }

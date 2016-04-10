@@ -130,6 +130,19 @@ public class Playlist {
 	public void addSongWithoutUpdating(Song song){
 		playlist.add(song);
 	}
+
+	/**
+	 * Remove a song from a playlist and update it on the server
+	 * Do nothing if the song is not in the playlist (shouldn't happen)
+	 * @param song The song to delete
+	 */
+	public void deleteSong(Song song){
+		playlist.remove(song);
+		if(playlist.isEmpty())
+			PlaylistManager.getInstance().deletePlaylist(this);
+		else
+			PlaylistManager.getInstance().updatePlaylist(this);
+	}
 	
 	/**
 	 * {@inheritDoc}
