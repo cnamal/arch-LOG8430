@@ -13,16 +13,20 @@ import javax.json.JsonObjectBuilder;
 public class APIHelper {
 
     public static String dataResponse(JsonArrayBuilder arrayBuilder){
-        return Json.createObjectBuilder()
+        String res =Json.createObjectBuilder()
                 .add(Constants.DATA,arrayBuilder)
                 .build()
                 .toString();
+        System.out.println("Sending : " +res);
+        return res;
     }
 
     public static String dataResponse(JsonObjectBuilder objectBuilder){
-        return Json.createObjectBuilder()
+        String res =Json.createObjectBuilder()
                 .add(Constants.DATA,objectBuilder)
                 .build()
                 .toString();
+        System.out.println("Sending : " +res);
+        return res;
     }
 }

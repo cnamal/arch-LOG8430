@@ -47,7 +47,7 @@ class DeezerProvider implements AudioServiceProvider {
 			JsonReader rdr = Json.createReader(url.openConnection().getInputStream());
 			JsonObject results = rdr.readObject();
 			String res= results.getInt("id")+"";
-            objectBuilder.add(ID,results.getInt("id"));
+            objectBuilder.add(ID,results.getInt("id")+"");
             if(!pub){
                 url = new URL(Deezer.PLAYLISTURL+res+"?access_token="+authToken+"&request_method=POST&public=false");
                 url.openStream();

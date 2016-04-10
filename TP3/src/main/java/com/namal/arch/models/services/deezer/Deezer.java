@@ -96,7 +96,7 @@ public class Deezer implements AudioService {
             JsonArray results = obj.getJsonArray("data");
             for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add(ID,playlist.getString("id"));
+                objectBuilder.add(ID,playlist.getInt("id")+"");
                 objectBuilder.add(TITLE,playlist.getString("title"));
                 objectBuilder.add(PUB, playlist.getBoolean("public"));
                 objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
