@@ -37,10 +37,12 @@ public class AudioServiceController {
 		AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
 		if(service==null)
 			return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
-		
-		IAuthentification auth = service.getAuthentification();
-		String authToken = auth.serverResponse(url);
-		Session.addService(token, serviceId, authToken);
+
+		if(!serviceId.equals("0")) {
+            IAuthentification auth = service.getAuthentification();
+            String authToken = auth.serverResponse(url);
+            Session.addService(token, serviceId, authToken);
+        }
 
         return APIHelper.dataResponse(Json.createObjectBuilder().add(Constants.TOKEN,token));
     }

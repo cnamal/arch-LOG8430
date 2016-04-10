@@ -54,20 +54,20 @@ public class PlaylistManager {
                             JsonArray playlists = services.getJsonArray("playlists");
                             for (JsonObject playlist : playlists.getValuesAs(JsonObject.class)) {
                                 Playlist aux_playlist = new Playlist(playlist.getString("title"),
-                                        playlist.getInt("id"),
+                                        playlist.getString("id"),
                                         playlist.getString("serviceId"),
                                         playlist.getBoolean("pub"));
                                 JsonArray songs = playlist.getJsonArray("songs");
                                 for (JsonObject song : songs.getValuesAs(JsonObject.class)) {
                                     try {
-                                    Song song_aux = SongBuilder.songBuilder().setId(song.getString("id"))
-                                            .setTitle(song.getString("title"))
-                                            .setArtist(song.getString("artist"))
-                                            .setServiceId(song.getString("serviceId"))
-                                            .setDuration(song.getInt("duration"))
-                                            .setUri(song.getString("uri"))
-                                            .build();
-
+                                        SongBuilder builder = SongBuilder.songBuilder().setId(song.getString("id"))
+                                                .setTitle(song.getString("title"))
+                                                .setArtist(song.getString("artist"))
+                                                .setServiceId(song.getString("serviceId"))
+                                                .setDuration(song.getInt("duration"));
+                                        if(!song.isNull("uri"))
+                                            builder.setUri(song.getString("uri"));
+                                        Song song_aux = builder.build();
                                         aux_playlist.addSongWithoutUpdating(song_aux);
                                     } catch (SongMalformed e) {
                                         e.printStackTrace();
@@ -114,7 +114,7 @@ public class PlaylistManager {
 
             JsonReader rdr = Json.createReader(httpCon.getInputStream());
             JsonObject results = rdr.readObject().getJsonObject("data");
-            playlist.setId(results.getInt("id"));
+            playlist.setId(results.getString("id"));
 
             updatePlaylist(playlist);
 

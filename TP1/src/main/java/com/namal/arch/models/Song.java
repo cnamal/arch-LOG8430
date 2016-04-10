@@ -116,6 +116,8 @@ public class Song {
 	
 	@Override
 	public boolean equals(Object o){
+		if(uri==null)
+			return false;
 		if(o instanceof Song){
 			return uri.equals(((Song)o).uri);
 		}

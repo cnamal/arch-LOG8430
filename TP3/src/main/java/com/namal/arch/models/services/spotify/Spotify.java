@@ -89,7 +89,7 @@ public class Spotify implements AudioService {
             httpCon.setRequestMethod("GET");
             httpCon.setRequestProperty(
                     "Authorization", "Bearer " + authToken);
-            JsonReader rdr = Json.createReader(url.openStream());
+            JsonReader rdr = Json.createReader(httpCon.getInputStream());
             JsonObject obj = rdr.readObject();
             JsonArray results = obj.getJsonArray("items");
             for (JsonObject playlist : results.getValuesAs(JsonObject.class)) {
@@ -104,7 +104,7 @@ public class Spotify implements AudioService {
                 httpCon.setRequestMethod("GET");
                 httpCon.setRequestProperty(
                         "Authorization", "Bearer "+authToken );
-                rdr = Json.createReader(url.openStream());
+                rdr = Json.createReader(httpCon.getInputStream());
                 obj  = rdr.readObject();
                 results = obj.getJsonArray("items");
                 JsonArrayBuilder arrayBuilder= Json.createArrayBuilder();

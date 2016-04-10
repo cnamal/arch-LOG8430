@@ -111,7 +111,7 @@ public class Soundcloud implements AudioService {
 			results.getValuesAs(JsonObject.class).stream().filter(playlist -> !playlist.isNull("streamable") && playlist.getBoolean("streamable")).forEach(playlist -> {
 				JsonObjectBuilder object = Json.createObjectBuilder();
 				object.add(TITLE, playlist.getString("title"));
-				object.add(ID, playlist.getInt("id"));
+				object.add(ID, playlist.getInt("id")+"");
 				object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
 				object.add(PUB, playlist.getString("sharing").equals("public"));
 				JsonArrayBuilder songsJson = Json.createArrayBuilder();
