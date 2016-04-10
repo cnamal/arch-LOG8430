@@ -42,9 +42,9 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	public JsonObjectBuilder createPlaylist(String name, Boolean pub, String authToken) {
 		MongoDatabase db = MongoDB.getDatabase();
 		Document play = new Document()
-				.append("title",name)
+				.append(TITLE,name)
 				.append("public", pub)
-				.append("songs",new ArrayList<>());
+				.append(SONGS,new ArrayList<>());
 		db.getCollection("playlists").insertOne(play);
 		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         objectBuilder.add(ID,play.getObjectId("_id").toString());
@@ -62,12 +62,12 @@ class CrossPlatformProvider implements AudioServiceProvider {
         while(songs.hasNext()){
             Song song = songs.next();
             list.add(new Document()
-                    .append("id", song.getId())
-                    .append("title", song.getTitle())
-                    .append("artist", song.getArtist())
-                    .append("provider", song.getServiceId())
-                    .append("duration", song.getDuration())
-                    .append("uri", song.getUri()));
+                    .append(ID, song.getId())
+                    .append(TITLE, song.getTitle())
+                    .append(ARTIST, song.getArtist())
+                    .append(SERVICEID, song.getServiceId())
+                    .append(DURATION, song.getDuration())
+                    .append(URI, song.getUri()));
         }
         db.getCollection("playlists").updateOne(new Document("_id", new ObjectId(id)),new Document("$set",new Document("songs",list)));
 	}

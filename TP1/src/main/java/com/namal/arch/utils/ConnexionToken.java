@@ -7,7 +7,7 @@ public class ConnexionToken {
 
     private static ConnexionToken instance;
 
-    private String token;
+    private String token=null;
 
     static public ConnexionToken getInstance(){
         if(instance==null)
