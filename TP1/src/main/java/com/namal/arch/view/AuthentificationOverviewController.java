@@ -141,11 +141,14 @@ public class AuthentificationOverviewController {
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if(!serv.isConnected()&&(serv.getConnectUrl()!=null))
-                        onLoadService(stage, button, serv);
-                    else{
-                        //serv.disconnect();
-                        updateButton(button, serv);
+                    if(serv.getConnectUrl()!=null) {
+                        if (!serv.isConnected())
+                            onLoadService(stage, button, serv);
+                        else {
+                            //serv.disconnect();
+                            serv.setConnected(false);
+                            updateButton(button, serv);
+                        }
                     }
                 }
             });

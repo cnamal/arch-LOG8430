@@ -66,19 +66,18 @@ public class AudioServiceLoader {
                     boolean searchAvailable = service.getBoolean("searchAvailable");
 
                     AudioService newService = new AudioService(serviceId, name, connectURL, imageURL, searchAvailable);
-                    if(serviceId.equals("0")) {
+                    if(newService.getConnectUrl()==null )
                         newService.setConnected(true);
-                        String strUrlServer = Connexion.getURI();
-                        strUrlServer = strUrlServer+"/services/connect?serviceId=0&url=null";
-                        URL urlServer;
-                        urlServer = new URL(strUrlServer);
-                        InputStream serverResponse = urlServer.openStream();
-                        JsonReader rdr = Json.createReader(serverResponse);
-                        ConnexionToken.getInstance().setToken(rdr.readObject().getJsonObject("data").getString("token"));
-                    }
                     audioServices.add(newService);
                 }
                 is.close();
+                String strUrlServer = Connexion.getURI();
+                strUrlServer = strUrlServer+"/services/connect?serviceId=0&url=null";
+                URL urlServer;
+                urlServer = new URL(strUrlServer);
+                InputStream serverResponse = urlServer.openStream();
+                JsonReader rdr = Json.createReader(serverResponse);
+                ConnexionToken.getInstance().setToken(rdr.readObject().getJsonObject("data").getString("token"));
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
