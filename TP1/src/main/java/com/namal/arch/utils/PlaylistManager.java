@@ -177,7 +177,7 @@ public class PlaylistManager {
             if(token == null){
                 //TODO : Manage if the token is null
             }
-            URL url = new URL("/playlists");
+            URL url = new URL(Connexion.getURI()+"/playlists");
 
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setDoOutput(true);
