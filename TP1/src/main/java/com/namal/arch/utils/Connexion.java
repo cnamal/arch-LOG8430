@@ -7,6 +7,7 @@ import java.util.Properties;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
+import com.namal.arch.models.services.AudioServiceLoader;
 
 /**
  * MongoDB driver
@@ -20,7 +21,7 @@ public class Connexion {
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
 
-		InputStream inputStream = Configuration.getAudioServiceLoader().getClass().getClassLoader().getResourceAsStream(propFileName);
+		InputStream inputStream = AudioServiceLoader.getInstance().getClass().getClassLoader().getResourceAsStream(propFileName);
 		if(inputStream==null){
 			System.err.println("config.properties wasn't found. Please create it and add necessary information using config.properties.dist .");
 			System.exit(1);
@@ -31,7 +32,7 @@ public class Connexion {
 			prop.load(inputStream);
 			inputStream.close();
 			uriString = "http://";
-			if(prop.getProperty("host")==null ||prop.getProperty("port") ==null){
+			if(prop.getProperty("host")==null || prop.getProperty("port") ==null){
 				System.err.println("You need to connect to a server. Please follow the tutorial in the report.");
 				System.exit(1);
 			}
@@ -47,7 +48,13 @@ public class Connexion {
 	 * @return The URI
 	 */
 	public static String getURI(){
-		return uriString;
+		if(uriString == null) {
+			Connexion.init();
+			return uriString;
+		}
+		else {
+			return uriString;
+		}
 	}
 
 }
