@@ -111,7 +111,7 @@ public class Playlist {
 	 */
 	public void addSongAndUpdate(int index, Song song){
 		playlist.add(index, song);
-		if(!(song.getServiceId().equals(serviceId))){
+		if(!(song.getServiceId().equals(serviceId)) && !serviceId.equals("0")){
 			serviceId = "0";
 			id = Integer.MIN_VALUE+"";
 			name = "[CP]" + name;
