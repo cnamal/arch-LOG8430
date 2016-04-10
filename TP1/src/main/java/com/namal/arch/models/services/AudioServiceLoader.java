@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,10 +31,14 @@ public class AudioServiceLoader {
 
     private List<AudioService> audioServices;
     private static AudioServiceLoader instance = new AudioServiceLoader();
+    private HashMap<String, String> idToUriMap;
 
     public Iterator<AudioService> getAudioServices(){
         if(audioServices==null){
             audioServices = new ArrayList<>();
+            if(idToUriMap == null){
+            	idToUriMap = new HashMap<String, String>();
+            }
             String baseUri = Connexion.getURI();
             try {
                 URL url = new URL(baseUri+"/services");
@@ -57,6 +62,7 @@ public class AudioServiceLoader {
                     if(!service.isNull("imageUrl")) {
                         imageURL = service.getString("imageUrl");
                     }
+                    idToUriMap.put(serviceId, imageURL);
                     boolean searchAvailable = service.getBoolean("searchAvailable");
 
                     AudioService newService = new AudioService(serviceId, name, connectURL, imageURL, searchAvailable);
@@ -88,6 +94,12 @@ public class AudioServiceLoader {
 
     public static AudioServiceLoader getInstance(){
         return instance;
+    }
+    
+    public String getUriFromId(String id){
+    	if(idToUriMap == null)
+    		getAudioServices();
+    	return idToUriMap.get(id);
     }
 
     private AudioServiceLoader(){};

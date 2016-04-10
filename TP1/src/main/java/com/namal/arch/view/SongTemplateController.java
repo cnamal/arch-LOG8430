@@ -7,6 +7,7 @@ import java.util.List;
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.Song;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.PlaylistManager;
 import com.namal.arch.utils.ServiceListener;
 
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -78,7 +80,13 @@ public class SongTemplateController extends UIController{
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
 		// TODO
-		//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
+		String imageURI = AudioServiceLoader.getInstance().getUriFromId(song.getServiceId());
+		if(song.getServiceId().equals("0")){
+			//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
+		}else if(imageURI == null){
+			//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
+		}else
+			this.imageView.setImage(new Image(imageURI, songBox.getHeight(),songBox.getHeight(), true, true));
 		this.songBox = songBox;
 		this.playlist = playlist;
 		menuButton.getItems().get(0).setDisable(song.getUri()==null);
