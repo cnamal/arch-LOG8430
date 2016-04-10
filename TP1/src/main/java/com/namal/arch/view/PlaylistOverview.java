@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.namal.arch.models.Playlist;
 import com.namal.arch.models.services.AudioService;
+import com.namal.arch.models.services.AudioServiceLoader;
 import com.namal.arch.utils.PlaylistManager;
 import com.namal.arch.utils.ServiceListener;
 
@@ -79,8 +80,17 @@ public class PlaylistOverview extends UIController{
 		AnchorPane.setRightAnchor(newBox, 0.0);
 		newBox.setLayoutX(0.0);
 		newBox.setLayoutY(playlistList.size()*PREF_HEIGHT);
+
+		String imageURI = AudioServiceLoader.getInstance().getUriFromId(playlist.getServiceId());
+		ImageView imageView = new ImageView();
+		if(imageURI == null){
+			//imageView.setImage(new Image(imageURI, PREF_HEIGHT,PREF_HEIGHT, true, true));
+		} else {
+			imageView.setImage(new Image(imageURI, PREF_HEIGHT,PREF_HEIGHT, true, true));
+		}
 		
 		//Add a label for the playlist
+		newBox.getChildren().add(imageView);
 		newBox.getChildren().add(new Label(playlist.getName()));
 		Button button = new Button();
 

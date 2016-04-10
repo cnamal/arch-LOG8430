@@ -79,11 +79,8 @@ public class SongTemplateController extends UIController{
 		this.singer.setText(this.song.getArtist());
 		this.album.setText(this.song.getAlbum());
 		this.time.setText(PlayerOverviewController.msToMin(this.song.getDuration()));
-		// TODO
 		String imageURI = AudioServiceLoader.getInstance().getUriFromId(song.getServiceId());
-		if(song.getServiceId().equals("0")){
-			//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
-		}else if(imageURI == null){
+		if(imageURI == null){
 			//this.imageView.setImage(mainApp.getLogoProvider(song.getProvider()));
 		}else
 			this.imageView.setImage(new Image(imageURI, songBox.getHeight(),songBox.getHeight(), true, true));
