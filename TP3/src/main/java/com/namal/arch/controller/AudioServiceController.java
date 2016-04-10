@@ -22,51 +22,49 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/services")
 public class AudioServiceController {
-	
-	
-	@RequestMapping(method = RequestMethod.GET)
-    public String getServices() {
-		return APIHelper.dataResponse(Configuration.getAudioServiceLoader().getAudioServicesJson());
-    }
-	
-	@RequestMapping(value="/connect",method = RequestMethod.GET)
-    public String connect(@RequestParam(value=Constants.SERVICEID) String serviceId,@RequestParam(value=Constants.URL) String url,@RequestParam(value=Constants.TOKEN,required=false)String token,HttpServletResponse response) {
-		if(token == null)
-			token =UUID.randomUUID().toString().replace("-", "");
-		
-		AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
-		if(service==null)
-			return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
 
-		if(!serviceId.equals("0")) {
-            IAuthentification auth = service.getAuthentification();
-            String authToken = auth.serverResponse(url);
-            Session.addService(token, serviceId, authToken);
-        }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String getServices() {
+        return APIHelper.dataResponse(Configuration.getAudioServiceLoader().getAudioServicesJson());
+    }
+
+    @RequestMapping(value="/connect",method = RequestMethod.GET)
+    public String connect(@RequestParam(value=Constants.SERVICEID) String serviceId,@RequestParam(value=Constants.URL) String url,@RequestParam(value=Constants.TOKEN,required=false)String token,HttpServletResponse response) {
+        if(token == null)
+            token =UUID.randomUUID().toString().replace("-", "");
+
+        AudioService service = Configuration.getAudioServiceLoader().getService(serviceId);
+        if(service==null)
+            return ErrorBuilder.error(404, Constants.unfoundServiceError(serviceId),response);
+
+        IAuthentification auth = service.getAuthentification();
+        String authToken = auth.serverResponse(url);
+        Session.addService(token, serviceId, authToken);
 
         return APIHelper.dataResponse(Json.createObjectBuilder().add(Constants.TOKEN,token));
     }
-	
-	@RequestMapping(value="/searchTrack",method = RequestMethod.GET)
+
+    @RequestMapping(value="/searchTrack",method = RequestMethod.GET)
     public String searchTrack(@RequestParam(Constants.SERVICEID) String[] serviceId,@RequestParam("q") String query, HttpServletResponse response) {
-		List<AudioService> services = new ArrayList<>();
-		for(String p : serviceId){
-			AudioService service =Configuration.getAudioServiceLoader().getService(p);
-			if(service!=null)
-				services.add(service);
-			else
-				return ErrorBuilder.error(404, Constants.unfoundServiceError(p),response);
-		}
-		JsonArrayBuilder builder = Json.createArrayBuilder();
-		for(AudioService service:services){
-			JsonObjectBuilder object = Json.createObjectBuilder();
-			object.add(Constants.SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
-			object.add(Constants.SONGS, service.searchTrack(query));
-			builder.add(object);
-		}
-		
+        List<AudioService> services = new ArrayList<>();
+        for(String p : serviceId){
+            AudioService service =Configuration.getAudioServiceLoader().getService(p);
+            if(service!=null)
+                services.add(service);
+            else
+                return ErrorBuilder.error(404, Constants.unfoundServiceError(p),response);
+        }
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for(AudioService service:services){
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            object.add(Constants.SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+            object.add(Constants.SONGS, service.searchTrack(query));
+            builder.add(object);
+        }
+
         return APIHelper.dataResponse(builder);
     }
-	
-	
+
+
 }
