@@ -385,6 +385,26 @@ The third laboratory was pretty straight forward, since we were quite familiar w
 %TODO
 \subsubsection{Server}
 
+The previous services interfaces have been slightly modified. 
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/servicesServer.png}
+  \caption{Services diagram (server)}
+  \label{servicesServer}
+\end{figure}
+\end{center}
+
+The controllers are now the API endpoints :
+
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/controllerServer.png}
+  \caption{Controller diagram (server)}
+  \label{controllerServer}
+\end{figure}
+\end{center}
 
 }
 
@@ -454,7 +474,14 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \subsection{Client}
 %TODO
 \subsection{Server}
-%TODO
+
+\ifthenelse{\boolean{fun}}{\subsubsection{\href{http://data.whicdn.com/images/33689024/large.gif}{Swagger}}}{\subsubsection{Swagger}}
+Swagger was used to create the API but was \textbf{NOT} used to generate the code. We felt that the swagger project, albeit quite promising, wasn't mature enough to create a \textit{good} code. For instance, it is impossible to download the HTML/CSS/JS code of the editor, once the API is written (that is why we give you the yaml and not a generated html directly)\footnote{Link to github issue : \url{https://github.com/swagger-api/swagger-editor/issues/664}}.
+
+\ifthenelse{\boolean{fun}}{\subsubsection{https://www.facebook.com/photo.php?fbid=10209423114439593&set=gm.10153621153678691&type=3&theater}{Spring boot}}{\subsubsection{Spring boot}}
+
+We used Spring boot to develop the server. It is pretty straight forward and easier to use than writing J2EE code directly. However, we had a hard time getting programmatically the address of the server (localhost) and the port (8080). We could have hardcoded those values, but it wouldn't have been modular enough.
+
 }
 
 \chapter{Limitations}
@@ -501,7 +528,11 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \subsection{Client}
 %TODO
 \subsection{Server}
-%TODO
+
+\begin{itemize}
+\item There is no User system on the cross-platform playlists. Anyone can access/modify/delete anyone's cross-platform playlist. We felt like it wasn't the most important feature.
+\item Authentication uses a hack to work. Indeed, in a real system, a service (Soundcloud, Spotify or Deezer) should callback our server once the user has successfully authenticated. However, since our server is running locally, we cannot use that system. Therefore the callback is sent by the client to our server which then process' the service's answer.
+\end{itemize}
 }
 
 \chapter{Future fixes}
@@ -559,7 +590,8 @@ These changes have been made (cf Update section).
 \subsection{Client}
 %TODO
 \subsection{Server}
-%TODO
+
+Hopefully, we will add a User system on our server, for cross-platform playlists. 
 }
 
 \ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
