@@ -1,12 +1,15 @@
 package com.namal.arch.models;
 
-import com.namal.arch.utils.Configuration;
+import static com.namal.arch.utils.Constants.ARTIST;
+import static com.namal.arch.utils.Constants.DURATION;
+import static com.namal.arch.utils.Constants.ID;
+import static com.namal.arch.utils.Constants.SERVICEID;
+import static com.namal.arch.utils.Constants.TITLE;
+import static com.namal.arch.utils.Constants.URI;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
-
-import static com.namal.arch.utils.Constants.*;
 
 /**
  * Model of a song

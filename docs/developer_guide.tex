@@ -210,7 +210,6 @@ JavaFX which is used for our view has some compatibility issues with Linux and G
 \subsection{Laboratory n$\degree$3}}
 Using the clients has not changed, except the fact that for the 2nd laboratory RCP client, you only need to do step 1 to 5 - since there aren't any other plugins-.
 To launch the server, you will just need to run the Maven command : \textbf{mvn spring-boot:run}.
-
 }
 
 \section{ObjectAid}
@@ -268,7 +267,7 @@ The figures \ref{play2} and \ref{search2} are  play sequence and a search sequen
 \subsection{Clients}
 %TODO
 \subsection{Server}
-%TODO
+Since the sequence diagram isn't pertinent here, we give the full API description. You can view the API by going to the \href{http://editor.swagger.io/}{Swagger editor} and uploading the \textit{swagger.yaml} in \textbf{doc} folder (File -\textgreater Import File).
 }
 
 \chapter{Class Diagram}
@@ -375,10 +374,18 @@ Otherwise, we only have a few new classes, since the main logic of the applicati
 \ifthenelse{\boolean{lab3} \OR \boolean{all}}{
 \ifthenelse{\boolean{all}}{
 \section{Laboratory n$\degree$3}}
-\subsection{Client}
+
+\subsection{Methodology}
+
+The third laboratory was pretty straight forward, since we were quite familiar with the services. What we decided to do, was to create the API first and implement the server and clients afterwards. This way, we had a \textit{contract} and both implementations could be done separately.
+
+\subsection{Figures}
+
+\subsubsection{Client}
 %TODO
-\subsection{Server}
-%TODO
+\subsubsection{Server}
+
+
 }
 
 \chapter{Implementation}
