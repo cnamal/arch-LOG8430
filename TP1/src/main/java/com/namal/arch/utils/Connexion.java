@@ -16,7 +16,14 @@ import com.namal.arch.models.services.AudioServiceLoader;
  */
 public class Connexion {
 	
+	/**
+	 * The base URL of the server.
+	 */
 	private static String uriString;
+	
+	/**
+	 * Reads the configuration file and builds the base URL of the server
+	 */
 	public static void init(){
 		Properties prop = new Properties();
 		String propFileName = "config.properties";

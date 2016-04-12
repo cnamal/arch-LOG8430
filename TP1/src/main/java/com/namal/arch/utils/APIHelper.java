@@ -21,9 +21,19 @@ import com.namal.arch.models.Song;
 import com.namal.arch.models.SongBuilder;
 import com.namal.arch.models.SongMalformed;
 import com.namal.arch.models.services.AudioService;
-
+/**
+ * Class made to encapsulate the searchTrack algorithm, which was previously in a controller of the view.
+ * @author Fabien Berquez
+ *
+ */
 public class APIHelper {
 	
+	/**
+	 * Requests the server for a search of songs according to the parameters.
+	 * @param query : the piece of string the user search for.
+	 * @param servicesList : the list of services on which the search will be made.
+	 * @return a playlist contening the corresponding songs.
+	 */
 	public static Playlist searchTrack(String query, List<AudioService> servicesList) {
 		Playlist playlist = new Playlist("Search results - "+query, true, false);
 		String baseUri = Connexion.getURI();
