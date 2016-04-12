@@ -189,6 +189,10 @@ public class PlaylistOverview extends UIController{
 		resetAllBoxes();
     }
 
+    /**
+     * Refresh the list of playlist (when changes occurs).
+     * @param playlist Playlist on which the changes occured
+     */
 	public void refresh(Playlist playlist){
 		if(playlist.getTotalNumberSongs() == 0)
 			playlists.remove(playlist);

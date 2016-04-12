@@ -22,8 +22,15 @@ import java.util.List;
  */
 public class PlaylistManager {
 
+	/**
+	 * Singleton class
+	 */
     static private PlaylistManager instance;
 
+    /**
+     * 
+     * @return The instance of the class
+     */
     static public PlaylistManager getInstance(){
         if(instance == null){
             instance = new PlaylistManager();
@@ -88,6 +95,10 @@ public class PlaylistManager {
         }
     }
 
+    /**
+     * Create a playlist on the serveur and updtate it
+     * @param playlist the new playlist
+     */
     public void createPlaylist(Playlist playlist){
         try {
             String token = ConnexionToken.getInstance().getToken();
@@ -134,6 +145,10 @@ public class PlaylistManager {
         }
     }
 
+    /**
+     * Update the playlist on the serveur
+     * @param playlist Updated playlist
+     */
     public void updatePlaylist(Playlist playlist){
         try {
             String token = ConnexionToken.getInstance().getToken();
@@ -184,6 +199,10 @@ public class PlaylistManager {
         }
     }
 
+    /**
+     * Delete a playlist on the server
+     * @param playlist The playlist to delete
+     */
     public void deletePlaylist(Playlist playlist){
         try {
             String token = ConnexionToken.getInstance().getToken();

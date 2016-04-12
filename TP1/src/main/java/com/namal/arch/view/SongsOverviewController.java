@@ -85,6 +85,9 @@ public class SongsOverviewController extends UIController{
 	       }		
 	}
 
+	/**
+	 * Refresh the list of the songs (when changes occurred)
+	 */
 	public void refresh(){
 		onLoad(playlist, playerOverviewController, mainApp);
 	}

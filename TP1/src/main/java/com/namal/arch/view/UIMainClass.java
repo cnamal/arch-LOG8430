@@ -125,6 +125,10 @@ public class UIMainClass extends Application{
 		return logos.get(prov);
 	}
 
+	/**
+	 * Refresh the list of playlist and the list of songs (when changes occured)
+	 * @param playlist Playlist on which the changes occured
+	 */
 	public void refresh(Playlist playlist){
 		if(songsOverviewController != null)
 			songsOverviewController.refresh();
