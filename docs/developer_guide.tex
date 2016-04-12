@@ -472,7 +472,9 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \section{Laboratory n$\degree$3}}
 
 \subsection{Client}
-%TODO
+\subsubsection{Playlist Manager}
+Managing the playlists is different now that we use a server to communicate. With the API REST on the server, all the requests are in JSON, and get back a JSON as a result. 
+\textit{PlaylistManager} is now the class to call when we want to interrogate the server. All the base functionality is there (GET = getPlaylist, POST = CreatePlaylist, PUT = UpdatePlaylist, DELETE = DeletePlaylist). Into the methods, a connection is opened with the server and a request with the right method (GET,PUT,etc..) is done and the answer is parsed into a Playlist object, model used from the beginning of our project.
 \subsection{Server}
 
 \ifthenelse{\boolean{fun}}{\subsubsection{\href{http://data.whicdn.com/images/33689024/large.gif}{Swagger}}}{\subsubsection{Swagger}}
