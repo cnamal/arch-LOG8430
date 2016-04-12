@@ -1,0 +1,313 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Namal Arch API
+  description: Move your app forward with the Namal Arch API
+  version: "1.0.0"
+# the domain of the service
+#host: api.uber.com
+# array of all schemes that your API supports
+#schemes:
+#  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /services:
+    get:
+      summary: Services
+      description: |
+        The Services endpoint returns all the services registered on the server. The response includes the display name
+        and other details about each service.
+      tags:
+        - Services
+      responses:
+        200:
+          description: An array of services
+          schema:
+            type: object
+            properties :
+              data: 
+                type: array
+                items:
+                  $ref: '#/definitions/Service'
+            
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /services/connect:
+    get:
+      summary: Connect Service
+      description: |
+        The Connect Service endpoint allows you to connect to a service.
+      parameters:
+        - name: serviceId
+          in: query
+          description: Unique identifier representing a specific service. 
+          required: true
+          type: string
+          format: int
+        - name: url
+          in: query
+          description: URL Callback sent by the service.
+          required: true
+          type: string
+        - name: token
+          in: query
+          description: Token of our server.
+          required: false
+          type: string
+      tags:
+        - Services
+      responses:
+        200:
+          description: Token of our server
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  token :
+                    type: string
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /services/searchTrack:
+    get:
+      summary: Search Track
+      description: The Search Track endpoint returns all the search results for different services.
+      parameters:
+        - name: q
+          in: query
+          description: Name of the track
+          required: true
+          type: string
+        - name: serviceId
+          in: query
+          description: Array of services. 
+          required: true
+          type: array
+          items:
+            type: string
+      tags:
+        - Services
+      responses:
+        200:
+          description: An array of results
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    serviceId:
+                      type: string
+                    songs:
+                      type: array
+                      items:
+                        $ref: '#/definitions/Song'
+                        
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /playlists:
+    get:
+      summary: User Playlists
+      description: The User Playlists endpoint returns all the playlists of the user on connected services.
+      tags:
+        - Playlist
+      parameters:
+        - name: token
+          in: query
+          description: Token of our server.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Array of playlists with corresponding service ID
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    serviceId:
+                      type: string
+                    playlists:
+                      type: array
+                      items:
+                        $ref: '#/definitions/Playlist'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create Playlist
+      description: The Create Playlist endpoint creates a playlist.
+      tags:
+        - Playlist
+      parameters:
+        - name: data
+          in: body
+          description: Data in the body
+          required: true
+          schema:
+            type: object
+            properties:
+              serviceId:
+                type: string
+              name:
+                type: string
+              pub:
+                type: boolean
+              token:
+                type: string
+                description: Optional if serviceId is 0
+      responses:
+        200:
+          description: Playlist data
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Playlist'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Modify Playlist
+      description: The Modify Playlist endpoint allows you to add/remove songs from a playlist.
+      tags:
+        - Playlist
+      parameters:
+        - name: data
+          in: body
+          description: Data in the body
+          required: true
+          schema:
+            type: object
+            properties:
+              serviceId:
+                type: string
+              id:
+                type: string
+              songs:
+                type: array
+                items:
+                      $ref: '#/definitions/Song'
+              token:
+                type: string
+                description: Optional if serviceId is 0
+      responses:
+        200:
+          description: Success
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete Playlist
+      description: The Delete Playlist endpoint allows you to delete a playlist.
+      tags:
+        - Playlist
+      parameters:
+        - name: data
+          in: body
+          description: Data in the body
+          required: true
+          schema:
+            type: object
+            properties:
+              serviceId:
+                type: string
+              id:
+                type: string
+              token:
+                type: string
+                description: Optional if serviceId is 0
+      responses:
+        200:
+          description: Success
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Service:
+    type: object
+    properties:
+      serviceId:
+        type: string
+        description: Unique identifier representing a specific service.
+      name:
+        type: string
+        description: Display name of service.
+      connectUrl:
+        type: string
+        description: Url endpoint for connection.
+      imageUrl:
+        type: string
+        description: Image URL representing the service.
+      searchAvailable:
+        type: boolean
+        description: True if you can search tracks with this service.
+  Song:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the song in the service's database.
+      title:
+        type: string
+        description: Title of the song.
+      artist:
+        type: string
+        description: Artist of the song.
+      serviceId:
+        type: string
+        description: Unique identifier representing a specific service.
+      duration:
+        type: integer
+        format: int64 (long)
+        description: Duration of the song in ms.
+      uri:
+        type: string
+        description: URI of the song.
+  Playlist:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the playlist in the service's database.
+      title:
+        type: string
+        description: Title of the playlist.
+      serviceId:
+        type: string
+        description: Unique identifier representing a specific service.
+      pub:
+        type: boolean
+        description: Boolean to describe whether a playlist is public or not.
+      songs:
+        type: array
+        items:
+          $ref: '#/definitions/Song'
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
