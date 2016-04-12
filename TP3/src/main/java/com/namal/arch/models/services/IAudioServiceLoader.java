@@ -12,31 +12,22 @@ import javax.json.JsonArrayBuilder;
 public interface IAudioServiceLoader {
 	
 	/**
-	 * 
-	 * @return list of all audio services
+	 * Get the service's id given a service
+	 * @param service service
+	 * @return service's id
 	 */
-	Iterator<AudioService> getAudioServices();
+	String getServiceId(AudioService service);
 	
-	/**
-	 * Get the provider's id given a provider
-	 * @param service provider
-	 * @return provider's id
-	 */
-	String getProviderId(AudioService service);
-	
-	/**
-	 * Get the provider given it's id
-	 * @param serviceId provider's id
-	 * @return provider
-	 */
-	AudioServiceProvider getProvider(String serviceId);
-
 	/**
 	 * Get the service given it's id
-	 * @param serviceId provider's id
+	 * @param serviceId service's id
 	 * @return service
 	 */
 	AudioService getService(String serviceId);
-	
+
+	/**
+	 *
+	 * @return Json of all service information
+     */
 	JsonArrayBuilder getAudioServicesJson();
 }

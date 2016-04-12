@@ -27,7 +27,13 @@ public class PlaylistController {
 	private String badRequest(String message, HttpServletResponse response){
 		return ErrorBuilder.error(400, message, response);
 	}
-	
+
+    /**
+     * The User Playlists endpoint returns all the playlists of the user on connected services.
+     * @param token Token of our server.
+     * @param response Server response
+     * @return Array of playlists with corresponding service ID
+     */
 	@RequestMapping(method = RequestMethod.GET)
     public String getPlaylists(@RequestParam(value=Constants.TOKEN) String token,HttpServletResponse response) {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -49,8 +55,13 @@ public class PlaylistController {
 		
         return APIHelper.dataResponse(builder);
     }
-	
-	
+
+    /**
+     * The Create Playlist endpoint creates a playlist.
+     * @param map Data in the body
+     * @param response Server response
+     * @return Playlist data
+     */
 	@RequestMapping(method = RequestMethod.POST)
 	public String postPlaylists(@RequestBody Map<String, Object> map,HttpServletResponse response){
 		try{
@@ -80,7 +91,13 @@ public class PlaylistController {
 			return badRequest(Constants.incorrectTypeError(), response);
 		}
 	}
-	
+
+    /**
+     * The Modify Playlist endpoint allows you to add/remove songs from a playlist.
+     * @param data Data in the body
+     * @param response Server response
+     * @return Success
+     */
 	@RequestMapping(method = RequestMethod.PUT)
 	public String putPlaylists(@RequestBody Data data,HttpServletResponse response){
 		try{
@@ -114,7 +131,13 @@ public class PlaylistController {
 		}
 		return "";
 	}
-	
+
+    /**
+     * The Delete Playlist endpoint allows you to delete a playlist.
+     * @param map Data in the body
+     * @param response Server response
+     * @return Success
+     */
 	@RequestMapping(method = RequestMethod.DELETE)
 	public String deletePlaylists(@RequestBody Map<String, Object> map,HttpServletResponse response){
 		try{

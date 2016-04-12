@@ -16,7 +16,7 @@ public interface IAuthentification {
 	/**
 	 * 
 	 * @param response server's response
-	 * @return true if authentication succeeded, false otherwise
+	 * @return Authentication token
 	 */
 	String serverResponse(String response);
 

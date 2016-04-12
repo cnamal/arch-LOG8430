@@ -30,10 +30,19 @@ public class Configuration {
 		return serviceLoader;
 	}
 
+	/**
+	 *
+	 * @param base Base url of the server
+	 * @param port Port where the server is listening
+     */
 	public static void setUrlBase(String base,int port){
 		urlBase = "http://"+base+":"+port;
 	}
 
+    /**
+     *
+     * @return Base url
+     */
 	public static String getUrlBase(){
 		return urlBase;
 	}

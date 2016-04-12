@@ -26,8 +26,8 @@
 
 \setboolean{all}{false}
 \setboolean{lab1}{false}
-\setboolean{lab2}{true}
-\setboolean{lab3}{false}
+\setboolean{lab2}{false}
+\setboolean{lab3}{true}
 \setboolean{fun}{false}
 
 
@@ -84,7 +84,8 @@ We started with implementing a service for Soundcloud because it was the easiest
 
 The second laboratory's objective was to create an RCP application of the first project. \ifthenelse{\boolean{fun}}{\scriptsize \textit{The reason for such a project still eludes us.} \normalsize}}
 
-%\section{Laboratory n$\degree$3}
+\section{Laboratory n$\degree$3}
+The third laboratory's objective was to create a server that would serve as an interface for all the streaming services. The previous laboratories' applications would serve as clients.
 
 \section{Requirements}
 
@@ -127,6 +128,12 @@ To install e(fx)clipse :
 \end{itemize}
 
 Please follow the same steps to install Eclipse Plug-in Development Environment, but instead of typing ``e(" in the last step, please type ``Plug".
+}
+
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\subsection{Laboratory n$\degree$3}}
+The requirements are the same as the union of Laboratory n$\degree$1 and n$\degree$2.
 }
 
 \section{Usage}
@@ -198,6 +205,13 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 JavaFX which is used for our view has some compatibility issues with Linux and GTK3 \ifthenelse{\boolean{fun}}{(\#Oracle anyone?)}. To solve this issue, you need to disable GTK3 when running the Eclipse Application \ifthenelse{\boolean{fun}}{(\textit{fair warning: the resulting Eclipse UI Interface is ugly})}: Right click on any project (Core or plugin) -\textgreater Run As -\textgreater Run Configurations -\textgreater Eclipse Application -\textgreater Environment tab -\textgreater New -\textgreater Set \textit{SWT\_GTK3} as Name and \textit{0} as it's Value. You can then Run the project \ifthenelse{\boolean{fun}}{\href{http://i.imgur.com/l9EHHWA.gif}{smoothly}}{smoothly}.
 }
 
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\subsection{Laboratory n$\degree$3}}
+Using the clients has not changed, except the fact that for the 2nd laboratory RCP client, you only need to do step 1 to 5 - since there aren't any other plugins-.
+To launch the server, you will just need to run the Maven command : \textbf{mvn spring-boot:run}.
+}
+
 \section{ObjectAid}
 ObjectAid is an Eclipse plugin that automatically draws the UML diagrams of your project. If you have installed it, you can use it to open the \textbf{*.ucls} files in the documentation folder.
 
@@ -245,7 +259,16 @@ The figures \ref{play2} and \ref{search2} are  play sequence and a search sequen
 \end{figure}
 
 }
-%\section{Laboratory n$\degree$3}
+
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$3}}
+
+\subsection{Clients}
+%TODO
+\subsection{Server}
+Since the sequence diagram isn't pertinent here, we give the full API description. You can view the API by going to the \href{http://editor.swagger.io/}{Swagger editor} and uploading the \textit{swagger.yaml} in \textbf{doc} folder (File -\textgreater Import File).
+}
 
 \chapter{Class Diagram}
 
@@ -348,7 +371,43 @@ Otherwise, we only have a few new classes, since the main logic of the applicati
 \end{center}
 }
 
-%\section{Laboratory n$\degree$3}
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$3}}
+
+\subsection{Methodology}
+
+The third laboratory was pretty straight forward, since we were quite familiar with the services. What we decided to do, was to create the API first and implement the server and clients afterwards. This way, we had a \textit{contract} and both implementations could be done separately.
+
+\subsection{Figures}
+
+\subsubsection{Client}
+%TODO
+\subsubsection{Server}
+
+The previous services interfaces have been slightly modified. 
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/servicesServer.png}
+  \caption{Services diagram (server)}
+  \label{servicesServer}
+\end{figure}
+\end{center}
+
+The controllers are now the API endpoints :
+
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/controllerServer.png}
+  \caption{Controller diagram (server)}
+  \label{controllerServer}
+\end{figure}
+\end{center}
+
+}
+
 \chapter{Implementation}
 
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
@@ -408,7 +467,23 @@ The lack of documentation and tutorials was the biggest obstacle in this process
 This was the last issue. Indeed, using Maven seemed way too complicated in this laboratory, since there were our dependencies (the jars of the previous laboratory, and all the libraries it depended on) but also the dependencies for eclipse plugin development. Therefore after a lot of trial and error, we came up with the solution given in the \hyperref[Usage::lab2]{Usage section}. This took approximately 3h to solve, and isn't optimal since we aren't using any build automation tool.
 }
 
-%\section{Laboratory n$\degree$3}
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$3}}
+
+\subsection{Client}
+%TODO
+\subsection{Server}
+
+\ifthenelse{\boolean{fun}}{\subsubsection{\href{http://data.whicdn.com/images/33689024/large.gif}{Swagger}}}{\subsubsection{Swagger}}
+Swagger was used to create the API but was \textbf{NOT} used to generate the code. We felt that the swagger project, albeit quite promising, wasn't mature enough to create a \textit{good} code. For instance, it is impossible to download the HTML/CSS/JS code of the editor, once the API is written (that is why we give you the yaml and not a generated html directly)\footnote{Link to github issue : \url{https://github.com/swagger-api/swagger-editor/issues/664}}.
+
+\ifthenelse{\boolean{fun}}{\subsubsection{https://www.facebook.com/photo.php?fbid=10209423114439593&set=gm.10153621153678691&type=3&theater}{Spring boot}}{\subsubsection{Spring boot}}
+
+We used Spring boot to develop the server. It is pretty straight forward and easier to use than writing J2EE code directly. However, we had a hard time getting programmatically the address of the server (localhost) and the port (8080). We could have hardcoded those values, but it wouldn't have been modular enough.
+
+}
+
 \chapter{Limitations}
 
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
@@ -446,7 +521,20 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 }
 
 
-%\section{Laboratory n$\degree$3}
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$3}}
+
+\subsection{Client}
+%TODO
+\subsection{Server}
+
+\begin{itemize}
+\item There is no User system on the cross-platform playlists. Anyone can access/modify/delete anyone's cross-platform playlist. We felt like it wasn't the most important feature.
+\item Authentication uses a hack to work. Indeed, in a real system, a service (Soundcloud, Spotify or Deezer) should callback our server once the user has successfully authenticated. However, since our server is running locally, we cannot use that system. Therefore the callback is sent by the client to our server which then process' the service's answer.
+\end{itemize}
+}
+
 \chapter{Future fixes}
 
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
@@ -499,7 +587,11 @@ These changes have been made (cf Update section).
 \ifthenelse{\boolean{all}}{
 \section{Laboratory n$\degree$3}}
 
+\subsection{Client}
+%TODO
+\subsection{Server}
 
+Hopefully, we will add a User system on our server, for cross-platform playlists. 
 }
 
 \ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
@@ -606,6 +698,5 @@ Due to a lack of time, we weren't able to consider the suggestions of our collea
 
 }
 
-%\section{Laboratory n$\degree$2}
 
 \end{document}

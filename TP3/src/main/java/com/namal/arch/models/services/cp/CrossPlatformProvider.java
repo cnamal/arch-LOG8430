@@ -49,7 +49,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         objectBuilder.add(ID,play.getObjectId("_id").toString());
 		objectBuilder.add(TITLE,name);
-		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(service));
 		objectBuilder.add(PUB,pub);
 		objectBuilder.add(SONGS,Json.createArrayBuilder());
 		return objectBuilder;
@@ -81,7 +81,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 	private static class SpotifyProviderInformation extends ProviderInformation{
 		
 		private static final String name = "Crossplatform";
-		private static final String logoURL = null;
+		private static final String logoURL = Configuration.getUrlBase()+"/img/CP.png";
 		private static final SpotifyProviderInformation instance = new SpotifyProviderInformation();
 		
 		private SpotifyProviderInformation(){

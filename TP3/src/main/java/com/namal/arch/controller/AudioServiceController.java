@@ -24,11 +24,23 @@ import java.util.UUID;
 public class AudioServiceController {
 
 
+    /**
+     * The Services endpoint returns all the services registered on the server. The response includes the display name and other details about each service.
+     * @return An array of services
+     */
     @RequestMapping(method = RequestMethod.GET)
     public String getServices() {
         return APIHelper.dataResponse(Configuration.getAudioServiceLoader().getAudioServicesJson());
     }
 
+    /**
+     * The Connect Service endpoint allows you to connect to a service.
+     * @param serviceId Unique identifier representing a specific service.
+     * @param url URL Callback sent by the service.
+     * @param token Token of our server.
+     * @param response Server response
+     * @return Token of our server
+     */
     @RequestMapping(value="/connect",method = RequestMethod.GET)
     public String connect(@RequestParam(value=Constants.SERVICEID) String serviceId,@RequestParam(value=Constants.URL) String url,@RequestParam(value=Constants.TOKEN,required=false)String token,HttpServletResponse response) {
         if(token == null)
@@ -45,6 +57,13 @@ public class AudioServiceController {
         return APIHelper.dataResponse(Json.createObjectBuilder().add(Constants.TOKEN,token));
     }
 
+    /**
+     * The Search Track endpoint returns all the search results for different services.
+     * @param serviceId Array of services.
+     * @param query Name of the track
+     * @param response Server response
+     * @return An array of results
+     */
     @RequestMapping(value="/searchTrack",method = RequestMethod.GET)
     public String searchTrack(@RequestParam(Constants.SERVICEID) String[] serviceId,@RequestParam("q") String query, HttpServletResponse response) {
         List<AudioService> services = new ArrayList<>();
@@ -58,7 +77,7 @@ public class AudioServiceController {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for(AudioService service:services){
             JsonObjectBuilder object = Json.createObjectBuilder();
-            object.add(Constants.SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+            object.add(Constants.SERVICEID, Configuration.getAudioServiceLoader().getServiceId(service));
             object.add(Constants.SONGS, service.searchTrack(query));
             builder.add(object);
         }

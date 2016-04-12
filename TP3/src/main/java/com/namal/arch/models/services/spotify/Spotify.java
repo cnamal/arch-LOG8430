@@ -97,7 +97,7 @@ public class Spotify implements AudioService {
                 objectBuilder.add(ID,playlist.getString("id"));
                 objectBuilder.add(TITLE,playlist.getString("name"));
                 objectBuilder.add(PUB, playlist.getBoolean("public"));
-                objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
+                objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(this));
                 String trackUrl = playlist.getJsonObject("tracks").getString("href");
                 url = new URL(trackUrl);
                 httpCon = (HttpURLConnection) url.openConnection();

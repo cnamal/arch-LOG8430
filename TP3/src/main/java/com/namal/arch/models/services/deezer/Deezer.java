@@ -99,7 +99,7 @@ public class Deezer implements AudioService {
                 objectBuilder.add(ID,playlist.getInt("id")+"");
                 objectBuilder.add(TITLE,playlist.getString("title"));
                 objectBuilder.add(PUB, playlist.getBoolean("public"));
-                objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
+                objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(this));
                 String trackUrl = playlist.getString("link");
                 trackUrl = PLAYLISTURL + trackUrl.substring(trackUrl.lastIndexOf("/") + 1) + "?access_token=" + authToken;
                 url = new URL(trackUrl);

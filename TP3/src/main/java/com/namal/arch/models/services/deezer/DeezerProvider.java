@@ -53,7 +53,7 @@ class DeezerProvider implements AudioServiceProvider {
                 url.openStream();
             }
             objectBuilder.add(TITLE,name);
-            objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+            objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
 		} catch (IOException e) {

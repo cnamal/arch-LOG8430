@@ -12,6 +12,11 @@ import javax.json.JsonObjectBuilder;
  */
 public class APIHelper {
 
+    /**
+     *
+     * @param arrayBuilder data
+     * @return Json
+     */
     public static String dataResponse(JsonArrayBuilder arrayBuilder){
         String res =Json.createObjectBuilder()
                 .add(Constants.DATA,arrayBuilder)
@@ -21,6 +26,11 @@ public class APIHelper {
         return res;
     }
 
+    /**
+     *
+     * @param objectBuilder data
+     * @return Json
+     */
     public static String dataResponse(JsonObjectBuilder objectBuilder){
         String res =Json.createObjectBuilder()
                 .add(Constants.DATA,objectBuilder)

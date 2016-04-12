@@ -68,7 +68,7 @@ class SoundcloudProvider implements AudioServiceProvider {
             JsonObject results = rdr.readObject();
 			objectBuilder.add(ID,results.getInt("id")+"");
 			objectBuilder.add(TITLE,results.getString("title"));
-            objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+            objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(service));
             objectBuilder.add(PUB,pub);
             objectBuilder.add(SONGS,Json.createArrayBuilder());
             return objectBuilder;
