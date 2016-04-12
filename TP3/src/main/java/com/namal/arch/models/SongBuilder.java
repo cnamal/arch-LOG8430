@@ -75,7 +75,7 @@ public class SongBuilder {
 	 * @return the same object with it's id set
 	 */
 	public SongBuilder setService(AudioService service){
-		this.serviceId= Configuration.getAudioServiceLoader().getProviderId(service);
+		this.serviceId= Configuration.getAudioServiceLoader().getServiceId(service);
 		return this;
 	}
 

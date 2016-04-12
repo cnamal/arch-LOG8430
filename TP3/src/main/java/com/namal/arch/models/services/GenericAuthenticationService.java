@@ -24,7 +24,7 @@ public abstract class GenericAuthenticationService implements IAuthentification{
 	/**
 	 * 
 	 * @param s map with the get parameters
-	 * @return true if authentication succeeded, false otherwise
+	 * @return Authentication token
 	 */
 	protected abstract String serverResponse(Map<String, String> s);
 }

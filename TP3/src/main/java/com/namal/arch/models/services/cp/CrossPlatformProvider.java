@@ -49,7 +49,7 @@ class CrossPlatformProvider implements AudioServiceProvider {
 		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         objectBuilder.add(ID,play.getObjectId("_id").toString());
 		objectBuilder.add(TITLE,name);
-		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(service));
+		objectBuilder.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(service));
 		objectBuilder.add(PUB,pub);
 		objectBuilder.add(SONGS,Json.createArrayBuilder());
 		return objectBuilder;

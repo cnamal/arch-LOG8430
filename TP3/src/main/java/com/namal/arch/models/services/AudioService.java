@@ -10,17 +10,20 @@ import javax.json.JsonArrayBuilder;
  *
  */
 public interface AudioService {
-	
-	/**
-	 * Get the playlists of the user 
-	 */
-	JsonArrayBuilder getPlaylists(String authToken);
 
 	/**
-	 * 
-	 * @param track Name of the track that is researched
-	 */
-	JsonArrayBuilder searchTrack(String track);
+	 * Get the playlists of the user
+	 * @param authToken Authentication token
+	 * @return Json
+     */
+	JsonArrayBuilder getPlaylists(String authToken);
+
+    /**
+     * Search for a track
+     * @param track Name of the track that is researched
+     * @return Json
+     */
+    JsonArrayBuilder searchTrack(String track);
 	
 	/**
 	 * 

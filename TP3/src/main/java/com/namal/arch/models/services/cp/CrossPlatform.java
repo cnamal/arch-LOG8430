@@ -103,7 +103,7 @@ public class CrossPlatform implements AudioService {
             JsonObjectBuilder object = Json.createObjectBuilder();
             object.add(TITLE, document.getString("title"));
             object.add(ID, document.getObjectId("_id").toString());
-            object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(instance));
+            object.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(instance));
             object.add(PUB	, document.getBoolean("public"));
             JsonArrayBuilder songsJson = Json.createArrayBuilder();
             List<Document> songs = (List<Document>)document.get("songs");

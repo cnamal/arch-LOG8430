@@ -112,7 +112,7 @@ public class Soundcloud implements AudioService {
 				JsonObjectBuilder object = Json.createObjectBuilder();
 				object.add(TITLE, playlist.getString("title"));
 				object.add(ID, playlist.getInt("id")+"");
-				object.add(SERVICEID, Configuration.getAudioServiceLoader().getProviderId(this));
+				object.add(SERVICEID, Configuration.getAudioServiceLoader().getServiceId(this));
 				object.add(PUB, playlist.getString("sharing").equals("public"));
 				JsonArrayBuilder songsJson = Json.createArrayBuilder();
 				JsonArray songs = playlist.getJsonArray("tracks");

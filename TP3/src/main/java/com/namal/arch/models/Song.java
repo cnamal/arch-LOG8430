@@ -78,7 +78,8 @@ public class Song {
 	public String getId(){
 		return id;
 	}
-	
+
+	@Override
 	public String toString(){
 		return "Title : "+title + "\n Artist : "+artist+ "\n Uri : "+uri+"\n";
 	}
@@ -90,12 +91,16 @@ public class Song {
 
 	/**
 	 * 
-	 * @return provider's id
+	 * @return service's id
 	 */
 	public String getServiceId() {
 		return serviceId;
 	}
 
+    /**
+     *
+     * @return Json
+     */
 	public JsonObjectBuilder toJsonObjectBuilder() {
 		JsonObjectBuilder res = Json.createObjectBuilder();
 		

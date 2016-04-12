@@ -53,20 +53,18 @@ abstract class GenericServiceLoader implements IAudioServiceLoader{
 				audioServicesMap.put(id, service);
 		}
 	}
-	
-	public String getProviderId(AudioService service){
+
+	@Override
+	public String getServiceId(AudioService service){
 		return audioServicesMap.inverse().get(service);
 	}
 	
-	
-	public AudioServiceProvider getProvider(String serviceId){
-		return audioServicesMap.get(serviceId).getAudioServiceProvider();
-	}
-
+	@Override
 	public AudioService getService(String serviceId){
 		return audioServicesMap.get(serviceId);
 	}
-	
+
+    @Override
 	public JsonArrayBuilder getAudioServicesJson(){
         JsonArrayBuilder res = Json.createArrayBuilder();
 		for(Entry<String,AudioService> entry :audioServicesMap.entrySet()){

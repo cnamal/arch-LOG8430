@@ -9,7 +9,7 @@ import com.namal.arch.models.services.soundcloud.Soundcloud;
 import com.namal.arch.models.services.spotify.Spotify;
 
 /**
- * Audio Service Loader for 1st lab
+ * Audio Service Loader
  * @author namalgac
  *
  */
@@ -17,10 +17,6 @@ public class AudioServiceLoader extends GenericServiceLoader{
 	
 	
 	private static AudioServiceLoader instance ;
-	
-	public Iterator<AudioService> getAudioServices(){
-		return audioServices.iterator();
-	}
 	
 	private void init(){
 		audioServices = new ArrayList<>();
@@ -30,7 +26,7 @@ public class AudioServiceLoader extends GenericServiceLoader{
 		audioServices.add(Deezer.getInstance());
 		initMap();
 	}
-	
+
 	public static IAudioServiceLoader getInstance(){
 		if(instance==null){
 			instance = new AudioServiceLoader();
