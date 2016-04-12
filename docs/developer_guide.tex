@@ -16,7 +16,7 @@
 
 \title{Developer's Guide}
 \author{BERQUEZ Fabien  (1800325), LOGUT Adrien (1815142) \\ \& NAMALGAMUWA Chathura (1815118)}
-\date{Updated on 19/02/2016}
+\date{}
 
 \newboolean{all}
 \newboolean{lab1}
@@ -382,7 +382,35 @@ The third laboratory was pretty straight forward, since we were quite familiar w
 \subsection{Figures}
 
 \subsubsection{Client}
-%TODO
+The services package has been largely reworked since the previous laboratory. Instead of having multiples sub packages representing each a service and implementing the generic interfaces, we now have a unique class \texttt{AudioService} able to represent any of the audio services we handle. This class has become more of a model rather than a base class meant to be extended by the concrete classes, as it was in previous versions. 
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/servicesClient.png}
+  \caption{Services diagram (class)}
+  \label{servicesClient}
+\end{figure}
+\end{center}
+
+The models have been slightly modified to remove all references to the old \texttt{AudioServiceProvider} classes and replace them by references to \texttt{AudioService}
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/modelsClient.png}
+  \caption{Models diagram (class)}
+  \label{modelsClient}
+\end{figure}
+\end{center}
+
+Some new classes, essentially helpers, have been created in order to do some of the recurrent work we need, such as reading the configuration files to create the base URL of the server, or to keep the centralized authentication token, as a Singleton class \texttt{ConnexionToken}.
+\begin{center}
+\begin{figure}[H]
+
+  \includegraphics[scale=0.4]{class/utilsClient.png}
+  \caption{Utils diagram (class)}
+  \label{utilsClient}
+\end{figure}
+\end{center}
 \subsubsection{Server}
 
 The previous services interfaces have been slightly modified. 
@@ -472,7 +500,14 @@ This was the last issue. Indeed, using Maven seemed way too complicated in this 
 \section{Laboratory n$\degree$3}}
 
 \subsection{Client}
-%TODO
+\subsubsection{Playlist Manager}
+Managing the playlists is different now that we use a server to communicate. With the API REST on the server, all the requests are in JSON, and get back a JSON as a result. 
+\textit{PlaylistManager} is now the class to call when we want to interrogate the server. All the base functionality is there (GET = getPlaylist, POST = CreatePlaylist, PUT = UpdatePlaylist, DELETE = DeletePlaylist). Into the methods, a connection is opened with the server and a request with the right method (GET,PUT,etc..) is done and the answer is parsed into a Playlist object, model used from the beginning of our project.
+\subsubsection{Services}
+The first changes we had to make were about the way services were represented. In the former version of the project, services were locally created, each one implemented as a package of classes managing the authentication process, the management of playlists, search processes and basically all other required functionalities.\\ We had to rework everything, to eventually create one single class \texttt{AudioService} representing a service, with the information needed to implement client-side functionalities, such as the authentication to each service (because the login form of each provider must be used, which can only be done on the client side). To create those objects, we needed a class \texttt{AudioServiceLoader} that would make the calls to the server API and parse the resulting JSON. This class has been made as a Singleton, and contains all the code needed to locally create the services.\\
+The authentication process has been implemented in \texttt{AuthentificationOverviewController}. In a few words, the authentication process is managed on the server side, but requires client side actions. Each client is allocated a unique token, the first time it connects to a service, allowing our server to identify it. For each service, we use the service's own login form to get the authentication token for this service and then we associate this particular token to the token of the client. This process allows our server to make requests to the services' API in the "name" of the user, that means by using his/her account. 
+ We use the \textit{connectUrl} of our \texttt{AudioService} object (for the considered service) to open a browser window which displays the login form of the service. We then get the callback URL and send it to the server (as a \texttt{GET /services/connect}), in order to let the server process the URL as described above.
+ 
 \subsection{Server}
 
 \ifthenelse{\boolean{fun}}{\subsubsection{\href{http://data.whicdn.com/images/33689024/large.gif}{Swagger}}}{\subsubsection{Swagger}}
@@ -526,6 +561,10 @@ We used Spring boot to develop the server. It is pretty straight forward and eas
 \section{Laboratory n$\degree$3}}
 
 \subsection{Client}
+\begin{itemize}
+\item It is probable that network errors or HTTP errors are not particularly handled. It would be an improvement to manage them better (with a nicer presentation of the errors rather than a quite brutal exception)
+\item JSON errors (as described in the API, that means a formally correct JSON response, but with an error code and message) are not handled in most of the client side implementations.
+\end{itemize}
 %TODO
 \subsection{Server}
 
@@ -588,7 +627,10 @@ These changes have been made (cf Update section).
 \section{Laboratory n$\degree$3}}
 
 \subsection{Client}
-%TODO
+\begin{itemize}
+\item Handling of network or HTTP errors (for instance error 500 or 400)
+\item Handling of API error messages (as described above)
+\end{itemize}
 \subsection{Server}
 
 Hopefully, we will add a User system on our server, for cross-platform playlists. 

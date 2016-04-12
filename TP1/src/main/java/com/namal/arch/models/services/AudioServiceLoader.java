@@ -24,15 +24,30 @@ import com.namal.arch.utils.Connexion;
 
 /**
  * Audio Service Loader for 3rd lab
+ * Class managing the interpretation of the services data from the server
  * @author Fabien Berquez
  *
  */
 public class AudioServiceLoader {
 
+	/**
+	 * List of the audio services instances
+	 */
     private List<AudioService> audioServices;
+    /**
+     * Stores the single instance of this loader (Singleton pattern)
+     */
     private static AudioServiceLoader instance = new AudioServiceLoader();
+    /**
+     * Convenience map to get the Uri of the service based on its id.
+     */
     private HashMap<String, String> idToUriMap;
 
+    /**
+     * Requests the server for the services data and creates the instances
+     * representing the audio services.
+     * @return the list of the audio services instances.
+     */
     public Iterator<AudioService> getAudioServices(){
         if(audioServices==null){
             audioServices = new ArrayList<>();
@@ -91,16 +106,28 @@ public class AudioServiceLoader {
         return audioServices.iterator();
     }
 
+    /**
+     * Gets the unique instance of this class
+     * @return the unique instance of this class
+     */
     public static AudioServiceLoader getInstance(){
         return instance;
     }
     
+    /**
+     * Gets the URL associated with this id
+     * @param id : the desired id of the service
+     * @return the URL associated with the service of this particular id.
+     */
     public String getUriFromId(String id){
     	if(idToUriMap == null)
     		getAudioServices();
     	return idToUriMap.get(id);
     }
-
+    
+    /**
+     * Default constructor (private for Singleton)
+     */
     private AudioServiceLoader(){};
 
 }
