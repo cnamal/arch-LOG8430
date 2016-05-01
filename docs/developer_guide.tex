@@ -41,7 +41,7 @@
 \toggletrue{diag}
 %\togglefalse{paper}
 
-\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
+\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{lab3} \OR \boolean{all}}{
 
 \chapter{Preliminary note on the update}
 
@@ -51,6 +51,11 @@ This Developer's Guide has been updated after the first time we submitted the as
 
 \ifthenelse{\boolean{lab2} \OR \boolean{all}}{
 This Developer's Guide has been updated after the first time we submitted the assignment. All the changes made are listed with a comparison in the update section of this guide (the last section), with the explanation of why we did these changes to the initial work. \textbf{Important:} The \hyperref[Usage::lab2] {usage section} has been updated. Please take those modifications into account.
+}
+
+
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+This Developer's Guide has been updated after the first time we submitted the assignment. All the changes made are listed at the end of this guide.
 }
 
 }
@@ -153,6 +158,7 @@ The requirements are the same as the union of Laboratory n$\degree$1 and n$\degr
 \end{enumerate}
 
 \subsubsection{Windows}
+
 \begin{enumerate}
 \item Open Eclipse and be sure that Maven and Git are both installed (it should be by default, but we are never cautious enough)
 \item Open the Git Perspective (Window/Perspective/Open Perspective/Other/Git)
@@ -171,6 +177,7 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 \ifthenelse{\boolean{lab2} \OR \boolean{all}}{
 \ifthenelse{\boolean{all}}{
 \subsection{Laboratory n$\degree$2}}
+
 \label{Usage::lab2}
 
 \begin{enumerate}
@@ -180,6 +187,7 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 \item Uncheck \textit{Use default location} and Browse the location of \textit{CorePlugin}. Click on Finish. 
 \item In the Package Explorer, right click on the CorePlugin project -\textgreater Configure (it's towards the end) -\textgreater Configure to Plug-in projects... -\textgreater Select the project and click on Finish.
 \item At this point, Eclipse shouldn't show you errors anymore. If not, please send me an email\ifthenelse{\boolean{fun}}{ or \href{https://twitter.com/cnamalgamuwa}{tweet} me.}{.}
+
 \item Open the \textbf{MANIFEST.MF} in \textit{META-INF}. Add in \textit{Runtime} -\textgreater \textit{ Exported Packages} : 
 \begin{itemize}
 \item com.namal.arch.models
@@ -199,6 +207,7 @@ Normally, you shouldn't have any problems using Eclipse if you have installed e(
 \end{itemize}
 \item To use our application afterwards, please use the User Guide.
 \ifthenelse{\boolean{fun}}{\item Profit!}
+
 \end{enumerate}
 
 \subsubsection{Linux}
@@ -275,6 +284,7 @@ Since the sequence diagram isn't pertinent here, we give the full API descriptio
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
 \ifthenelse{\boolean{all}}{
 \section{Laboratory n$\degree$1}}
+
 \subsection{Methodology}
 
 When we chose to do this option (two project options were given), we started to think about the \href{https://s3.amazonaws.com/applause-devmktg/2015/12/02/57kz3goral_YOU_DONT_SAY.png}{architecture of the project}. We started to draw a few UML diagrams on a piece of paper highlighting the main models and a few pattern designs we would use. At the end of that mini work-session, we knew we would use a MVC architecture, and as models we would have \textit{Song} and \textit{Playlist}, as controllers we'd have the \textit{Player} and finally we would have \textit{AudioService(s)} that would be generic. To be able to have numerous audio services, the idea to use the \href{https://en.wikipedia.org/wiki/Strategy_pattern}{\textit{strategy pattern}} was most obvious. However, after this first session, we never drew a UML diagram again. Indeed, the rest of the architecture was designed directly by coding the classes (cf \href{https://github.com/cnamal/arch-LOG8430/commit/d4953e0fc8fc3a7a8641dd7cacef69496f3ca011}{initial commit}). By coding the classes, we mean that every class was created along with it's methods and attributes, but the methods were not implemented. A few \texttt{TODO}s were added to explain what a method should do, and hence explain the main workflow.\\
@@ -513,7 +523,7 @@ The authentication process has been implemented in \texttt{AuthentificationOverv
 \ifthenelse{\boolean{fun}}{\subsubsection{\href{http://data.whicdn.com/images/33689024/large.gif}{Swagger}}}{\subsubsection{Swagger}}
 Swagger was used to create the API but was \textbf{NOT} used to generate the code. We felt that the swagger project, albeit quite promising, wasn't mature enough to create a \textit{good} code. For instance, it is impossible to download the HTML/CSS/JS code of the editor, once the API is written (that is why we give you the yaml and not a generated html directly)\footnote{Link to github issue : \url{https://github.com/swagger-api/swagger-editor/issues/664}}.
 
-\ifthenelse{\boolean{fun}}{\subsubsection{https://www.facebook.com/photo.php?fbid=10209423114439593&set=gm.10153621153678691&type=3&theater}{Spring boot}}{\subsubsection{Spring boot}}
+\ifthenelse{\boolean{fun}}{\subsubsection{https://www.facebook.com/photo.php?fbid=10209423114439593\&set=gm.10153621153678691\&type=3\&theater}{Spring boot}}{\subsubsection{Spring boot}}
 
 We used Spring boot to develop the server. It is pretty straight forward and easier to use than writing J2EE code directly. However, we had a hard time getting programmatically the address of the server (localhost) and the port (8080). We could have hardcoded those values, but it wouldn't have been modular enough.
 
@@ -597,6 +607,7 @@ We used Spring boot to develop the server. It is pretty straight forward and eas
 \item Create threads for web queries. This is very complicated and isn't necessarily worth it. Indeed, if you have a good internet connection, the waiting times aren't bad. However, once we will add other services, this might become necessary.
 \end{itemize}
 \end{enumerate}
+
 }
 
 \ifthenelse{\boolean{lab2} \OR \boolean{all}}{
@@ -634,9 +645,10 @@ These changes have been made (cf Update section).
 \subsection{Server}
 
 Hopefully, we will add a User system on our server, for cross-platform playlists. 
+
 }
 
-\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{all}}{
+\ifthenelse{\boolean{lab1} \OR \boolean{lab2} \OR \boolean{lab3} \OR \boolean{all}}{
 \chapter{Updates}}
 
 \ifthenelse{\boolean{lab1} \OR \boolean{all}}{
@@ -679,6 +691,7 @@ The other group also advised us to split the \texttt{PlayerController} class, as
 \item All the other methods have the responsibility to manage the state of the controller but also of the \texttt{PausablePlayer}, the concrete implementation of the music player. Some of them give feedbacks to the view of the current state of the music player, but they have a quite high cohesion and would be hard to split into two classes.
 \item We could have managed the current song index and similar matters directly into the \texttt{Playlist} class, but we wanted to keep the \texttt{Playlist} class as a data structure to encapsulate a list of songs, with limited responsibilities otherwise than giving easier access through appropriate getters and setters.
 \end{itemize}
+
 }
 
 \ifthenelse{\boolean{lab2} \OR \boolean{all}}{
@@ -740,5 +753,12 @@ Due to a lack of time, we weren't able to consider the suggestions of our collea
 
 }
 
+\ifthenelse{\boolean{lab3} \OR \boolean{all}}{
+\ifthenelse{\boolean{all}}{
+\section{Laboratory n$\degree$3}}
+
+No major update was done for the final submission, besides renaming a few folders and update documentation. Indeed, the group that evaluated us didn't find any major problems. Furthermore, the next interesting feature would have been to add a user system on our server. However, it would have required a lot of extra programming that we felt wasn't necessary for this course. Indeed, we would have needed to create a HTML/CSS/JS interface for authentication which is a painful process. 
+
+}
 
 \end{document}
